@@ -7,7 +7,69 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9081408210050192" crossorigin="anonymous"></script>
 </head>
 <body>
+<style>
+  :root{--bg:#f3f6f4;--ink:#14211c;--muted:#5b6b64;--accent:#0b6e4f;--accent-ink:#fff;--line:#c9d5cf;--err:#b3261e}
+  @media (prefers-color-scheme:dark){:root{--bg:#0f1a16;--ink:#e8f0ec;--muted:#94a69d;--accent:#3ddc97;--accent-ink:#06231a;--line:#25382f;--err:#ff8a80}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;line-height:1.5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  main{width:100%;max-width:520px}
+  h1{font-size:clamp(3rem,14vw,5.5rem);line-height:.95;letter-spacing:-.04em;font-weight:800;margin:0 0 12px}
+  .sub{color:var(--muted);margin:0 0 32px}
+  label{display:block;font-weight:600;margin-bottom:8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  input{flex:1 1 240px;min-width:0;padding:14px 16px;font-size:1rem;color:var(--ink);background:transparent;border:2px solid var(--line);border-radius:10px}
+  input:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  button{padding:14px 22px;font-size:1rem;font-weight:700;color:var(--accent-ink);background:var(--accent);border:0;border-radius:10px;cursor:pointer}
+  button:disabled{opacity:.6;cursor:wait}
+  #status{min-height:1.5em;margin-top:16px;color:var(--muted)}
+  #status.error{color:var(--err)}
+  #result a{color:var(--accent);font-weight:700}
+  footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+</style>
+<main>
   <h1>Youdown</h1>
-  <p>Selamat datang.</p>
+  <p class="sub">Tempel link video, lalu tekan Unduh.</p>
+  <form id="f" novalidate>
+    <label for="url">Link video</label>
+    <div class="row">
+      <input id="url" type="url" inputmode="url" autocomplete="off" placeholder="https://..." required>
+      <button id="go" type="submit">Unduh</button>
+    </div>
+  </form>
+  <div id="status" role="status" aria-live="polite"></div>
+  <div id="result"></div>
+  <footer>Gunakan hanya untuk konten milikmu atau yang boleh diunduh.</footer>
+</main>
+<script>
+  // Isi dengan alamat backend, misalnya "https://api.youdown.my.id/download"
+  const API_URL = "";
+  const form = document.getElementById("f");
+  const input = document.getElementById("url");
+  const btn = document.getElementById("go");
+  const status = document.getElementById("status");
+  const result = document.getElementById("result");
+  function say(m, e) { status.textContent = m; status.className = e ? "error" : ""; }
+  form.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    result.textContent = "";
+    const link = input.value.trim();
+    let ok = false;
+    try { ok = /^https?:$/.test(new URL(link).protocol); } catch (_) {}
+    if (!ok) { say("Link tidak valid. Mulai dengan https://", true); return; }
+    if (!API_URL) { say("Server unduhan belum terhubung.", true); return; }
+    btn.disabled = true; say("Memproses...");
+    try {
+      const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: link }) });
+      if (!res.ok) throw new Error("Server menjawab " + res.status);
+      const data = await res.json();
+      if (!data.download_url) throw new Error("Jawaban server tidak berisi link unduhan");
+      say("Siap diunduh.");
+      const a = document.createElement("a");
+      a.href = data.download_url; a.textContent = "Unduh file"; a.rel = "noopener";
+      result.appendChild(a);
+    } catch (err) { say("Gagal: " + err.message, true); }
+    finally { btn.disabled = false; }
+  });
+</script>
 </body>
 </html>
