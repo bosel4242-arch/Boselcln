@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Link YouTube, Facebook, dan TikTok Bosel42.">
+<title>Bosel42 - Link Saya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+  /* Layout: satu kolom sempit ala layar HP; kepala profil rata kiri, tombol link besar, lalu langkah mendukung */
+  :root {
+    --bg: #eef1f6;
+    --surface: #ffffff;
+    --ink: #101828;
+    --muted: #5b6577;
+    --line: #d9dfea;
+    --accent: #2f5bff;
+    --accent-ink: #ffffff;
+    --fb: #1b6ef3;
+    --yt: #e02b20;
+    --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --font-body: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c1220;
+      --surface: #151d30;
+      --ink: #eef2fb;
+      --muted: #9aa6bd;
+      --line: #263250;
+      --accent: #7b97ff;
+      --accent-ink: #0c1220;
+      --fb: #5b9bff;
+      --yt: #ff6a5e;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c1220;
+    --surface: #151d30;
+    --ink: #eef2fb;
+    --muted: #9aa6bd;
+    --line: #263250;
+    --accent: #7b97ff;
+    --accent-ink: #0c1220;
+    --fb: #5b9bff;
+    --yt: #ff6a5e;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    padding-inline: 16px;
+    padding-block: 32px 48px;
+  }
+  .wrap { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+  header { display: flex; flex-direction: column; gap: 14px; }
+  .avatar {
+    width: 72px; height: 72px; border-radius: 22px;
+    background: var(--accent); color: var(--accent-ink);
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 30px;
+  }
+  h1 {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(30px, 8vw, 38px); line-height: 1.05; letter-spacing: -0.02em;
+    margin: 0; text-wrap: balance;
+  }
+  .bio { margin: 0; color: var(--muted); max-width: 40ch; }
+
+  .links { display: flex; flex-direction: column; gap: 12px; }
+  .link {
+    display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 14px;
+    padding: 14px 16px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 16px;
+    color: inherit; text-decoration: none;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .link:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .link:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .glyph {
+    width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--c) 14%, var(--surface));
+    color: var(--c);
+  }
+  .glyph svg { width: 22px; height: 22px; }
+  .link-title { font-weight: 700; line-height: 1.25; }
+  .link-desc { font-size: 14px; color: var(--muted); line-height: 1.35; }
+  .link-text { min-width: 0; }
+  .arrow { color: var(--muted); font-size: 20px; }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 20px;
+    letter-spacing: -0.01em; margin: 0 0 12px;
+  }
+  .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: s; }
+  .steps li {
+    counter-increment: s; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; align-items: start;
+    color: var(--ink);
+  }
+  .steps li::before {
+    content: counter(s); width: 28px; height: 28px; border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700; font-size: 14px;
+    border: 1.5px solid var(--accent); color: var(--accent);
+  }
+  .steps span { padding-top: 2px; }
+
+  .share { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    font: inherit; font-weight: 700; cursor: pointer;
+    padding: 12px 18px; border-radius: 12px; border: 0;
+    background: var(--accent); color: var(--accent-ink);
+  }
+  .status { color: var(--muted); font-size: 14px; }
+  footer { color: var(--muted); font-size: 13px; }
+
+  @media (prefers-reduced-motion: reduce) { .link { transition: none; } }
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="avatar" id="avatar" aria-hidden="true"></div>
+    <h1 id="name"></h1>
+    <p class="bio" id="bio"></p>
+  </header>
+
+  <nav aria-label="Link konten">
+    <div class="links" id="links"></div>
+  </nav>
+
+  <section>
+    <h2>Suka kontennya?</h2>
+    <ol class="steps">
+      <li><span>Tonton Reels atau video sampai habis.</span></li>
+      <li><span>Tekan suka, tulis komentar, lalu ikuti akunnya.</span></li>
+      <li><span>Bagikan ke teman yang cocok dengan topiknya.</span></li>
+    </ol>
+  </section>
+
+  <section class="share">
+    <button class="btn" id="copy" type="button">Salin link halaman ini</button>
+    <span class="status" id="status" role="status"></span>
+  </section>
+
+  <footer>Semua penonton di halaman ini datang dari orang sungguhan yang kamu ajak.</footer>
+</div>
+
+<script>
+  // Ubah bagian ini: nama, bio, dan link akunmu.
+  var PROFILE = {
+    name: "Bosel42",
+    bio: "Video dan Reels terbaru ada di sini. Tonton, ikuti, dan subscribe supaya tidak ketinggalan.",
+    links: [
+      { kind: "yt", title: "Tonton video di YouTube", desc: "Semua video di channel @bosel42", url: "https://www.youtube.com/@bosel42" },
+      { kind: "yt", title: "Subscribe channel YouTube", desc: "Satu ketukan, lalu konfirmasi", url: "https://www.youtube.com/@bosel42?sub_confirmation=1" },
+      { kind: "fb", title: "Tonton Reels dan ikuti di Facebook", desc: "Reels dan update terbaru", url: "https://www.facebook.com/share/1FedngTcEh/" },
+      { kind: "tt", title: "Ikuti di TikTok", desc: "Video pendek di @prlvdsyafaa04", url: "https://www.tiktok.com/@prlvdsyafaa04" }
+    ]
+  };
+
+  var ICON = {
+    fb: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10-6.5a1 1 0 0 0 0-1.72l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>',
+    yt: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7zm6 2.2v5.6a.5.5 0 0 0 .76.43l4.6-2.8a.5.5 0 0 0 0-.86l-4.6-2.8A.5.5 0 0 0 10 9.2z"/></svg>'
+  };
+  ICON.tt = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 3h2.6a4.4 4.4 0 0 0 3.4 3.9v2.7a7 7 0 0 1-3.4-1V15a5.5 5.5 0 1 1-5.5-5.5c.3 0 .6 0 .9.1v2.8a2.7 2.7 0 1 0 1.9 2.6V3z"/></svg>';
+  var COLOR = { fb: "var(--fb)", yt: "var(--yt)", tt: "var(--ink)" };
+
+  document.getElementById("name").textContent = PROFILE.name;
+  document.getElementById("bio").textContent = PROFILE.bio;
+  document.getElementById("avatar").textContent = PROFILE.name.trim().charAt(0).toUpperCase();
+
+  var box = document.getElementById("links");
+  PROFILE.links.forEach(function (l) {
+    var a = document.createElement("a");
+    a.className = "link";
+    a.href = l.url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    var g = document.createElement("span");
+    g.className = "glyph";
+    g.style.setProperty("--c", COLOR[l.kind] || "var(--accent)");
+    g.innerHTML = ICON[l.kind] || ICON.fb;
+    var t = document.createElement("span");
+    t.className = "link-text";
+    var t1 = document.createElement("div");
+    t1.className = "link-title";
+    t1.textContent = l.title;
+    var t2 = document.createElement("div");
+    t2.className = "link-desc";
+    t2.textContent = l.desc;
+    t.appendChild(t1);
+    t.appendChild(t2);
+    var ar = document.createElement("span");
+    ar.className = "arrow";
+    ar.setAttribute("aria-hidden", "true");
+    ar.textContent = "→";
+    a.appendChild(g);
+    a.appendChild(t);
+    a.appendChild(ar);
+    box.appendChild(a);
+  });
+
+  document.getElementById("copy").addEventListener("click", function () {
+    var s = document.getElementById("status");
+    var url = window.location.href;
+    function ok() { s.textContent = "Link tersalin."; }
+    function fail() { s.textContent = "Salin manual dari kolom alamat browser."; }
+    try {
+      navigator.clipboard.writeText(url).then(ok, fail);
+    } catch (e) { fail(); }
+  });
+</script>
+</body>
+</html>
