@@ -1,1 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e14">
+<title>KlipKu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e14;--panel:#131822;--line:#232b3a;--text:#eef2f7;--mute:#8b96a8;--accent:#2ee6e0;--accent-ink:#04201f;--accent-soft:#12302f;--warn:#ffb454;--bad:#ff6b6b}
+@media (prefers-color-scheme:light){:root{--bg:#f6f8fb;--panel:#fff;--line:#dbe2ec;--text:#101828;--mute:#566176;--accent:#0aa8a3;--accent-ink:#fff;--accent-soft:#d9f4f3;--warn:#9a5b00;--bad:#c62828}}
+html{height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;font-size:16px;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px 48px}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 8px}
+.logo{font-size:30px;font-weight:700;letter-spacing:-.02em}.logo b{color:var(--accent)}
+nav{display:flex;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:0;background:var(--bg);z-index:5}
+nav button{flex:1 0 auto;background:none;border:0;color:var(--mute);font:inherit;font-size:14px;padding:12px 10px;cursor:pointer;border-bottom:2px solid transparent;min-width:64px}
+nav button[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
+h1{font-size:clamp(34px,9vw,48px);line-height:1.05;letter-spacing:-.03em;margin:28px 0 10px;font-weight:700}
+h1 em{font-style:normal;color:var(--accent)}
+h2{font-size:18px;margin:0 0 10px}
+p.lead{color:var(--mute);margin:0 0 22px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:14px 0}
+.row{display:flex;gap:10px;align-items:center}.row>*{min-width:0}
+input[type=text],textarea,select{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px;font:inherit;font-size:16px}
+textarea{min-height:92px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{width:100%;border:0;border-radius:10px;padding:14px;font:inherit;font-weight:600;font-size:16px;cursor:pointer;background:var(--accent);color:var(--accent-ink);text-align:center;text-decoration:none;display:block}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn.soft{background:var(--accent-soft);color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{width:auto;display:inline-block;padding:9px 14px;font-size:14px}
+.check{display:flex;gap:10px;align-items:flex-start;color:var(--mute);font-size:14px;margin:12px 0}
+.check input{margin-top:4px;width:18px;height:18px;accent-color:var(--accent)}
+.note{font-size:14px;color:var(--mute);margin:10px 0 0}.note.warn{color:var(--warn)}.note.bad{color:var(--bad)}
+video,audio{width:100%;border-radius:12px;background:#000;max-height:60vh;display:block}
+audio{background:none}
+.preview{min-height:150px;display:grid;place-items:center;border:1px dashed var(--line);border-radius:12px;color:var(--mute);text-align:center;padding:14px}
+.preview img{width:100%;border-radius:10px;display:block}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;margin:12px 0}
+.seg button{border:0;background:none;color:var(--mute);font:inherit;padding:10px;border-radius:8px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+label.f{display:block;color:var(--mute);font-size:14px;margin:12px 0 4px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.chip{border:1px solid var(--line);background:none;color:var(--mute);border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.kv span:first-child{color:var(--mute)}.kv:last-child{border:0}
+.tabs2{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line);margin:18px 0}
+.tabs2.three{grid-template-columns:repeat(3,1fr)}
+.tabs2 button{background:none;border:0;color:var(--mute);font:inherit;font-size:14px;padding:10px 4px;cursor:pointer;border-bottom:2px solid transparent}
+.tabs2 button[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
+.out{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;font-size:15px}
+.item{display:flex;gap:10px;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}.item small{color:var(--mute);display:block}
+.item img{width:96px;border-radius:8px;display:block;margin-bottom:6px}
+.empty{text-align:center;color:var(--mute);padding:36px 8px}
+.empty strong{display:block;color:var(--text);font-size:20px;margin-bottom:4px}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;width:40%;background:var(--accent);animation:run 1.1s infinite ease-in-out}
+@keyframes run{0%{margin-left:-40%}100%{margin-left:100%}}
+@media (prefers-reduced-motion:reduce){.bar i{animation:none;width:100%}}
+footer{border-top:1px solid var(--line);margin-top:36px;padding-top:16px;color:var(--mute);font-size:13px}
+[hidden]{display:none!important}
+.stack>*+*{margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><div class="logo">Klip<b>Ku.</b></div></header>
+  <nav id="nav" role="tablist">
+    <button role="tab" data-t="studio" aria-selected="true">Studio</button>
+    <button role="tab" data-t="foto" aria-selected="false">Unduh foto</button>
+    <button role="tab" data-t="ai" aria-selected="false">Studio AI</button>
+    <button role="tab" data-t="koleksi" aria-selected="false">Koleksi</button>
+    <button role="tab" data-t="riwayat" aria-selected="false">Riwayat</button>
+  </nav>
+  <details class="panel" id="srvBox" style="margin-top:14px">
+    <summary style="cursor:pointer">Alamat server: <b id="srvState">memeriksa…</b></summary>
+    <div class="stack" style="margin-top:12px">
+      <input type="text" id="srvUrl" inputmode="url" autocomplete="off" placeholder="https://klipku-server.onrender.com" aria-label="Alamat server">
+      <button class="btn" id="srvSave">Simpan &amp; cek</button>
+      <p class="note" style="margin:0">Kosongkan jika halaman ini dibuka langsung dari server KlipKu. Untuk server di HP (Termux): http://localhost:8000</p>
+    </div>
+  </details>
+  <p class="note bad" id="srvOff" hidden>Server tidak terjangkau. Buka "Alamat server" di atas dan periksa alamatnya.</p>
 
+  <!-- STUDIO -->
+  <section id="studio">
+    <h1>Ambil momennya. <em>Jadikan milikmu.</em></h1>
+    <p class="lead">Unduh, potong, dan simpan bagian terbaik.</p>
+    <div class="panel">
+      <label class="f" for="url" style="margin-top:0">Tautan YouTube, TikTok, atau Facebook</label>
+      <input type="text" id="url" inputmode="url" autocomplete="off" placeholder="Tempel tautan di sini…">
+      <div style="height:10px"></div>
+      <button class="btn" id="getUrl">Ambil video</button>
+      <div class="check"><input type="checkbox" id="own1"><label for="own1">Video ini milik saya atau saya memiliki izin dari pemiliknya.</label></div>
+      <button class="btn ghost" id="pickVideo">Atau pilih video dari perangkat</button>
+      <input type="file" id="videoFile" accept="video/*,audio/*" hidden>
+      <div class="bar" id="vBar" hidden><i></i></div>
+      <p class="note" id="urlMsg" hidden></p>
+    </div>
+    <div class="panel">
+      <h2 id="vTitle">Pratinjau video</h2>
+      <div class="preview" id="vidEmpty">Video kamu akan tampil di ruang ini.</div>
+      <video id="vid" controls playsinline hidden></video>
+      <div class="seg"><button id="mCut" aria-pressed="true">Potong video</button><button id="mFull" aria-pressed="false">Video utuh</button></div>
+      <div id="cutBox">
+        <label class="f" for="s">Mulai: <b id="sv">0.0</b> detik</label>
+        <input type="range" id="s" min="0" max="30" step="0.1" value="0" disabled>
+        <label class="f" for="e">Selesai: <b id="ev">9.0</b> detik</label>
+        <input type="range" id="e" min="0" max="30" step="0.1" value="9" disabled>
+        <div class="chips" id="quick"><span style="color:var(--mute);font-size:14px">Durasi cepat</span>
+          <button class="chip" data-d="5">5 dtk</button><button class="chip" data-d="9">9 dtk</button><button class="chip" data-d="10">10 dtk</button><button class="chip" data-d="15">15 dtk</button></div>
+      </div>
+      <div class="kv" style="margin-top:14px"><span>Total durasi</span><span id="total">0.0 detik</span></div>
+      <div class="kv"><span>Biaya unduh</span><span style="color:var(--accent)">Gratis</span></div>
+      <div style="height:10px"></div>
+      <button class="btn" id="clipBtn" disabled>Potong &amp; unduh</button>
+      <div class="bar" id="cBar" hidden><i></i></div>
+      <p class="note" id="clipMsg">Ambil video dulu untuk mulai memotong.</p>
+      <a class="btn soft" id="clipLink" hidden style="margin-top:10px">Unduh hasil</a>
+      <p class="note">MP4, hingga 720p, tanpa watermark. File otomatis kedaluwarsa dalam 24 jam.</p>
+    </div>
+  </section>
+
+  <!-- FOTO -->
+  <section id="foto" hidden>
+    <h1>Gambar asli. <em>Siap disimpan.</em></h1>
+    <p class="lead">Foto dari tautan publik, sampul video, atau perangkatmu.</p>
+    <div class="tabs2 three" id="fTabs">
+      <button data-f="link" aria-selected="true">Tautan gambar</button>
+      <button data-f="thumb" aria-selected="false">Sampul video</button>
+      <button data-f="dev" aria-selected="false">Perangkat</button>
+    </div>
+    <div class="panel">
+      <div id="f-link" class="stack"><input type="text" id="imgUrl" inputmode="url" placeholder="https://…/foto.jpg" aria-label="Tautan gambar"><button class="btn" id="getImg">Ambil foto</button></div>
+      <div id="f-thumb" class="stack" hidden><input type="text" id="thUrl" inputmode="url" placeholder="Tautan YouTube, TikTok, atau Facebook" aria-label="Tautan video"><button class="btn" id="getThumb">Ambil sampul</button></div>
+      <div id="f-dev" class="stack" hidden><button class="btn ghost" id="pickImg">Pilih foto dari perangkat</button><input type="file" id="imgFile" accept="image/jpeg,image/png,image/webp" hidden></div>
+      <div class="check"><input type="checkbox" id="own2"><label for="own2">Foto ini milik saya atau saya memiliki izin dari pemiliknya.</label></div>
+      <div class="bar" id="iBar" hidden><i></i></div>
+      <p class="note warn" id="imgMsg" hidden></p>
+    </div>
+    <div class="panel">
+      <h2>Pratinjau foto</h2>
+      <div class="preview" id="imgBox">Setiap gambar punya cerita.<br>JPG, PNG, dan WEBP, maks. 15 MB</div>
+      <div style="margin-top:12px">
+        <div class="kv"><span>Resolusi</span><span id="iRes">—</span></div>
+        <div class="kv"><span>Format</span><span id="iFmt">—</span></div>
+        <div class="kv"><span>Ukuran file</span><span id="iSize">—</span></div>
+        <div class="kv"><span>Biaya unduh</span><span style="color:var(--accent)">Gratis</span></div>
+      </div>
+      <div style="height:10px"></div>
+      <a class="btn" id="dlImg" hidden>Unduh foto asli</a>
+    </div>
+  </section>
+
+  <!-- AI -->
+  <section id="ai" hidden>
+    <h1>Ruang kreatif. <em>Dibantu AI.</em></h1>
+    <p class="lead">Dari ide jadi caption, dari suara jadi cerita.</p>
+    <p class="note warn" id="aiOff" hidden>Fitur AI belum aktif di server ini. Isi OPENAI_API_KEY (lihat README).</p>
+    <div class="tabs2" id="aiTabs">
+      <button data-a="cap" aria-selected="true">Caption</button>
+      <button data-a="trs" aria-selected="false">Transkrip</button>
+      <button data-a="voc" aria-selected="false">Sulih suara</button>
+      <button data-a="img" aria-selected="false">Gambar AI</button>
+    </div>
+
+    <div id="a-cap" class="panel">
+      <label class="f" for="capIdea" style="margin-top:0">Ceritakan videomu</label>
+      <textarea id="capIdea" placeholder="Contoh: video kucing lompat ke kardus, lucu dan santai"></textarea>
+      <label class="f" for="capTone">Gaya</label>
+      <select id="capTone"><option>Santai</option><option>Lucu</option><option>Profesional</option><option>Menyentuh</option></select>
+      <div style="height:12px"></div>
+      <button class="btn" id="capGo">Buat caption</button>
+      <div class="out" id="capOut" hidden></div>
+      <button class="btn soft sm" id="capSave" hidden style="margin-top:10px">Simpan ke koleksi</button>
+    </div>
+
+    <div id="a-trs" class="panel" hidden>
+      <p class="note" style="margin-top:0">Ubah suara dalam video jadi teks. Pakai video yang sedang dibuka di Studio, atau pilih file dari perangkat.</p>
+      <div class="stack" style="margin-top:12px">
+        <button class="btn" id="trsStudio">Transkripsi video di Studio</button>
+        <button class="btn ghost" id="trsPick">Pilih video atau audio dari perangkat</button>
+        <input type="file" id="trsFile" accept="video/*,audio/*" hidden>
+      </div>
+      <div class="bar" id="tBar" hidden><i></i></div>
+      <div class="out" id="trsOut" hidden></div>
+      <div class="row" id="trsAct" hidden style="margin-top:10px;flex-wrap:wrap">
+        <button class="btn soft sm" id="trsTidy">Rapikan &amp; ringkas</button>
+        <button class="btn soft sm" id="trsDl">Unduh .txt</button>
+      </div>
+    </div>
+
+    <div id="a-voc" class="panel" hidden>
+      <label class="f" for="vocIn" style="margin-top:0">Teks yang dibacakan</label>
+      <textarea id="vocIn" placeholder="Tulis narasi di sini…"></textarea>
+      <label class="f" for="vocVoice">Suara</label>
+      <select id="vocVoice"><option>alloy</option><option>ash</option><option>coral</option><option>echo</option><option>fable</option><option>nova</option><option>onyx</option><option>sage</option><option>shimmer</option></select>
+      <label class="f" for="vocStyle">Gaya bicara (opsional)</label>
+      <input type="text" id="vocStyle" placeholder="Contoh: hangat, tenang, seperti narator film">
+      <div style="height:12px"></div>
+      <button class="btn" id="vocGo">Buat suara</button>
+      <div id="vocOut" hidden style="margin-top:12px"><audio id="vocAudio" controls></audio><div class="row" style="margin-top:10px;flex-wrap:wrap"><a class="btn soft sm" id="vocDl">Unduh MP3</a><button class="btn soft sm" id="vocSave">Simpan ke koleksi</button></div></div>
+    </div>
+
+    <div id="a-img" class="panel" hidden>
+      <label class="f" for="imgPrompt" style="margin-top:0">Gambar apa yang kamu mau?</label>
+      <textarea id="imgPrompt" placeholder="Contoh: matahari terbit di atas sawah, gaya ilustrasi"></textarea>
+      <div style="height:12px"></div>
+      <button class="btn" id="imgGo">Buat gambar</button>
+      <div id="imgOut" hidden style="margin-top:12px"><div class="preview" id="aiImgBox"></div><div class="row" style="margin-top:10px;flex-wrap:wrap"><a class="btn soft sm" id="aiDl">Unduh PNG</a><button class="btn soft sm" id="aiSave">Simpan ke koleksi</button></div></div>
+    </div>
+    <p class="note bad" id="aiErr" hidden></p>
+  </section>
+
+  <section id="koleksi" hidden>
+    <h1>Satu koleksi. <em>Semua kreasimu.</em></h1>
+    <p class="lead">Tersimpan di perangkat ini. File media tersedia 24 jam sejak dibuat.</p>
+    <div class="panel" id="kList"></div>
+  </section>
+
+  <section id="riwayat" hidden>
+    <h1>Riwayat unduhan.</h1>
+    <p class="lead">Tersimpan di perangkat ini. Hanya mencatat nama dan waktu.</p>
+    <div class="panel" id="hList"></div>
+    <button class="btn ghost" id="hClear">Hapus riwayat</button>
+  </section>
+
+  <footer>© 2026 KlipKu. Akses media berlaku 24 jam. Unduh hanya konten milikmu atau yang kamu punya izinnya.</footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const mem={};
+let BASE="";try{BASE=(localStorage.getItem("klip.api")||"").replace(/\/+$/,"")}catch(e){}
+const U=p=>/^(https?:|blob:)/.test(p)?p:BASE+p;
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return mem[k]||[]}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){mem[k]=v}}};
+async function api(path,opts){
+  let r;try{r=await fetch(U(path),opts)}catch(e){$("#srvOff").hidden=false;throw new Error("Server tidak terjangkau.")}
+  let j=null;try{j=await r.json()}catch(e){}
+  if(!r.ok){const d=j&&j.detail;throw new Error(typeof d==="string"?d:"Permintaan gagal ("+r.status+").")}
+  return j;
+}
+const post=(p,b)=>api(p,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)});
+const upload=(p,file)=>{const fd=new FormData();fd.append("file",file);return api(p,{method:"POST",body:fd})};
+const busy=(bar,on)=>{$(bar).hidden=!on};
+function say(sel,msg,cls){const n=$(sel);n.hidden=!msg;n.textContent=msg||"";if(cls!==undefined)n.className="note "+cls}
+const mb=b=>b>1048576?(b/1048576).toFixed(2)+" MB":Math.round(b/1024)+" KB";
+
+/* Navigasi */
+function show(t){["studio","foto","ai","koleksi","riwayat"].forEach(id=>$("#"+id).hidden=id!==t);
+  $$("#nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===t));
+  if(t==="koleksi")renderK();if(t==="riwayat")renderH();window.scrollTo(0,0)}
+$("#nav").onclick=e=>{const b=e.target.closest("button");if(b)show(b.dataset.t)};
+function tabs(box,attr,prefix,ids){$(box).onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  $$(box+" button").forEach(x=>x.setAttribute("aria-selected",x===b));ids.forEach(k=>$(prefix+k).hidden=k!==b.dataset[attr])}}
+tabs("#fTabs","f","#f-",["link","thumb","dev"]);
+tabs("#aiTabs","a","#a-",["cap","trs","voc","img"]);
+
+/* Riwayat & koleksi */
+const addH=(name,kind)=>{const h=store.get("klip.h");h.unshift({name,kind,t:Date.now()});store.set("klip.h",h.slice(0,60))};
+const ago=t=>{const m=Math.round((Date.now()-t)/60000);return m<1?"baru saja":m<60?m+" menit lalu":m<1440?Math.round(m/60)+" jam lalu":Math.round(m/1440)+" hari lalu"};
+function renderH(){const h=store.get("klip.h");
+  $("#hList").innerHTML=h.length?h.map(x=>`<div class="item"><div>${esc(x.name)}<small>${esc(x.kind)} · ${ago(x.t)}</small></div></div>`).join(""):`<div class="empty"><strong>Belum ada momen yang disimpan.</strong>Potongan pertamamu menunggu di studio.</div>`;
+  $("#hClear").hidden=!h.length}
+$("#hClear").onclick=()=>{store.set("klip.h",[]);renderH()};
+const addK=it=>{const k=store.get("klip.k");k.unshift({...it,t:Date.now()});store.set("klip.k",k.slice(0,40))};
+function renderK(){const k=store.get("klip.k");
+  $("#kList").innerHTML=k.length?k.map((x,i)=>{
+    const exp=Date.now()-x.t>864e5;
+    let body="";
+    if(x.type==="text")body=`<div style="white-space:pre-wrap">${esc(x.body)}</div>`;
+    else if(exp)body=`<div>${esc(x.title)}</div><small>File sudah kedaluwarsa</small>`;
+    else if(x.type==="image")body=`<a href="${esc(U(x.url))}"><img alt="" src="${esc(U(x.media))}"></a>`;
+    else body=`<audio controls src="${esc(U(x.media))}" style="width:200px"></audio><a href="${esc(U(x.url))}" style="color:var(--accent)">Unduh</a>`;
+    return `<div class="item"><div style="min-width:0">${body}<small>${esc(x.title)} · ${ago(x.t)}</small></div><button class="btn ghost sm" data-del="${i}">Hapus</button></div>`}).join(""):
+    `<div class="empty"><strong>Koleksimu masih kosong.</strong>Caption, suara, dan gambar AI yang kamu simpan muncul di sini.</div>`}
+$("#kList").onclick=e=>{const b=e.target.closest("[data-del]");if(!b)return;const k=store.get("klip.k");k.splice(+b.dataset.del,1);store.set("klip.k",k);renderK()};
+
+/* Cek server */
+function checkSrv(){
+  $("#srvUrl").value=BASE;$("#srvState").textContent="memeriksa…";
+  return api("/api/health").then(h=>{$("#srvOff").hidden=true;$("#srvState").textContent="terhubung";$("#aiOff").hidden=!!h.ai})
+   .catch(()=>{$("#srvState").textContent="tidak terhubung";$("#srvOff").hidden=false;$("#srvBox").open=true});
+}
+$("#srvSave").onclick=()=>{BASE=$("#srvUrl").value.trim().replace(/\/+$/,"");
+  if(BASE&&!/^https?:\/\//.test(BASE))BASE="https://"+BASE;
+  try{localStorage.setItem("klip.api",BASE)}catch(e){}checkSrv()};
+checkSrv();
+
+/* STUDIO */
+const vid=$("#vid");let mode="cut",cur=null;
+function needOwn(id,msgSel){if(!$(id).checked){say(msgSel,"Centang pernyataan kepemilikan atau izin dulu.","warn");return true}return false}
+function loadVideo(r){
+  cur=r;$("#vTitle").textContent=r.title;$("#vidEmpty").hidden=true;vid.hidden=false;vid.src=U(r.media);
+  $("#clipLink").hidden=true;
+}
+$("#getUrl").onclick=async()=>{
+  const u=$("#url").value.trim();if(!u){say("#urlMsg","Tempel tautan dulu.","warn");return}
+  if(needOwn("#own1","#urlMsg"))return;
+  say("#urlMsg","Mengambil video… ini bisa 10–60 detik.","");busy("#vBar",true);$("#getUrl").disabled=true;
+  try{loadVideo(await post("/api/video/fetch",{url:u}));say("#urlMsg","Video siap. Atur rentang potongan di bawah.","")}
+  catch(e){say("#urlMsg",e.message,"bad")}finally{busy("#vBar",false);$("#getUrl").disabled=false}
+};
+$("#pickVideo").onclick=()=>$("#videoFile").click();
+$("#videoFile").onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;
+  say("#urlMsg","Mengunggah & memproses…","");busy("#vBar",true);
+  try{loadVideo(await upload("/api/video/upload",f));say("#urlMsg","Video siap.","")}
+  catch(err){say("#urlMsg",err.message,"bad")}finally{busy("#vBar",false);e.target.value=""}
+};
+vid.onloadedmetadata=()=>{
+  const d=Math.floor((vid.duration||cur.duration||0)*10)/10;
+  ["s","e"].forEach(id=>{$("#"+id).max=d;$("#"+id).disabled=false});
+  $("#s").value=0;$("#e").value=Math.min(9,d);$("#clipBtn").disabled=false;
+  $("#clipMsg").textContent="Atur rentang lalu tekan tombol unduh.";upd();
+};
+function upd(){
+  let s=+$("#s").value,e=+$("#e").value,max=+$("#e").max;
+  if(e<=s){e=Math.min(s+.5,max);if(e<=s)s=Math.max(0,e-.5);$("#s").value=s;$("#e").value=e}
+  $("#sv").textContent=s.toFixed(1);$("#ev").textContent=e.toFixed(1);
+  const t=mode==="cut"?e-s:(cur?cur.duration:0);$("#total").textContent=(t||0).toFixed(1)+" detik"}
+$("#s").oninput=()=>{upd();vid.currentTime=+$("#s").value};
+$("#e").oninput=()=>{upd();vid.currentTime=+$("#e").value};
+$("#quick").onclick=e=>{const b=e.target.closest("[data-d]");if(!b||$("#s").disabled)return;
+  $("#e").value=Math.min(+$("#e").max,+$("#s").value+ +b.dataset.d);upd()};
+function setMode(m){mode=m;$("#mCut").setAttribute("aria-pressed",m==="cut");$("#mFull").setAttribute("aria-pressed",m==="full");
+  $("#cutBox").hidden=m!=="cut";$("#clipBtn").textContent=m==="cut"?"Potong & unduh":"Unduh video utuh";upd()}
+$("#mCut").onclick=()=>setMode("cut");$("#mFull").onclick=()=>setMode("full");
+$("#clipBtn").onclick=async()=>{
+  if(!cur)return;if(needOwn("#own1","#clipMsg"))return;
+  $("#clipBtn").disabled=true;busy("#cBar",true);$("#clipMsg").textContent="Memproses…";$("#clipLink").hidden=true;
+  try{
+    const r=await post("/api/video/cut",{id:cur.id,start:+$("#s").value,end:+$("#e").value,full:mode==="full"});
+    const href=U(r.url+"?dl="+encodeURIComponent(r.name));
+    $("#clipLink").href=href;$("#clipLink").hidden=false;$("#clipLink").textContent="Unduh "+r.name+" ("+mb(r.size)+")";
+    $("#clipMsg").textContent="Selesai. Unduhan dimulai otomatis; kalau tidak, tekan tombol di bawah.";
+    addH(r.name,mode==="cut"?"Potongan video":"Video utuh");
+    const a=document.createElement("a");a.href=href;a.download=r.name;document.body.appendChild(a);a.click();a.remove();
+  }catch(e){$("#clipMsg").textContent=e.message}
+  finally{$("#clipBtn").disabled=false;busy("#cBar",false)}
+};
+
+/* FOTO */
+function showImage(media,url,type,size,name){
+  const box=$("#imgBox");box.innerHTML="";const im=new Image();im.alt="Pratinjau foto";
+  im.onload=()=>{$("#iRes").textContent=im.naturalWidth+" × "+im.naturalHeight};im.src=media;box.appendChild(im);
+  $("#iFmt").textContent=(type.split("/")[1]||"—").toUpperCase().replace("JPEG","JPG");$("#iSize").textContent=mb(size);
+  const d=$("#dlImg");d.href=url;d.setAttribute("download",name);d.hidden=false;d.onclick=()=>addH(name,"Foto");
+}
+async function getImage(path,body,inputOk){
+  if(needOwn("#own2","#imgMsg"))return;
+  say("#imgMsg","Mengambil gambar…","");busy("#iBar",true);
+  try{const r=await post(path,body);const name=r.file;showImage(U(r.media),U(r.url+"?dl=foto"),r.type,r.size,name);say("#imgMsg","")}
+  catch(e){say("#imgMsg",e.message,"bad")}finally{busy("#iBar",false)}
+}
+$("#getImg").onclick=()=>{const u=$("#imgUrl").value.trim();if(!u){say("#imgMsg","Tempel tautan gambar dulu.","warn");return}getImage("/api/image/fetch",{url:u})};
+$("#getThumb").onclick=()=>{const u=$("#thUrl").value.trim();if(!u){say("#imgMsg","Tempel tautan video dulu.","warn");return}getImage("/api/image/thumbnail",{url:u})};
+$("#pickImg").onclick=()=>$("#imgFile").click();
+$("#imgFile").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  if(f.size>15*1048576){say("#imgMsg","Ukuran melebihi 15 MB.","bad");return}
+  say("#imgMsg","");const url=URL.createObjectURL(f);showImage(url,url,f.type,f.size,f.name);
+};
+
+/* AI */
+function aiErr(m){say("#aiErr",m,"bad")}
+async function aiCall(btn,fn){aiErr("");btn.disabled=true;try{await fn()}catch(e){aiErr(e.message)}finally{btn.disabled=false}}
+let lastCap="",lastTrs="",lastVoc=null,lastImg=null;
+$("#capGo").onclick=()=>aiCall($("#capGo"),async()=>{
+  const idea=$("#capIdea").value.trim();if(!idea)throw new Error("Ceritakan videomu dulu.");
+  $("#capOut").hidden=false;$("#capOut").textContent="Menulis…";
+  const r=await post("/api/ai/caption",{idea,tone:$("#capTone").value});lastCap=r.text;$("#capOut").textContent=r.text;$("#capSave").hidden=false;$("#capSave").textContent="Simpan ke koleksi"});
+$("#capSave").onclick=()=>{addK({type:"text",title:"Caption",body:lastCap});$("#capSave").textContent="Tersimpan"};
+
+async function transcribe(id){
+  $("#trsOut").hidden=false;$("#trsOut").textContent="Mentranskripsi… bisa 10–60 detik.";busy("#tBar",true);$("#trsAct").hidden=true;
+  try{const r=await post("/api/ai/transcribe",{id});lastTrs=r.text||"(tidak ada suara terdeteksi)";$("#trsOut").textContent=lastTrs;$("#trsAct").hidden=false;addH("Transkrip","Teks")}
+  finally{busy("#tBar",false)}}
+$("#trsStudio").onclick=()=>aiCall($("#trsStudio"),async()=>{if(!cur)throw new Error("Belum ada video di Studio.");await transcribe(cur.id)});
+$("#trsPick").onclick=()=>$("#trsFile").click();
+$("#trsFile").onchange=e=>{const f=e.target.files[0];if(!f)return;
+  aiCall($("#trsPick"),async()=>{$("#trsOut").hidden=false;$("#trsOut").textContent="Mengunggah…";const r=await upload("/api/video/upload",f);await transcribe(r.id)});e.target.value=""};
+$("#trsTidy").onclick=()=>aiCall($("#trsTidy"),async()=>{$("#trsOut").textContent="Merapikan…";const r=await post("/api/ai/tidy",{text:lastTrs});lastTrs=r.text;$("#trsOut").textContent=r.text});
+$("#trsDl").onclick=()=>{const u=URL.createObjectURL(new Blob([lastTrs],{type:"text/plain;charset=utf-8"}));const a=document.createElement("a");a.href=u;a.download="transkrip.txt";a.click();URL.revokeObjectURL(u)};
+
+$("#vocGo").onclick=()=>aiCall($("#vocGo"),async()=>{
+  const text=$("#vocIn").value.trim();if(!text)throw new Error("Tulis teksnya dulu.");
+  const r=await post("/api/ai/tts",{text,voice:$("#vocVoice").value,style:$("#vocStyle").value});
+  lastVoc=r;$("#vocAudio").src=U(r.media);$("#vocDl").href=U(r.url+"?dl=sulih-suara");$("#vocDl").setAttribute("download","sulih-suara.mp3");$("#vocOut").hidden=false;$("#vocSave").textContent="Simpan ke koleksi";addH("sulih-suara.mp3","Suara AI")});
+$("#vocSave").onclick=()=>{addK({type:"audio",title:"Sulih suara",media:lastVoc.media,url:lastVoc.url});$("#vocSave").textContent="Tersimpan"};
+
+$("#imgGo").onclick=()=>aiCall($("#imgGo"),async()=>{
+  const prompt=$("#imgPrompt").value.trim();if(!prompt)throw new Error("Tulis deskripsi gambarnya dulu.");
+  $("#imgOut").hidden=false;$("#aiImgBox").textContent="Membuat gambar… bisa sampai 1 menit.";
+  const r=await post("/api/ai/image",{prompt});lastImg=r;
+  $("#aiImgBox").innerHTML=`<img alt="Gambar AI" src="${esc(U(r.media))}">`;$("#aiDl").href=U(r.url+"?dl=gambar-ai");$("#aiDl").setAttribute("download","gambar-ai.png");$("#aiSave").textContent="Simpan ke koleksi";addH("gambar-ai.png","Gambar AI")});
+$("#aiSave").onclick=()=>{addK({type:"image",title:"Gambar AI",media:lastImg.media,url:lastImg.url});$("#aiSave").textContent="Tersimpan"};
+
+upd();renderH();
+</script>
+</body>
+</html>
