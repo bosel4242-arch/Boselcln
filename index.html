@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c0c0f">
+<meta name="description" content="Bikin gambar dari teks, langsung di browser. Gratis, tanpa daftar.">
+<title>Bosel - Bikin gambar dari teks</title>
+<style>
+:root{--bg:#0c0c0f;--panel:#16161c;--line:#2a2a34;--text:#f2f0f7;--mute:#9a97a8;--acc:#b9a4ff}
+@media (prefers-color-scheme:light){:root{--bg:#f4f3f8;--panel:#fff;--line:#d9d6e4;--text:#17151f;--mute:#6a667a;--acc:#5b3fd6}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:28px 18px 48px}
+h1{font:800 clamp(2rem,8vw,3.2rem)/1.05 Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0 0 8px}
+p.lead{color:var(--mute);margin:0 0 24px;max-width:46ch}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;justify-content:center}
+canvas{max-width:100%;max-height:70vh;height:auto;border-radius:6px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+label{font-size:.85rem;color:var(--mute);display:block;margin-bottom:4px}
+textarea,select{width:100%;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit}
+textarea{min-height:92px;resize:vertical}
+.col{flex:1 1 150px}
+.swatches{display:flex;gap:10px}
+.sw{width:40px;height:40px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{border-color:var(--text);outline:2px solid var(--acc);outline-offset:2px}
+button.go{width:100%;margin-top:18px;background:var(--acc);color:#14101f;border:0;border-radius:12px;padding:14px;font:700 1rem inherit;font-family:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+footer{margin-top:28px;color:var(--mute);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+  <h1>Bikin gambar dari teks</h1>
+  <p class="lead">Tulis kalimatmu, pilih warna, lalu unduh sebagai gambar PNG. Semua diproses di HP kamu, tidak ada yang diunggah.</p>
 
+  <div class="stage"><canvas id="cv" width="1080" height="1080" aria-label="Pratinjau gambar"></canvas></div>
+
+  <div class="row">
+    <div style="flex:1 1 100%">
+      <label for="txt">Teks</label>
+      <textarea id="txt">Halo dari Bosel</textarea>
+    </div>
+    <div class="col">
+      <label for="size">Ukuran</label>
+      <select id="size">
+        <option value="1080x1080">Kotak 1080x1080</option>
+        <option value="1080x1350">Potret 1080x1350</option>
+        <option value="1080x1920">Story 1080x1920</option>
+        <option value="1600x900">Lebar 1600x900</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="font">Huruf</label>
+      <select id="font">
+        <option value="Georgia, serif">Serif</option>
+        <option value="system-ui, sans-serif">Sans</option>
+        <option value="'Courier New', monospace">Mono</option>
+      </select>
+    </div>
+    <div style="flex:1 1 100%">
+      <label>Warna latar</label>
+      <div class="swatches" id="sws"></div>
+    </div>
+  </div>
+
+  <button class="go" id="dl">Unduh gambar</button>
+  <footer>Dibuat oleh Bosel</footer>
+</main>
+
+<script>
+(function(){
+  var cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+  var txt=document.getElementById('txt'),size=document.getElementById('size'),font=document.getElementById('font');
+  var themes=[
+    {n:'Senja',a:'#ff7a59',b:'#5b2a86',t:'#ffffff'},
+    {n:'Laut',a:'#0f2027',b:'#2c7a9b',t:'#ffffff'},
+    {n:'Hutan',a:'#12372a',b:'#436850',t:'#f5f1e0'},
+    {n:'Kertas',a:'#f6f2ea',b:'#e4dccb',t:'#1c1a17'},
+    {n:'Malam',a:'#0c0c0f',b:'#272240',t:'#f2f0f7'}
+  ];
+  var cur=0,sws=document.getElementById('sws');
+  themes.forEach(function(t,i){
+    var b=document.createElement('button');
+    b.className='sw';b.title=t.n;b.setAttribute('aria-label','Warna '+t.n);
+    b.style.background='linear-gradient(135deg,'+t.a+','+t.b+')';
+    b.onclick=function(){cur=i;mark();draw()};
+    sws.appendChild(b);
+  });
+  function mark(){Array.prototype.forEach.call(sws.children,function(b,i){b.setAttribute('aria-pressed',i===cur)})}
+  function wrap(lines,maxW){
+    var out=[];
+    lines.split('\n').forEach(function(par){
+      var words=par.split(' '),line='';
+      words.forEach(function(w){
+        var test=line?line+' '+w:w;
+        if(ctx.measureText(test).width>maxW&&line){out.push(line);line=w}else line=test;
+      });
+      out.push(line);
+    });
+    return out;
+  }
+  function draw(){
+    var p=size.value.split('x'),W=+p[0],H=+p[1],t=themes[cur];
+    cv.width=W;cv.height=H;
+    var g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,t.a);g.addColorStop(1,t.b);
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    var text=txt.value.trim()||'Tulis sesuatu';
+    var pad=W*0.1,maxW=W-pad*2,fs=Math.round(W*0.085),lines;
+    while(fs>28){
+      ctx.font='700 '+fs+'px '+font.value;
+      lines=wrap(text,maxW);
+      if(lines.length*fs*1.25<=H-pad*2)break;
+      fs-=4;
+    }
+    ctx.font='700 '+fs+'px '+font.value;lines=wrap(text,maxW);
+    ctx.fillStyle=t.t;ctx.textAlign='left';ctx.textBaseline='middle';
+    var lh=fs*1.25,y=(H-lines.length*lh)/2+lh/2;
+    lines.forEach(function(l,i){ctx.fillText(l,pad,y+i*lh)});
+  }
+  [txt,size,font].forEach(function(e){e.addEventListener('input',draw)});
+  document.getElementById('dl').onclick=function(){
+    var a=document.createElement('a');
+    a.download='bosel-gambar.png';a.href=cv.toDataURL('image/png');
+    document.body.appendChild(a);a.click();a.remove();
+  };
+  mark();draw();
+})();
+</script>
+</body>
+</html>
