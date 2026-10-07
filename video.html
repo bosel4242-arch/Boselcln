@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Channel Saya - Tonton Video Terbaru</title>
+<title>Bosel42 - Tonton Video Terbaru</title>
 <meta name="description" content="Kumpulan video terbaru, tonton langsung di YouTube dan Facebook Reels.">
 <meta property="og:title" content="Tonton Video Terbaru">
 <meta property="og:description" content="Kumpulan video terbaru, tonton dan ikuti channelnya.">
@@ -21,7 +21,7 @@ header{text-align:center;margin-bottom:24px}
 h1{margin:0;font-size:22px}
 header p{margin:6px 0 0;color:var(--muted);font-size:14px}
 .btn{display:block;text-align:center;text-decoration:none;color:#fff;padding:14px;border-radius:12px;font-weight:600;margin-bottom:10px;border:0;width:100%;font-size:16px;cursor:pointer}
-.fb{background:#1877f2}.yt{background:#e63946}.wa{background:#25a244}
+.tt{background:#111}.fb{background:#1877f2}.yt{background:#e63946}.wa{background:#25a244}
 h2{font-size:17px;margin:28px 0 12px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
 .card h3{margin:0 0 4px;font-size:16px}
@@ -42,10 +42,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:32px}
 
 <a class="btn yt" id="lnkYt" target="_blank" rel="noopener">Subscribe di YouTube</a>
 <a class="btn fb" id="lnkFb" target="_blank" rel="noopener">Ikuti di Facebook</a>
+<a class="btn tt" id="lnkTt" target="_blank" rel="noopener">Ikuti di TikTok</a>
 <a class="btn wa" id="lnkWa" target="_blank" rel="noopener">Kabari saya lewat WhatsApp</a>
 <button class="btn" style="background:#444" id="shareSite">Bagikan website ini</button>
 
-<h2>Video Terbaru</h2>
+<h2 id="vidTitle">Video Terbaru</h2>
 <div id="videos"></div>
 
 <footer>Terima kasih sudah menonton!</footer>
@@ -54,14 +55,15 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:32px}
 <script>
 // ===== EDIT BAGIAN INI SAJA =====
 var CONFIG = {
-  nama: "Nama Channel Kamu",
+  nama: "Bosel42",
   bio: "Video seru setiap minggu. Tonton dan ikuti ya!",
-  youtube: "https://www.youtube.com/@namakamu",
-  facebook: "https://www.facebook.com/namakamu",
-  whatsapp: "6281234567890", // nomor tanpa + dan tanpa 0 di depan
+  youtube: "https://youtube.com/@bosel42",
+  facebook: "https://www.facebook.com/share/1FedngTcEh/",
+  tiktok: "https://www.tiktok.com/@prlvdsyafaa04",
+  whatsapp: "", // isi nomor tanpa + dan tanpa 0 di depan, contoh 6281234567890
   video: [
-    {judul: "Judul Video 1", deskripsi: "Deskripsi singkat video pertama.", url: "https://www.youtube.com/watch?v=GANTI_ID", reels: "", artikel: "Tulis 2-3 kalimat tentang isi video. Pakai kata yang dicari orang di Google agar video lebih mudah ditemukan."},
-    {judul: "Judul Video 2", deskripsi: "Deskripsi singkat video kedua.", url: "https://www.youtube.com/watch?v=GANTI_ID", reels: "https://www.facebook.com/reel/GANTI_ID"}
+    // Contoh isi video (hapus tanda // di depan lalu ganti):
+    // {judul: "Judul Video", deskripsi: "Deskripsi singkat.", url: "https://youtube.com/watch?v=ID", reels: "", artikel: ""}
   ]
 };
 // =================================
@@ -72,6 +74,8 @@ $("bio").textContent = CONFIG.bio;
 $("avatar").textContent = CONFIG.nama.charAt(0).toUpperCase();
 $("lnkYt").href = CONFIG.youtube;
 $("lnkFb").href = CONFIG.facebook;
+$("lnkTt").href = CONFIG.tiktok;
+if (!CONFIG.whatsapp) { $("lnkWa").style.display = "none"; }
 $("lnkWa").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent("Halo, kabari saya kalau ada video baru ya!");
 
 function shareLink(url, title){
@@ -81,6 +85,7 @@ function shareLink(url, title){
 }
 $("shareSite").onclick = function(){ shareLink(location.href, CONFIG.nama); };
 
+if (!CONFIG.video.length) { $("vidTitle").style.display = "none"; }
 var box = $("videos");
 CONFIG.video.forEach(function(v){
   var c = document.createElement("div");
