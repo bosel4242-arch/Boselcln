@@ -16,16 +16,14 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
                         brand: {
-                            navy: '#1B365D',     // Dark Navy Blue
-                            navyDark: '#0E1F38', // Deep Navy
-                            orangeRed: '#FF5F3F',// Vibrant Red-Orange Logo Color
+                            navy: '#1B365D',
+                            navyDark: '#0E1F38',
+                            orangeRed: '#FF5F3F',
                             orangeDark: '#E0482B',
-                            slateBg: '#F4F6F9',  // Fresh Clean Light Base
+                            slateBg: '#F4F6F9',
                         }
                     }
                 }
@@ -33,30 +31,17 @@
         }
     </script>
     <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .sidebar-item.active {
-            background-color: rgba(255, 95, 63, 0.1);
-            color: #FF5F3F;
-            border-left: 4px solid #FF5F3F;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .sidebar-item.active { background-color: rgba(255, 95, 63, 0.1); color: #FF5F3F; border-left: 4px solid #FF5F3F; }
     </style>
 </head>
 <body class="bg-brand-slateBg text-slate-800 font-sans antialiased min-h-screen flex flex-col md:flex-row selection:bg-brand-orangeRed selection:text-white">
 
-    <!-- SIDEBAR NAV (Left side for desktop, bottom for mobile) -->
+    <!-- SIDEBAR NAV -->
     <aside class="fixed md:sticky bottom-0 md:top-0 left-0 z-40 w-full md:w-64 h-16 md:h-screen bg-brand-navy text-white flex flex-row md:flex-col justify-between md:justify-start border-t md:border-t-0 md:border-r border-slate-700/30 shrink-0 md:py-6">
         
-        <!-- LOGO & BRANDING (Visible only on Desktop) -->
         <div class="hidden md:flex items-center gap-3 px-6 mb-8">
             <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15,55 C15,75 45,85 75,60" stroke="#FF5F3F" stroke-width="5" stroke-linecap="round" fill="none"/>
@@ -65,14 +50,11 @@
                 <path d="M48,25 L75,25 M61,25 L61,65" stroke="#FF5F3F" stroke-width="9" stroke-linecap="round" fill="none"/>
             </svg>
             <div>
-                <div class="flex items-center gap-1.5">
-                    <span class="text-xl font-black tracking-tight text-white">JT <span class="text-brand-orangeRed">ID</span></span>
-                </div>
+                <span class="text-xl font-black tracking-tight text-white">JT <span class="text-brand-orangeRed">ID</span></span>
                 <p class="text-[9px] text-slate-400 tracking-wider uppercase font-semibold">JasaTitip Global</p>
             </div>
         </div>
 
-        <!-- MAIN SIDEBAR NAVIGATION -->
         <nav class="flex-1 w-full flex flex-row md:flex-col justify-around md:justify-start gap-1">
             <button onclick="switchTab('home')" id="tab-home" class="sidebar-item active w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-xs md:text-sm font-semibold transition">
                 <i class="fa-solid fa-store text-base"></i>
@@ -102,9 +84,8 @@
             </button>
         </nav>
 
-        <!-- BOTTOM BRAND BUTTON (Desktop only) -->
         <div class="hidden md:block px-6 mt-auto">
-            <button onclick="openSellModal()" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs py-3 rounded-xl shadow-lg shadow-brand-orangeRed/30 transition flex items-center justify-center gap-2">
+            <button onclick="openSellModal()" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
                 <i class="fa-solid fa-plus-circle"></i>
                 <span>Tambah Penawaran</span>
             </button>
@@ -114,27 +95,20 @@
     <!-- CONTENT WRAPPER -->
     <div class="flex-1 flex flex-col md:pl-0 pb-16 md:pb-0 overflow-x-hidden min-h-screen">
 
-        <!-- TOP BAR (Utility Bar) -->
         <div class="bg-brand-navyDark text-xs py-2.5 px-4 md:px-8 border-b border-slate-700/20 text-slate-300 flex items-center justify-between z-30">
             <div class="flex items-center gap-2 text-slate-300 text-[11px] font-medium">
                 <i class="fa-solid fa-location-dot text-brand-orangeRed"></i>
                 <span>Dikirim ke <strong class="text-white">Jakarta Barat, IDN</strong></span>
             </div>
-            
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-1">
-                    <span class="text-[10px] text-slate-400">Mata Uang:</span>
+                    <span class="text-[10px] text-slate-400">Mata Uang Transaksi:</span>
                     <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-slate-800 text-brand-orangeRed text-[11px] font-bold py-1 px-2.5 rounded-lg border border-slate-700 cursor-pointer focus:outline-none">
                     </select>
-                </div>
-                <div class="hidden sm:flex items-center gap-3 text-[11px]">
-                    <a href="#" class="hover:text-white transition">Bantuan / FAQ</a>
-                    <a href="#" class="hover:text-white transition flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Escrow Safe</a>
                 </div>
             </div>
         </div>
 
-        <!-- MOBILE & MAIN HEADER SEARCH -->
         <header class="bg-white py-4 px-4 md:px-8 shadow-sm border-b border-slate-100 flex items-center justify-between gap-4 sticky top-0 z-30">
             <div class="md:hidden flex items-center gap-1.5 shrink-0">
                 <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -146,137 +120,86 @@
                 <span class="font-black text-brand-navy tracking-tight">JT <span class="text-brand-orangeRed">ID</span></span>
             </div>
 
-            <!-- SEARCH BAR -->
             <div class="flex-1 max-w-2xl mx-auto flex items-center bg-slate-100 rounded-xl border border-slate-200/80 overflow-hidden">
                 <div class="flex items-center justify-center pl-3">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm"></i>
                 </div>
-                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Cari barang impor dari luar negeri atau barang asli Indonesia..." class="w-full bg-transparent border-0 py-2.5 px-3 text-slate-700 placeholder-slate-400 focus:ring-0 outline-none text-xs">
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Cari barang impor atau lokal..." class="w-full bg-transparent border-0 py-2.5 px-3 text-slate-700 placeholder-slate-400 focus:ring-0 outline-none text-xs">
                 <button class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white text-xs font-bold px-5 py-2.5 h-full transition shadow">
                     Cari
                 </button>
             </div>
 
-            <button onclick="openSellModal()" class="md:hidden bg-brand-orangeRed hover:bg-brand-orangeDark text-white p-2.5 rounded-xl shadow-lg shadow-brand-orangeRed/30 shrink-0">
+            <button onclick="openSellModal()" class="md:hidden bg-brand-orangeRed hover:bg-brand-orangeDark text-white p-2.5 rounded-xl shadow-lg shrink-0">
                 <i class="fa-solid fa-plus-circle text-lg"></i>
             </button>
         </header>
 
-        <!-- MAIN MAIN SCROLLABLE AREA -->
         <main class="flex-grow p-4 md:p-8 space-y-6">
 
-            <!-- PROMO & CAROUSEL JASTIP BANNER -->
             <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-navy via-slate-900 to-brand-navy text-white p-6 md:p-8 shadow-xl">
                 <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-orangeRed/10 rounded-full blur-3xl"></div>
-                
                 <div class="relative z-10 max-w-2xl space-y-3">
-                    <div class="inline-flex items-center gap-1.5 bg-brand-orangeRed/20 border border-brand-orangeRed/30 text-brand-orangeRed text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-                        <i class="fa-solid fa-globe"></i> Global JasaTip Alliance
+                    <div class="inline-flex items-center gap-1.5 bg-brand-orangeRed/25 border border-brand-orangeRed/30 text-brand-orangeRed text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+                        <i class="fa-solid fa-globe"></i> Global Multi-Currency JasTip
                     </div>
                     <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
-                        Marketplace & JasTip Lintas <span class="text-brand-orangeRed">195+ Negara</span>
+                        Marketplace Belanja & Titip Lintas <span class="text-brand-orangeRed">195+ Negara</span>
                     </h1>
                     <p class="text-slate-300 text-xs leading-relaxed max-w-lg">
-                        Belanja impor dari luar negeri dan ekspor barang asli Indonesia secara aman dengan 12 kurir global resmi. Pasang iklan gratis dan dapatkan perlindungan escrow.
+                        Semua transaksi otomatis dikonversi secara real-time ke mata uang pilihan Anda. Nikmati kemudahan berbelanja dan pasang iklan gratis.
                     </p>
-                    <div class="flex items-center gap-3 pt-1">
-                        <button onclick="openSellModal()" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-orangeRed/20">
-                            <i class="fa-solid fa-bullhorn"></i> Tambah Penawaran
-                        </button>
-                        <div class="text-slate-400 hidden sm:flex items-center gap-1.5 text-xs font-semibold bg-white/5 border border-white/10 px-3 py-2 rounded-xl">
-                            <span class="text-brand-orangeRed font-bold">100% GRATIS</span> pasang iklan barang
-                        </div>
-                    </div>
-                </div>
-
-                <div class="absolute top-6 right-6 hidden lg:flex flex-col items-center bg-brand-navyDark/95 border border-brand-orangeRed/30 p-4 rounded-xl text-center">
-                    <span class="text-[10px] font-bold text-brand-orangeRed uppercase tracking-wider mb-1"><i class="fa-solid fa-bolt"></i> Flash Sale Selesai Dalam</span>
-                    <div id="flashSaleTimer" class="font-mono text-xl font-black text-white tracking-widest">01:24:15</div>
                 </div>
             </div>
 
-            <!-- COURIER PARNERSHIP LOGOS STRIP -->
-            <div class="bg-white border border-slate-100 rounded-xl p-3 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-slate-500 text-xs font-bold shadow-sm">
-                <span class="text-[10px] font-black text-brand-navy/60 uppercase tracking-widest flex items-center gap-1.5 mr-2">
-                    <i class="fa-solid fa-truck-fast text-brand-orangeRed"></i> Mitra Kurir Global Resmi:
-                </span>
-                <span class="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100/60 text-slate-700 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-box text-yellow-500"></i> DHL Express</span>
-                <span class="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100/60 text-slate-700 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-plane text-purple-400"></i> FedEx Int'l</span>
-                <span class="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100/60 text-slate-700 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-truck text-amber-500"></i> UPS Worldwide</span>
-                <span class="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100/60 text-slate-700 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-shipping-fast text-blue-500"></i> J&T Global</span>
-            </div>
-
-            <!-- MARKETPLACE (Home) TAB Content -->
+            <!-- PASAR GLOBAL TAB -->
             <div id="tabContentHome" class="space-y-6">
-                
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm" id="catalog">
                     <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-2 lg:pb-0 text-xs">
                         <span class="text-slate-400 font-extrabold uppercase text-[9px] shrink-0 mr-1.5">Filter Negara:</span>
-                        <button onclick="setCountryFilter('ALL')" id="filter-country-ALL" class="country-pill active bg-brand-navy text-white font-bold px-3 py-1.5 rounded-lg transition shrink-0">
-                            🌏 Semua
-                        </button>
-                        <button onclick="setCountryFilter('JP')" id="filter-country-JP" class="country-pill bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/50 font-bold px-3 py-1.5 rounded-lg transition shrink-0 flex items-center gap-1">
-                            🇯🇵 Jepang
-                        </button>
-                        <button onclick="setCountryFilter('KR')" id="filter-country-KR" class="country-pill bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/50 font-bold px-3 py-1.5 rounded-lg transition shrink-0 flex items-center gap-1">
-                            🇰🇷 Korea
-                        </button>
-                        <button onclick="setCountryFilter('US')" id="filter-country-US" class="country-pill bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/50 font-bold px-3 py-1.5 rounded-lg transition shrink-0 flex items-center gap-1">
-                            🇺🇸 Amerika
-                        </button>
-                        <button onclick="setCountryFilter('TH')" id="filter-country-TH" class="country-pill bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/50 font-bold px-3 py-1.5 rounded-lg transition shrink-0 flex items-center gap-1">
-                            🇹🇭 Thailand
-                        </button>
-                        <button onclick="setCountryFilter('SG')" id="filter-country-SG" class="country-pill bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/50 font-bold px-3 py-1.5 rounded-lg transition shrink-0 flex items-center gap-1">
-                            🇸🇬 Singapura
-                        </button>
-                        <button onclick="setCountryFilter('ID')" id="filter-country-ID" class="country-pill bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/50 font-bold px-3 py-1.5 rounded-lg transition shrink-0 flex items-center gap-1">
-                            🇮🇩 Indonesia
-                        </button>
-                        <button onclick="setCountryFilter('GLOBAL')" id="filter-country-GLOBAL" class="country-pill bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/50 font-bold px-3 py-1.5 rounded-lg transition shrink-0 flex items-center gap-1">
-                            🌍 dll
-                        </button>
+                        <button onclick="setCountryFilter('ALL')" id="filter-country-ALL" class="country-pill active bg-brand-navy text-white font-bold px-3 py-1.5 rounded-lg transition shrink-0">🌏 Semua</button>
+                        <button onclick="setCountryFilter('JP')" id="filter-country-JP" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇯🇵 Jepang</button>
+                        <button onclick="setCountryFilter('KR')" id="filter-country-KR" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇰🇷 Korea</button>
+                        <button onclick="setCountryFilter('US')" id="filter-country-US" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇺🇸 Amerika</button>
+                        <button onclick="setCountryFilter('SG')" id="filter-country-SG" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇸🇬 Singapura</button>
+                        <button onclick="setCountryFilter('ID')" id="filter-country-ID" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇮🇩 Indonesia</button>
+                        <button onclick="setCountryFilter('GLOBAL')" id="filter-country-GLOBAL" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🌍 Lainnya</button>
                     </div>
 
                     <div class="flex items-center justify-between lg:justify-end gap-3 text-xs shrink-0 border-t lg:border-t-0 pt-2 lg:pt-0">
                         <span class="text-slate-400 font-bold uppercase text-[9px]">Urutkan:</span>
-                        <select id="sortSelect" onchange="filterProducts()" class="bg-slate-50 text-slate-700 border border-slate-200 font-semibold py-1.5 px-3 rounded-lg outline-none focus:border-brand-navy cursor-pointer">
+                        <select id="sortSelect" onchange="filterProducts()" class="bg-slate-50 text-slate-700 border border-slate-200 font-semibold py-1.5 px-3 rounded-lg outline-none">
                             <option value="newest">Paling Baru</option>
                             <option value="price-low">Harga Terendah</option>
                             <option value="price-high">Harga Tertinggi</option>
-                            <option value="popular">Paling Populer</option>
                         </select>
                     </div>
-
                 </div>
 
-                <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                </div>
+                <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
 
-                <div id="emptyCatalogState" class="hidden text-center py-16 bg-white rounded-xl border border-slate-200/60 space-y-3">
+                <div id="emptyCatalogState" class="text-center py-16 bg-white rounded-xl border border-slate-200/60 space-y-3">
                     <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
                         <i class="fa-solid fa-box-open"></i>
                     </div>
-                    <h3 class="text-base font-bold text-slate-700">Tidak ada barang yang ditemukan</h3>
-                    <p class="text-xs text-slate-400">Coba gunakan kata kunci pencarian lain atau pilih filter negara yang berbeda.</p>
+                    <h3 class="text-base font-bold text-slate-700">Belum Ada Barang Jastip / Iklan</h3>
+                    <p class="text-xs text-slate-400">Jadilah yang pertama menambahkan penawaran jastip atau produk jualan Anda di sini!</p>
+                    <button onclick="openSellModal()" class="mt-2 bg-brand-orangeRed text-white text-xs font-bold px-4 py-2 rounded-xl shadow">Tambah Penawaran</button>
                 </div>
-
             </div>
 
-            <!-- PESANAN SAYA TAB Content -->
+            <!-- PESANAN SAYA TAB -->
             <div id="tabContentOrders" class="hidden space-y-6">
                 <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
                     <h2 class="text-base font-extrabold text-brand-navy flex items-center gap-2 mb-1">
                         <i class="fa-solid fa-truck-ramp-box text-brand-orangeRed"></i> Riwayat & Status Pesanan Saya
                     </h2>
-                    <p class="text-xs text-slate-400 mb-6">Lacak perjalanan pengiriman jastip dan kurir antarnegara Anda secara langsung.</p>
-
-                    <div id="ordersList" class="space-y-4">
-                    </div>
+                    <p class="text-xs text-slate-400 mb-6">Lacak perjalanan pengiriman jastip Anda.</p>
+                    <div id="ordersList" class="space-y-4"></div>
                 </div>
             </div>
 
-            <!-- LAPAK SAYA TAB Content -->
+            <!-- LAPAK SAYA TAB -->
             <div id="tabContentMyListings" class="hidden space-y-6">
                 <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -284,9 +207,9 @@
                             <h2 class="text-base font-extrabold text-brand-navy flex items-center gap-2 mb-1">
                                 <i class="fa-solid fa-shop text-brand-orangeRed"></i> Lapak & Dasbor Penjual
                             </h2>
-                            <p class="text-xs text-slate-400">Kelola dan lihat perkembangan penjualan barang/titipan Anda ke seluruh dunia.</p>
+                            <p class="text-xs text-slate-400">Kelola barang titipan / jualan Anda di sini.</p>
                         </div>
-                        <button onclick="openSellModal()" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-orangeRed/20">
+                        <button onclick="openSellModal()" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg">
                             <i class="fa-solid fa-plus-circle"></i> Tambah Lapak Jual Baru
                         </button>
                     </div>
@@ -302,45 +225,20 @@
                         </div>
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
                             <span class="text-[9px] font-black uppercase text-slate-400 block tracking-wider">Komisi Platform</span>
-                            <div class="text-xl font-black text-brand-orangeRed mt-1">5% <span class="text-xs font-normal text-slate-400">(Hanya Saat Terjual)</span></div>
+                            <div class="text-xl font-black text-brand-orangeRed mt-1">5% <span class="text-xs font-normal text-slate-400">(Saat Terjual)</span></div>
                         </div>
                     </div>
 
-                    <div id="myListingsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    </div>
+                    <div id="myListingsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
             </div>
 
         </main>
 
-        <!-- FOOTER -->
         <footer class="bg-brand-navy text-slate-400 text-xs py-10 border-t border-slate-700/30">
-            <div class="max-w-7xl mx-auto px-6 space-y-8">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-800">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15,55 C15,75 45,85 75,60" stroke="#FF5F3F" stroke-width="5"/>
-                            <circle cx="15" cy="55" r="4" fill="#FF5F3F"/>
-                            <path d="M40,25 L40,55 M61,25 L61,65" stroke="#FFFFFF" stroke-width="9"/>
-                        </svg>
-                        <div>
-                            <span class="font-extrabold text-white text-sm tracking-wide">JT <span class="text-brand-orangeRed">ID</span></span>
-                            <p class="text-[9px] uppercase tracking-wider text-slate-500 font-semibold">JasaTitip Global</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap items-center justify-center gap-6 text-slate-400 text-xs font-medium">
-                        <a href="#" class="hover:text-white transition">Syarat & Ketentuan</a>
-                        <a href="#" class="hover:text-white transition">Kebijakan Privasi</a>
-                        <a href="#" class="hover:text-white transition">Garansi Escrow Aman</a>
-                        <a href="#" class="hover:text-white transition">Hubungi Kami</a>
-                    </div>
-                </div>
-                <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-[11px]">
-                    <p>&copy; 2026 JT ID JasaTitip Global. Seluruh Hak Cipta Dilindungi.</p>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-lock text-emerald-500"></i> Pembayaran Terenkripsi Secure Escrow
-                    </div>
-                </div>
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-[11px]">
+                <p>&copy; 2026 JT ID JasaTitip Global. Seluruh Hak Cipta Dilindungi.</p>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> Secure Escrow Protected</div>
             </div>
         </footer>
 
@@ -350,60 +248,20 @@
     <div id="authModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
         <div class="bg-white border border-slate-100 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
             <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
-
             <div class="text-center space-y-1">
-                <svg class="w-12 h-12 mx-auto" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15,55 C15,75 45,85 75,60" stroke="#FF5F3F" stroke-width="5"/>
-                    <circle cx="15" cy="55" r="4" fill="#FF5F3F"/>
-                    <path d="M40,25 L40,55 M61,25 L61,65" stroke="#1B365D" stroke-width="9"/>
-                </svg>
-                <h3 class="text-base font-extrabold text-brand-navy">Masuk Ke Akun JT ID</h3>
-                <p class="text-xs text-slate-400">Mulailah titip beli, jual, dan belanja aman di marketplace global kami.</p>
+                <h3 class="text-base font-extrabold text-brand-navy">Masuk / Daftar Akun JT ID</h3>
+                <p class="text-xs text-slate-400">Masukkan email Anda untuk menerima tautan masuk instan via Supabase Auth.</p>
             </div>
-
             <form onsubmit="handleAuthSubmit(event)" class="space-y-4 text-xs">
                 <div>
                     <label class="block font-bold text-slate-500 mb-1">Email Anda</label>
-                    <input type="email" id="authEmail" required placeholder="nama@surel.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 placeholder-slate-400 focus:ring-1 focus:ring-brand-orangeRed focus:border-brand-orangeRed outline-none">
+                    <input type="email" id="authEmail" required placeholder="nama@surel.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-500 mb-1">Nama Lengkap / Username</label>
-                    <input type="text" id="authName" required placeholder="Sebutkan Nama/Username" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 placeholder-slate-400 focus:ring-1 focus:ring-brand-orangeRed focus:border-brand-orangeRed outline-none">
-                </div>
-                <div>
-                    <label class="block font-bold text-slate-500 mb-1">Negara Domisili</label>
-                    <select id="authCountry" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:ring-1 focus:ring-brand-orangeRed outline-none cursor-pointer">
-                        <option value="ID">🇮🇩 Indonesia</option>
-                        <option value="JP">🇯🇵 Jepang</option>
-                        <option value="KR">🇰🇷 Korea Selatan</option>
-                        <option value="US">🇺🇸 Amerika Serikat</option>
-                        <option value="SG">🇸🇬 Singapura</option>
-                        <option value="TH">🇹🇭 Thailand</option>
-                        <option value="MY">🇲🇾 Malaysia</option>
-                        <option value="AU">🇦🇺 Australia</option>
-                        <option value="GB">🇬🇧 Inggris (UK)</option>
-                    </select>
-                </div>
-
                 <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition">
-                    Mulai Gabung / Log In
+                    Kirim Link Masuk
                 </button>
             </form>
-
-            <div class="relative flex py-2 items-center">
-                <div class="flex-grow border-t border-slate-200"></div>
-                <span class="flex-shrink mx-3 text-[9px] text-slate-400 uppercase font-black">Cobalah Akun Demo</span>
-                <div class="flex-grow border-t border-slate-200"></div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 text-xs">
-                <button onclick="loginDemo('buyer')" class="bg-slate-50 hover:bg-slate-100 text-slate-700 py-2.5 rounded-xl font-bold border border-slate-200 flex items-center justify-center gap-1.5 transition">
-                    <i class="fa-solid fa-user-tag text-brand-orangeRed"></i> Pembeli
-                </button>
-                <button onclick="loginDemo('seller')" class="bg-slate-50 hover:bg-slate-100 text-slate-700 py-2.5 rounded-xl font-bold border border-slate-200 flex items-center justify-center gap-1.5 transition">
-                    <i class="fa-solid fa-shop text-brand-navy"></i> Penjual / Traveler
-                </button>
-            </div>
+            <div id="authMessage" class="text-center text-[11px] text-slate-500 font-medium"></div>
         </div>
     </div>
 
@@ -418,26 +276,26 @@
                 </div>
                 <div>
                     <h3 class="text-base font-extrabold text-brand-navy">Tambah Titipan Jual / JasaTip Baru</h3>
-                    <p class="text-[11px] text-slate-400">Daftarkan jastip Anda secara gratis. Kami hanya memotong biaya 5% jika barang laku.</p>
+                    <p class="text-[11px] text-slate-400">Masukkan harga dalam mata uang aktif Anda saat ini.</p>
                 </div>
             </div>
 
             <form onsubmit="handleCreateListing(event)" class="space-y-3.5 text-xs">
                 <div>
                     <label class="block font-bold text-slate-500 mb-1">Nama Produk / Barang JasaTip</label>
-                    <input type="text" id="sellTitle" required placeholder="Sebutkan barang, mis: Tokyo Banana Crisp Flavour" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-orangeRed">
+                    <input type="text" id="sellTitle" required placeholder="Mis: Tokyo Banana / Kain Tenun Asli" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-orangeRed">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block font-bold text-slate-500 mb-1">Negara Asal Barang</label>
                         <select id="sellOriginCountry" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
+                            <option value="ID">🇮🇩 Indonesia</option>
                             <option value="JP">🇯🇵 Jepang</option>
                             <option value="KR">🇰🇷 Korea Selatan</option>
                             <option value="US">🇺🇸 Amerika Serikat</option>
                             <option value="TH">🇹🇭 Thailand</option>
                             <option value="SG">🇸🇬 Singapura</option>
-                            <option value="ID">🇮🇩 Indonesia</option>
                             <option value="AU">🇦🇺 Australia</option>
                             <option value="GLOBAL">🌍 Negara Lainnya</option>
                         </select>
@@ -456,10 +314,10 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block font-bold text-slate-500 mb-1">Harga Jual (dalam USD $)</label>
+                        <label id="sellPriceLabel" class="block font-bold text-slate-500 mb-1">Harga Jual (dalam IDR)</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-2.5 text-slate-400 font-bold">$</span>
-                            <input type="number" id="sellPriceUSD" step="0.01" min="1" required oninput="calculateSellerPayout()" placeholder="25.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3.5 py-2.5 text-slate-800 placeholder-slate-400 focus:outline-none">
+                            <span id="sellSymbolPrefix" class="absolute left-3 top-2.5 text-slate-400 font-bold">Rp</span>
+                            <input type="number" id="sellPriceInput" step="any" min="1" required oninput="calculateSellerPayout()" placeholder="100000" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-slate-800 focus:outline-none">
                         </div>
                     </div>
                     <div>
@@ -471,36 +329,30 @@
                 <div class="bg-slate-50 border border-slate-200/60 p-3 rounded-xl space-y-2">
                     <div class="flex justify-between text-slate-400">
                         <span>Harga Kotor Barang</span>
-                        <span id="calcGrossUSD">$0.00</span>
+                        <span id="calcGross">$0.00</span>
                     </div>
                     <div class="flex justify-between text-brand-orangeRed">
-                        <span>Potongan Komisi JT ID (5%)</span>
-                        <span id="calcFeeUSD">-$0.00</span>
+                        <span>Komisi Platform (5%)</span>
+                        <span id="calcFee">-$0.00</span>
                     </div>
                     <div class="border-t border-slate-200 pt-2 flex justify-between font-extrabold text-emerald-500 text-sm">
-                        <span>Estimasi Pendapatan Bersih Anda</span>
-                        <span id="calcNetUSD">$0.00</span>
+                        <span>Pendapatan Bersih Anda</span>
+                        <span id="calcNet">$0.00</span>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block font-bold text-slate-500 mb-1">URL Foto atau Gunakan Preset</label>
-                    <input type="url" id="sellImageUrl" placeholder="https://unsplash.com/..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none mb-1.5">
-                    <div class="flex gap-1.5 overflow-x-auto pb-1 text-[10px]">
-                        <button type="button" onclick="setPresetImg('https://images.unsplash.com/photo-1541643600914-78b084683601?w=500')" class="bg-slate-100 px-2.5 py-1 rounded-lg hover:bg-slate-200 transition">Parfum/Beauty</button>
-                        <button type="button" onclick="setPresetImg('https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500')" class="bg-slate-100 px-2.5 py-1 rounded-lg hover:bg-slate-200 transition">Snack/Makanan</button>
-                        <button type="button" onclick="setPresetImg('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500')" class="bg-slate-100 px-2.5 py-1 rounded-lg hover:bg-slate-200 transition">Gadget/Lifestyle</button>
-                        <button type="button" onclick="setPresetImg('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500')" class="bg-slate-100 px-2.5 py-1 rounded-lg hover:bg-slate-200 transition">Seni & Tradisional</button>
-                    </div>
+                    <label class="block font-bold text-slate-500 mb-1"><i class="fa-solid fa-camera text-brand-orangeRed"></i> Upload Foto Barang dari Galeri HP</label>
+                    <input type="file" id="sellImageFile" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-slate-700 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-orangeRed file:text-white hover:file:bg-brand-orangeDark cursor-pointer">
                 </div>
 
                 <div>
-                    <label class="block font-bold text-slate-500 mb-1">Catatan & Deskripsi Tambahan</label>
-                    <textarea id="sellDescription" rows="2" placeholder="Sebutkan varian, rasa, ukuran, atau ketentuan pengiriman dari negara asal..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none"></textarea>
+                    <label class="block font-bold text-slate-500 mb-1">Deskripsi & Catatan Barang</label>
+                    <textarea id="sellDescription" rows="2" placeholder="Sebutkan varian, ukuran, rasa, atau detail ketentuan jastip..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none"></textarea>
                 </div>
 
                 <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition">
-                    Publikasikan JasaTip (Gratis)
+                    Publikasikan JasaTip Sekarang
                 </button>
             </form>
         </div>
@@ -508,8 +360,7 @@
 
     <!-- MODAL: DETIL BARANG -->
     <div id="productModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
-        <div class="bg-white border border-slate-100 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative my-8" id="productModalBody">
-        </div>
+        <div class="bg-white border border-slate-100 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative my-8" id="productModalBody"></div>
     </div>
 
     <!-- CART DRAWER -->
@@ -520,35 +371,17 @@
             </h3>
             <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
-
-        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
-        </div>
-
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar"></div>
         <div class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 text-xs">
             <div class="flex gap-2">
-                <input type="text" id="voucherInput" placeholder="KODE VOUCHER (MIs: JTID2026)" class="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800 font-bold uppercase placeholder-slate-400 focus:outline-none">
-                <button onclick="applyVoucher()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold px-3 py-2 rounded-lg border border-slate-200">Gunakan</button>
+                <input type="text" id="voucherInput" placeholder="KODE VOUCHER (Mis: JTID2026)" class="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800 font-bold uppercase placeholder-slate-400 focus:outline-none">
+                <button onclick="applyVoucher()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold px-3 py-2 rounded-lg">Gunakan</button>
             </div>
-
             <div class="space-y-1.5 text-slate-500 font-medium">
-                <div class="flex justify-between">
-                    <span>Nilai Belanjaan</span>
-                    <span id="cartSubtotal" class="font-bold text-slate-700">$0.00</span>
-                </div>
-                <div class="flex justify-between text-brand-orangeRed">
-                    <span>Diskon Voucher</span>
-                    <span id="cartDiscount">-$0.00</span>
-                </div>
-                <div class="flex justify-between text-slate-400 text-[10px]">
-                    <span>Bea / Pajak Internasional</span>
-                    <span>Sudah Termasuk</span>
-                </div>
-                <div class="border-t border-slate-200 pt-2 flex justify-between font-extrabold text-brand-navy text-sm">
-                    <span>Total Keseluruhan</span>
-                    <span id="cartGrandTotal" class="text-brand-orangeRed">$0.00</span>
-                </div>
+                <div class="flex justify-between"><span>Nilai Belanjaan</span><span id="cartSubtotal" class="font-bold text-slate-700">$0.00</span></div>
+                <div class="flex justify-between text-brand-orangeRed"><span>Diskon Voucher</span><span id="cartDiscount">-$0.00</span></div>
+                <div class="border-t border-slate-200 pt-2 flex justify-between font-extrabold text-brand-navy text-sm"><span>Total Keseluruhan</span><span id="cartGrandTotal" class="text-brand-orangeRed">$0.00</span></div>
             </div>
-
             <button onclick="openCheckoutModal()" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition">
                 Lanjutkan Ke Checkout & Pengiriman
             </button>
@@ -559,135 +392,30 @@
     <div id="checkoutModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
         <div class="bg-white border border-slate-100 rounded-2xl max-w-3xl w-full p-6 space-y-4 shadow-2xl relative my-8">
             <button onclick="closeCheckoutModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
-
-            <div class="border-b border-slate-100 pb-3">
-                <h3 class="text-base font-extrabold text-brand-navy flex items-center gap-2">
-                    <i class="fa-solid fa-credit-card text-brand-orangeRed"></i> Checkout & Pelayanan Antarnegara
-                </h3>
-                <p class="text-xs text-slate-400">Silakan isi alamat penerimaan barang, pilih ekspedisi kurir, serta cara bayar pilihan.</p>
-            </div>
-
+            <h3 class="text-base font-extrabold text-brand-navy border-b border-slate-100 pb-3">Checkout & Pengiriman Global</h3>
             <form onsubmit="handleProcessOrder(event)" class="space-y-4 text-xs">
                 <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                    <h4 class="font-extrabold text-brand-navy flex items-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-location-dot text-brand-orangeRed"></i> Alamat Pengiriman
-                    </h4>
+                    <h4 class="font-extrabold text-brand-navy">Alamat Penerima</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <input type="text" id="shipName" required placeholder="Nama Lengkap Penerima" class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800">
-                        <input type="tel" id="shipPhone" required placeholder="Nomor Handphone Penerima (mis: 0812...)" class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800">
+                        <input type="text" id="shipName" required placeholder="Nama Lengkap" class="bg-white border border-slate-200 rounded-lg px-3 py-2">
+                        <input type="tel" id="shipPhone" required placeholder="No HP" class="bg-white border border-slate-200 rounded-lg px-3 py-2">
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <select id="shipCountry" required class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800">
-                            <option value="ID">🇮🇩 Indonesia</option>
-                            <option value="JP">🇯🇵 Jepang</option>
-                            <option value="KR">🇰🇷 Korea Selatan</option>
-                            <option value="US">🇺🇸 Amerika Serikat</option>
-                            <option value="SG">🇸🇬 Singapura</option>
-                            <option value="MY">🇲🇾 Malaysia</option>
-                            <option value="TH">🇹🇭 Thailand</option>
-                            <option value="AU">🇦🇺 Australia</option>
-                            <option value="OTHER">🌍 Negara lainnya</option>
-                        </select>
-                        <input type="text" id="shipCity" required placeholder="Kota & Kode Pos" class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800">
-                    </div>
-                    <textarea id="shipAddress" required rows="2" placeholder="Masukkan alamat lengkap (Jalan, No. Rumah, Kecamatan, Kota)" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800"></textarea>
+                    <textarea id="shipAddress" required rows="2" placeholder="Alamat lengkap tujuan pengiriman" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2"></textarea>
                 </div>
-
-                <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                    <h4 class="font-extrabold text-brand-navy flex items-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-truck-fast text-brand-orangeRed"></i> Pilihan Ekspedisi Kurir Aliansi
-                    </h4>
-                    <select id="courierSelect" onchange="updateCheckoutTotals()" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800 font-bold">
-                        <option value="DHL">DHL Express Internasional (3-5 Hari Kerja) - $15.00</option>
-                        <option value="FEDEX">FedEx International Priority (2-4 Hari Kerja) - $18.00</option>
-                        <option value="UPS">UPS Worldwide Saver (3-5 Hari) - $16.50</option>
-                        <option value="EMS">EMS Pos Internasional Standard (7-10 Hari) - $8.00</option>
-                        <option value="JNT">J&T Global Cargo (5-8 Hari) - $9.50</option>
-                        <option value="LOCAL">JNE / SiCepat / GoSend (Khusus Domestik) - $3.00</option>
-                    </select>
-                </div>
-
-                <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                    <h4 class="font-extrabold text-brand-navy flex items-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-wallet text-brand-orangeRed"></i> Metode Pembayaran Global & Lokal
-                    </h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px]">
-                        <label class="flex items-center gap-2.5 p-2.5 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-slate-300">
-                            <input type="radio" name="paymentMethod" value="CARDS" checked class="text-brand-orangeRed">
-                            <div>
-                                <span class="font-bold text-slate-800 flex items-center gap-1"><i class="fa-solid fa-credit-card text-brand-navy"></i> Kartu Kredit / Debit</span>
-                                <span class="text-slate-400 text-[10px] block">Visa, Mastercard, JCB, UnionPay</span>
-                            </div>
-                        </label>
-
-                        <label class="flex items-center gap-2.5 p-2.5 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-slate-300">
-                            <input type="radio" name="paymentMethod" value="PAYPAL" class="text-brand-orangeRed">
-                            <div>
-                                <span class="font-bold text-slate-800 flex items-center gap-1"><i class="fa-brands fa-paypal text-blue-500"></i> PayPal & Apple Pay</span>
-                                <span class="text-slate-400 text-[10px] block">Layanan Dompet Global Elektronik</span>
-                            </div>
-                        </label>
-
-                        <label class="flex items-center gap-2.5 p-2.5 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-slate-300">
-                            <input type="radio" name="paymentMethod" value="QRIS" class="text-brand-orangeRed">
-                            <div>
-                                <span class="font-bold text-slate-800 flex items-center gap-1"><i class="fa-solid fa-qrcode text-emerald-500"></i> QRIS & E-Wallet Lokal</span>
-                                <span class="text-slate-400 text-[10px] block">GoPay, OVO, DANA, ShopeePay</span>
-                            </div>
-                        </label>
-
-                        <label class="flex items-center gap-2.5 p-2.5 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-slate-300">
-                            <input type="radio" name="paymentMethod" value="COD" class="text-brand-orangeRed">
-                            <div>
-                                <span class="font-bold text-slate-800 flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-brand-orangeRed"></i> Bayar di Tempat (COD)</span>
-                                <span class="text-slate-400 text-[10px] block">Sistem Escrow JT ID Aman</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 space-y-1.5">
-                    <div class="flex justify-between text-slate-400">
-                        <span>Harga Belanjaan</span>
-                        <span id="coSubtotal">$0.00</span>
-                    </div>
-                    <div class="flex justify-between text-slate-400">
-                        <span>Ongkos Kirim</span>
-                        <span id="coShipping">$0.00</span>
-                    </div>
-                    <div class="flex justify-between text-slate-400">
-                        <span>Asuransi Kurir (1.5%)</span>
-                        <span id="coInsurance">$0.00</span>
-                    </div>
-                    <div class="border-t border-slate-250 pt-2 flex justify-between font-extrabold text-slate-850 text-sm">
-                        <span>Jumlah Pembayaran</span>
-                        <span id="coGrandTotal" class="text-brand-orangeRed text-base">$0.00</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-lock"></i> Selesaikan Transaksi Pembayaran
-                </button>
+                <button type="submit" class="w-full bg-brand-orangeRed text-white font-extrabold py-3.5 rounded-xl shadow-lg">Selesaikan Transaksi</button>
             </form>
         </div>
     </div>
 
-    <!-- TOAST NOTIFIKASI BANNER -->
+    <!-- TOAST -->
     <div id="toastContainer" class="fixed bottom-20 md:bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
-    <!-- MAIN JAVASCRIPT APPLICATION -->
+    <!-- MAIN JAVASCRIPT -->
     <script>
-        // ==========================================
-        // KONFIGURASI SUPABASE CLOUD (SUDAH TERHUBUNG)
-        // ==========================================
         const SUPABASE_URL = "https://mijuxsfstrfqwdlaquvn.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_key_kamu_di_sini"; 
-        
-        const _supabase = (typeof supabase !== 'undefined')
-            ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
-            : null;
+        const SUPABASE_ANON_KEY = "sb_publishable_key_kamu_di_sini";
+        const _supabase = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-        // GLOBALS CURRENCY Engine
         const CURRENCIES = {
             IDR: { symbol: 'Rp ', rate: 15800, flag: '🇮🇩', name: 'Indonesian Rupiah' },
             USD: { symbol: '$', rate: 1.0, flag: '🇺🇸', name: 'US Dollar' },
@@ -712,131 +440,41 @@
         };
 
         let currentCurrency = 'IDR';
-
-        // SEEDS MOCK DATA JASTIP (Stores in base USD $)
-        const INITIAL_PRODUCTS = [
-            {
-                id: 'prod_1',
-                title: 'Tokyo Banana Banana Original Flavour (Box of 8)',
-                originCountry: 'JP',
-                originFlag: '🇯🇵',
-                originName: 'Jepang',
-                category: 'Makanan & Makanan Ringan',
-                priceUSD: 18.50,
-                deliveryDate: '2026-10-18',
-                imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500',
-                sellerName: 'Kenji Traveler',
-                sellerRole: 'Verified Traveler JP',
-                sellerId: 'seller_kenji',
-                description: 'Snack khas Tokyo Jepang paling populer. Dijamin original dibeli langsung di Bandara Haneda Tokyo.'
-            },
-            {
-                id: 'prod_2',
-                title: 'Batik Tulis Premium Solo Sutra Alam (Sutera Alus)',
-                originCountry: 'ID',
-                originFlag: '🇮🇩',
-                originName: 'Indonesia',
-                category: 'Kerajinan & Seni Lokal',
-                priceUSD: 65.00,
-                deliveryDate: '2026-10-15',
-                imageUrl: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500',
-                sellerName: 'Solo Heritage',
-                sellerRole: 'UMKM Indonesia Original',
-                sellerId: 'seller_batik',
-                description: 'Kain Batik Tulis asli karya pengrajin Solo. Cocok untuk koleksi internasional atau hadiah mewah.'
-            },
-            {
-                id: 'prod_3',
-                title: 'Beauty of Joseon Relief Sun Rice + Probiotics Sunscreen',
-                originCountry: 'KR',
-                originFlag: '🇰🇷',
-                originName: 'Korea Selatan',
-                category: 'Skincare & Kosmetik',
-                priceUSD: 14.00,
-                deliveryDate: '2026-10-20',
-                imageUrl: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=500',
-                sellerName: 'Min-jee JasaTip',
-                sellerRole: 'Korea Citizen Residency',
-                sellerId: 'seller_minjee',
-                description: 'Sunscreen viral Olive Young Korea. Mencerahkan dan tidak lengket. Dikirim dari Myeongdong.'
-            },
-            {
-                id: 'prod_4',
-                title: 'Trader Joe\'s Everything But The Bagel Seasoning USA',
-                originCountry: 'US',
-                originFlag: '🇺🇸',
-                originName: 'Amerika Serikat',
-                category: 'Makanan & Makanan Ringan',
-                priceUSD: 9.99,
-                deliveryDate: '2026-10-22',
-                imageUrl: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500',
-                sellerName: 'Sarah California',
-                sellerRole: 'US Traveler Expert',
-                sellerId: 'seller_sarah',
-                description: 'Bumbu tabur terfavorit di USA. Dibeli langsung dari supermarket Trader Joe\'s California.'
-            },
-            {
-                id: 'prod_5',
-                title: 'Kopi Arabika Gayo Aceh Organic Whole Beans (500g)',
-                originCountry: 'ID',
-                originFlag: '🇮🇩',
-                originName: 'Indonesia',
-                category: 'Makanan & Makanan Ringan',
-                priceUSD: 16.00,
-                deliveryDate: '2026-10-14',
-                imageUrl: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500',
-                sellerName: 'Gayo Coffee Export',
-                sellerRole: 'Aceh Gayo Producer',
-                sellerId: 'seller_aceh',
-                description: 'Bijih kopi Arabika Gayo kualitas ekspor dunia. Aroma harum citrus dan dark chocolate.'
-            },
-            {
-                id: 'prod_6',
-                title: 'Charles & Keith Gabine Saddle Bag Black Singapore',
-                originCountry: 'SG',
-                originFlag: '🇸🇬',
-                originName: 'Singapura',
-                category: 'Fashion & Pakaian',
-                priceUSD: 78.00,
-                deliveryDate: '2026-10-16',
-                imageUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500',
-                sellerName: 'Lina JasaTip SG',
-                sellerRole: 'Changi Traveler',
-                sellerId: 'seller_lina',
-                description: 'Tas selempang Gabine terfavorit dibeli langsung dari Orchard, Singapura.'
-            }
-        ];
-
-        // LOGIC STATES
         let products = [];
         let cart = [];
         let orders = [];
         let activeCountryFilter = 'ALL';
         let discountRate = 0;
-        let currentUser = {
-            id: 'user_demo_1',
-            name: 'Pengguna JT ID',
-            email: 'user@jtid.com',
-            country: 'ID'
-        };
+        let currentUser = null;
 
-        // SETUP APPLICATION ON INIT
-        document.addEventListener('DOMContentLoaded', () => {
+        // Kosong murni tanpa data contoh (produk awal diset kosong)
+        const INITIAL_PRODUCTS = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
             initCurrenciesSelector();
+            if (_supabase) {
+                const { data: { session } } = await _supabase.auth.getSession();
+                if (session && session.user) {
+                    currentUser = {
+                        id: session.user.id,
+                        name: session.user.email.split('@')[0],
+                        email: session.user.email
+                    };
+                }
+            }
             loadState();
             renderUserNav();
             renderProducts();
             renderOrders();
             renderMyListings();
             updateCartBadges();
-            startCountdown();
         });
 
         function initCurrenciesSelector() {
             const selector = document.getElementById('currencySelector');
             selector.innerHTML = Object.keys(CURRENCIES).map(code => {
                 const c = CURRENCIES[code];
-                return `<option value="${code}" ${code === currentCurrency ? 'selected' : ''}>${c.flag}${code}</option>`;
+                return `<option value="${code}" ${code === currentCurrency ? 'selected' : ''}>${c.flag} ${code} (${c.name})</option>`;
             }).join('');
         }
 
@@ -846,14 +484,23 @@
             renderOrders();
             renderMyListings();
             updateCartTotals();
-            showToast(`Mata uang diubah ke ${CURRENCIES[code].name} (${code})`, 'success');
+            if(!document.getElementById('sellModal').classList.contains('hidden')) {
+                updateSellCurrencyUI();
+            }
+            showToast(`Mata uang transaksi diubah ke ${code}`, 'success');
+        }
+
+        function updateSellCurrencyUI() {
+            const curr = CURRENCIES[currentCurrency] || CURRENCIES.USD;
+            document.getElementById('sellPriceLabel').innerText = `Harga Jual (dalam ${currentCurrency})`;
+            document.getElementById('sellSymbolPrefix').innerText = curr.symbol;
+            calculateSellerPayout();
         }
 
         function formatMoney(amountUSD) {
             const curr = CURRENCIES[currentCurrency] || CURRENCIES.IDR;
             const converted = amountUSD * curr.rate;
-
-            if (currentCurrency === 'IDR' || currentCurrency === 'VND' || currentCurrency === 'KRW') {
+            if (['IDR', 'VND', 'KRW'].includes(currentCurrency)) {
                 return curr.symbol + Math.round(converted).toLocaleString('id-ID');
             } else if (currentCurrency === 'JPY') {
                 return curr.symbol + Math.round(converted).toLocaleString('ja-JP');
@@ -865,22 +512,16 @@
         function loadState() {
             const savedProds = localStorage.getItem('jt_id_products');
             products = savedProds ? JSON.parse(savedProds) : INITIAL_PRODUCTS;
-
             const savedCart = localStorage.getItem('jt_id_cart');
             cart = savedCart ? JSON.parse(savedCart) : [];
-
             const savedOrders = localStorage.getItem('jt_id_orders');
             orders = savedOrders ? JSON.parse(savedOrders) : [];
-
-            const savedUser = localStorage.getItem('jt_id_user');
-            if (savedUser) currentUser = JSON.parse(savedUser);
         }
 
         function saveState() {
             localStorage.setItem('jt_id_products', JSON.stringify(products));
             localStorage.setItem('jt_id_cart', JSON.stringify(cart));
             localStorage.setItem('jt_id_orders', JSON.stringify(orders));
-            localStorage.setItem('jt_id_user', JSON.stringify(currentUser));
         }
 
         function renderProducts() {
@@ -891,7 +532,7 @@
 
             let filtered = products.filter(p => {
                 const matchCountry = activeCountryFilter === 'ALL' || p.originCountry === activeCountryFilter;
-                const matchSearch = p.title.toLowerCase().includes(search) || p.originName.toLowerCase().includes(search) || p.category.toLowerCase().includes(search);
+                const matchSearch = p.title.toLowerCase().includes(search) || (p.originName && p.originName.toLowerCase().includes(search)) || p.category.toLowerCase().includes(search);
                 return matchCountry && matchSearch;
             });
 
@@ -906,126 +547,89 @@
 
             empty.classList.add('hidden');
             grid.innerHTML = filtered.map(p => `
-                <div class="bg-white border border-slate-200/60 hover:border-brand-orangeRed/40 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between group">
+                <div class="bg-white border border-slate-200/60 hover:border-brand-orangeRed/40 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between group">
                     <div>
                         <div class="relative h-44 overflow-hidden bg-slate-50 border-b border-slate-100">
                             <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute top-2.5 left-2.5 bg-brand-navy/90 backdrop-blur-sm px-2 py-1 rounded-lg border border-slate-700/50 text-[10px] font-extrabold text-white flex items-center gap-1.5 shadow">
+                            <div class="absolute top-2.5 left-2.5 bg-brand-navy/90 px-2 py-1 rounded-lg text-[10px] font-extrabold text-white flex items-center gap-1.5 shadow">
                                 <span>${p.originFlag}</span> <span>${p.originName}</span>
                             </div>
                             <div class="absolute bottom-2.5 right-2.5 bg-brand-orangeRed text-white text-[9px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
                                 ${p.category}
                             </div>
-                            <div class="absolute top-2.5 right-2.5 bg-red-600/90 text-white font-extrabold text-[9px] px-2 py-0.5 rounded shadow flex items-center gap-1">
-                                <i class="fa-solid fa-truck-fast"></i> Gratis Ongkir Xtra
-                            </div>
                         </div>
-
                         <div class="p-4 space-y-2">
-                            <h3 class="font-extrabold text-brand-navy text-xs sm:text-sm line-clamp-2 leading-snug hover:text-brand-orangeRed transition">${p.title}</h3>
+                            <h3 class="font-extrabold text-brand-navy text-xs sm:text-sm line-clamp-2 leading-snug">${p.title}</h3>
                             <div class="flex items-center gap-1.5 text-[10px] text-slate-400 font-medium">
                                 <i class="fa-solid fa-user-check text-slate-400"></i>
-                                <span>${p.sellerName} <span class="bg-amber-100/80 text-amber-600 px-1 rounded text-[8px] font-black">Star Seller</span></span>
+                                <span>${p.sellerName || 'Seller'}</span>
                             </div>
-                            <p class="text-[10px] text-slate-500 flex items-center gap-1 font-semibold">
-                                <i class="fa-solid fa-plane-arrival text-brand-orangeRed"></i> Estimasi Kirim: ${p.deliveryDate}
-                            </p>
+                            <p class="text-[10px] text-slate-500 font-semibold"><i class="fa-solid fa-plane-arrival text-brand-orangeRed"></i> Estimasi Kirim: ${p.deliveryDate}</p>
                         </div>
                     </div>
-
                     <div class="p-4 pt-0 border-t border-slate-100/60 mt-3 flex items-center justify-between gap-2">
                         <div>
                             <span class="text-[8px] text-slate-400 uppercase font-black block">HARGA JUAL</span>
                             <span class="text-sm font-extrabold text-brand-orangeRed">${formatMoney(p.priceUSD)}</span>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button onclick="openProductDetail('${p.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-extrabold px-3 py-2 rounded-xl transition">
-                                Detil
-                            </button>
-                            <button onclick="addToCart('${p.id}')" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white text-[11px] font-extrabold px-3 py-2 rounded-xl shadow-md shadow-brand-orangeRed/10 transition">
-                                + Keranjang
-                            </button>
+                            <button onclick="openProductDetail('${p.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-extrabold px-3 py-2 rounded-xl">Detil</button>
+                            <button onclick="addToCart('${p.id}')" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white text-[11px] font-extrabold px-3 py-2 rounded-xl shadow-md">+ Keranjang</button>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function filterProducts() {
-            renderProducts();
-        }
+        function filterProducts() { renderProducts(); }
 
         function setCountryFilter(code) {
             activeCountryFilter = code;
-            document.querySelectorAll('.country-pill').forEach(el => {
-                el.classList.remove('active', 'bg-brand-navy', 'text-white');
-                el.classList.add('bg-slate-50', 'text-slate-600');
-            });
+            document.querySelectorAll('.country-pill').forEach(el => el.classList.remove('active', 'bg-brand-navy', 'text-white'));
             const activeBtn = document.getElementById(`filter-country-${code}`);
-            if (activeBtn) {
-                activeBtn.classList.add('active', 'bg-brand-navy', 'text-white');
-                activeBtn.classList.remove('bg-slate-50', 'text-slate-600');
-            }
+            if (activeBtn) activeBtn.classList.add('active', 'bg-brand-navy', 'text-white');
             renderProducts();
         }
 
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
-
             const existing = cart.find(c => c.id === productId);
-            if (existing) {
-                existing.qty += 1;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-
+            if (existing) { existing.qty += 1; } else { cart.push({ ...product, qty: 1 }); }
             saveState();
             updateCartBadges();
-            showToast(`"${product.title}" berhasil dimasukkan ke keranjang`, 'success');
+            showToast(`"${product.title}" masuk keranjang`, 'success');
         }
 
         function updateCartBadges() {
             const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
             document.getElementById('cartBadge').innerText = totalItems;
-            
-            if (totalItems > 0) {
-                document.getElementById('cartBadge').classList.remove('hidden');
-            } else {
-                document.getElementById('cartBadge').classList.add('hidden');
-            }
+            if (totalItems > 0) document.getElementById('cartBadge').classList.remove('hidden');
+            else document.getElementById('cartBadge').classList.add('hidden');
         }
 
         function toggleCartDrawer() {
             const drawer = document.getElementById('cartDrawer');
             drawer.classList.toggle('translate-x-full');
-            if (!drawer.classList.contains('translate-x-full')) {
-                renderCartDrawer();
-            }
+            if (!drawer.classList.contains('translate-x-full')) renderCartDrawer();
         }
 
         function renderCartDrawer() {
             const container = document.getElementById('cartItemsContainer');
             if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 space-y-2 text-slate-400">
-                        <i class="fa-solid fa-cart-arrow-down text-3xl"></i>
-                        <p class="text-xs font-semibold">Keranjang belanja Anda masih kosong</p>
-                    </div>
-                `;
+                container.innerHTML = `<div class="text-center py-12 text-slate-400 text-xs font-semibold">Keranjang kosong</div>`;
             } else {
                 container.innerHTML = cart.map(item => `
-                    <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80 text-xs shadow-sm">
-                        <img src="${item.imageUrl}" class="w-12 h-12 object-cover rounded-lg bg-white border border-slate-200">
+                    <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs shadow-sm">
+                        <img src="${item.imageUrl}" class="w-12 h-12 object-cover rounded-lg">
                         <div class="flex-grow min-w-0">
                             <h4 class="font-extrabold text-brand-navy truncate">${item.title}</h4>
-                            <p class="text-brand-orangeRed font-extrabold mt-0.5">${formatMoney(item.priceUSD)}</p>
-                            <span class="text-[9px] text-slate-400 font-bold">${item.originFlag}${item.originName}</span>
+                            <p class="text-brand-orangeRed font-extrabold">${formatMoney(item.priceUSD)}</p>
                         </div>
                         <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-lg border border-slate-200 shrink-0">
-                            <button onclick="updateQty('${item.id}', -1)" class="text-slate-400 hover:text-slate-700 font-bold">-</button>
-                            <span class="font-bold text-slate-800 px-1 text-center min-w-4">${item.qty}</span>
-                            <button onclick="updateQty('${item.id}', 1)" class="text-slate-400 hover:text-slate-700 font-bold">+</button>
+                            <button onclick="updateQty('${item.id}', -1)" class="font-bold">-</button>
+                            <span class="font-bold">${item.qty}</span>
+                            <button onclick="updateQty('${item.id}', 1)" class="font-bold">+</button>
                         </div>
                     </div>
                 `).join('');
@@ -1037,9 +641,7 @@
             const item = cart.find(c => c.id === productId);
             if (!item) return;
             item.qty += delta;
-            if (item.qty <= 0) {
-                cart = cart.filter(c => c.id !== productId);
-            }
+            if (item.qty <= 0) cart = cart.filter(c => c.id !== productId);
             saveState();
             updateCartBadges();
             renderCartDrawer();
@@ -1049,7 +651,6 @@
             const subtotalUSD = cart.reduce((sum, item) => sum + (item.priceUSD * item.qty), 0);
             const discountUSD = subtotalUSD * discountRate;
             const grandTotalUSD = subtotalUSD - discountUSD;
-
             document.getElementById('cartSubtotal').innerText = formatMoney(subtotalUSD);
             document.getElementById('cartDiscount').innerText = `-${formatMoney(discountUSD)}`;
             document.getElementById('cartGrandTotal').innerText = formatMoney(grandTotalUSD);
@@ -1057,159 +658,130 @@
 
         function applyVoucher() {
             const code = document.getElementById('voucherInput').value.trim().toUpperCase();
-            if (code === 'JTID2026' || code === 'BEBASONGKIR') {
-                discountRate = 0.15;
-                showToast('Kupon voucher 15% berhasil digunakan!', 'success');
-            } else {
-                discountRate = 0;
-                showToast('Kupon voucher tidak valid / sudah kadaluarsa', 'error');
-            }
+            if (code === 'JTID2026') { discountRate = 0.15; showToast('Voucher 15% aktif!', 'success'); }
+            else { discountRate = 0; showToast('Voucher tidak valid', 'error'); }
             updateCartTotals();
         }
 
         function openCheckoutModal() {
-            if (cart.length === 0) {
-                showToast('Keranjang Anda kosong! Tambahkan barang jastip dahulu.', 'error');
-                return;
-            }
+            if (cart.length === 0) { showToast('Keranjang kosong!', 'error'); return; }
             toggleCartDrawer();
             document.getElementById('checkoutModal').classList.remove('hidden');
-            updateCheckoutTotals();
         }
 
-        function closeCheckoutModal() {
-            document.getElementById('checkoutModal').classList.add('hidden');
-        }
-
-        function updateCheckoutTotals() {
-            const subtotalUSD = cart.reduce((sum, item) => sum + (item.priceUSD * item.qty), 0) * (1 - discountRate);
-            const courierVal = document.getElementById('courierSelect').value;
-
-            let shippingUSD = 15.00;
-            if (courierVal === 'FEDEX') shippingUSD = 18.00;
-            if (courierVal === 'UPS') shippingUSD = 16.50;
-            if (courierVal === 'EMS') shippingUSD = 8.00;
-            if (courierVal === 'JNT') shippingUSD = 9.50;
-            if (courierVal === 'LOCAL') shippingUSD = 3.00;
-
-            const insuranceUSD = subtotalUSD * 0.015;
-            const grandTotalUSD = subtotalUSD + shippingUSD + insuranceUSD;
-
-            document.getElementById('coSubtotal').innerText = formatMoney(subtotalUSD);
-            document.getElementById('coShipping').innerText = formatMoney(shippingUSD);
-            document.getElementById('coInsurance').innerText = formatMoney(insuranceUSD);
-            document.getElementById('coGrandTotal').innerText = formatMoney(grandTotalUSD);
-        }
+        function closeCheckoutModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
 
         function handleProcessOrder(e) {
             e.preventDefault();
             const orderId = 'JTID-' + Math.floor(100000 + Math.random() * 900000);
-            const courier = document.getElementById('courierSelect').value;
-            const trackingNum = `${courier}-${Math.floor(100000000 + Math.random() * 900000000)}`;
-
             const newOrder = {
                 id: orderId,
                 date: new Date().toLocaleDateString('id-ID'),
                 items: [...cart],
-                status: 'Dibeli Traveler (Dalam Pengiriman)',
-                trackingNumber: trackingNum,
-                courierName: courier,
+                status: 'Diproses',
+                trackingNumber: 'DHL-' + Math.floor(100000000 + Math.random() * 900000000),
                 totalUSD: cart.reduce((sum, item) => sum + (item.priceUSD * item.qty), 0)
             };
-
             orders.unshift(newOrder);
             cart = [];
             saveState();
-
             updateCartBadges();
             closeCheckoutModal();
             switchTab('orders');
-            showToast(`Selesai! Pesanan #${orderId} telah diproses. Resi Tracking: ${trackingNum}`, 'success');
+            showToast(`Pesanan #${orderId} berhasil dibuat!`, 'success');
         }
 
         function openSellModal() {
+            if (!currentUser) {
+                showToast('Silakan login dengan email terlebih dahulu!', 'error');
+                openAuthModal();
+                return;
+            }
             document.getElementById('sellModal').classList.remove('hidden');
-            calculateSellerPayout();
+            updateSellCurrencyUI();
         }
 
-        function closeSellModal() {
-            document.getElementById('sellModal').classList.add('hidden');
-        }
-
-        function setPresetImg(url) {
-            document.getElementById('sellImageUrl').value = url;
-        }
+        function closeSellModal() { document.getElementById('sellModal').classList.add('hidden'); }
 
         function calculateSellerPayout() {
-            const priceUSD = parseFloat(document.getElementById('sellPriceUSD').value) || 0;
+            const inputVal = parseFloat(document.getElementById('sellPriceInput').value) || 0;
+            const curr = CURRENCIES[currentCurrency] || CURRENCIES.USD;
+            
+            const priceUSD = inputVal / curr.rate;
             const feeUSD = priceUSD * 0.05;
             const netUSD = priceUSD - feeUSD;
 
-            document.getElementById('calcGrossUSD').innerText = formatMoney(priceUSD);
-            document.getElementById('calcFeeUSD').innerText = `-${formatMoney(feeUSD)}`;
-            document.getElementById('calcNetUSD').innerText = formatMoney(netUSD);
+            document.getElementById('calcGross').innerText = formatMoney(priceUSD);
+            document.getElementById('calcFee').innerText = `-${formatMoney(feeUSD)}`;
+            document.getElementById('calcNet').innerText = formatMoney(netUSD);
         }
 
         function handleCreateListing(e) {
             e.preventDefault();
-            const title = document.getElementById('sellTitle').value;
-            const countryCode = document.getElementById('sellOriginCountry').value;
-            const priceUSD = parseFloat(document.getElementById('sellPriceUSD').value);
-            const deliveryDate = document.getElementById('sellDeliveryDate').value;
-            const imageUrl = document.getElementById('sellImageUrl').value || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500';
-            const category = document.getElementById('sellCategory').value;
-            const desc = document.getElementById('sellDescription').value;
-
+            const fileInput = document.getElementById('sellImageFile');
             const flagMap = { JP: '🇯🇵', KR: '🇰🇷', US: '🇺🇸', TH: '🇹🇭', SG: '🇸🇬', ID: '🇮🇩', AU: '🇦🇺', GLOBAL: '🌍' };
             const nameMap = { JP: 'Jepang', KR: 'Korea Selatan', US: 'Amerika Serikat', TH: 'Thailand', SG: 'Singapura', ID: 'Indonesia', AU: 'Australia', GLOBAL: 'Global' };
+            const countryCode = document.getElementById('sellOriginCountry').value;
 
-            const newProduct = {
-                id: 'prod_' + Date.now(),
-                title: title,
-                originCountry: countryCode,
-                originFlag: flagMap[countryCode] || '🌍',
-                originName: nameMap[countryCode] || 'Global',
-                category: category,
-                priceUSD: priceUSD,
-                deliveryDate: deliveryDate,
-                imageUrl: imageUrl,
-                sellerName: currentUser.name,
-                sellerRole: 'Verified Traveler ID',
-                sellerId: currentUser.id,
-                description: desc
+            const inputVal = parseFloat(document.getElementById('sellPriceInput').value) || 0;
+            const curr = CURRENCIES[currentCurrency] || CURRENCIES.USD;
+            const priceUSD = inputVal / curr.rate;
+
+            const processProductData = (imageUrl) => {
+                const newProduct = {
+                    id: 'prod_' + Date.now(),
+                    title: document.getElementById('sellTitle').value,
+                    originCountry: countryCode,
+                    originFlag: flagMap[countryCode] || '🌍',
+                    originName: nameMap[countryCode] || 'Global',
+                    category: document.getElementById('sellCategory').value,
+                    priceUSD: priceUSD,
+                    deliveryDate: document.getElementById('sellDeliveryDate').value,
+                    imageUrl: imageUrl,
+                    sellerName: currentUser ? currentUser.name : 'Seller Resmi',
+                    sellerId: currentUser ? currentUser.id : 'seller_public',
+                    description: document.getElementById('sellDescription').value
+                };
+
+                products.unshift(newProduct);
+                saveState();
+                closeSellModal();
+                renderProducts();
+                renderMyListings();
+                showToast('Barang jastip berhasil dipublikasikan!', 'success');
             };
 
-            products.unshift(newProduct);
-            saveState();
-
-            closeSellModal();
-            renderProducts();
-            renderMyListings();
-            showToast('Barang jastip Anda berhasil dipublikasikan gratis!', 'success');
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    processProductData(uploadEvent.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                processProductData('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500');
+            }
         }
 
         function renderMyListings() {
             const container = document.getElementById('myListingsContainer');
+            if (!currentUser) {
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400 text-xs">Silakan login untuk melihat lapak Anda.</div>`;
+                document.getElementById('sellerTotalListings').innerText = '0';
+                return;
+            }
             const myProds = products.filter(p => p.sellerId === currentUser.id);
-
             document.getElementById('sellerTotalListings').innerText = myProds.length;
-
             if (myProds.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-8 text-slate-400 text-xs">
-                        Anda belum memiliki daftar tawaran barang. Klik tombol "Tambah Lapak Jual Baru" di atas.
-                    </div>
-                `;
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400 text-xs">Anda belum memajang produk di lapak.</div>`;
             } else {
                 container.innerHTML = myProds.map(p => `
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center gap-3 text-xs shadow-sm">
-                        <img src="${p.imageUrl}" class="w-12 h-12 object-cover rounded-lg bg-white border border-slate-200 shrink-0">
+                        <img src="${p.imageUrl}" class="w-12 h-12 object-cover rounded-lg">
                         <div class="flex-grow min-w-0">
                             <h4 class="font-extrabold text-brand-navy truncate">${p.title}</h4>
-                            <p class="text-brand-orangeRed font-extrabold mt-0.5">${formatMoney(p.priceUSD)}</p>
-                            <span class="text-[9px] text-slate-400 font-medium">${p.originFlag}${p.originName}</span>
+                            <p class="text-brand-orangeRed font-extrabold">${formatMoney(p.priceUSD)}</p>
                         </div>
-                        <button onclick="deleteListing('${p.id}')" class="text-red-500 hover:text-red-600 p-2"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deleteListing('${p.id}')" class="text-red-500 p-2"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 `).join('');
             }
@@ -1220,221 +792,96 @@
             saveState();
             renderProducts();
             renderMyListings();
-            showToast('Barang tawaran berhasil dihapus', 'success');
+            showToast('Produk dihapus', 'success');
         }
 
         function renderOrders() {
             const container = document.getElementById('ordersList');
             document.getElementById('activeOrdersBadge').innerText = orders.length;
-
-            if (orders.length > 0) {
-                document.getElementById('activeOrdersBadge').classList.remove('hidden');
-            } else {
-                document.getElementById('activeOrdersBadge').classList.add('hidden');
-            }
+            if (orders.length > 0) document.getElementById('activeOrdersBadge').classList.remove('hidden');
+            else document.getElementById('activeOrdersBadge').classList.add('hidden');
 
             if (orders.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-10 text-slate-400 text-xs font-semibold">
-                        Anda belum memiliki pesanan aktif. Mulai belanja dari pasar jastip kami!
-                    </div>
-                `;
+                container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs font-semibold">Belum ada pesanan aktif.</div>`;
             } else {
                 container.innerHTML = orders.map(o => `
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 text-xs shadow-sm">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-200/80 pb-2.5">
-                            <div>
-                                <span class="font-extrabold text-brand-navy">Kode Pesanan: <span class="text-brand-orangeRed font-bold">${o.id}</span></span>
-                                <span class="text-slate-400 font-medium ml-2">${o.date}</span>
-                            </div>
-                            <span class="bg-emerald-100 text-emerald-600 border border-emerald-200/60 px-3 py-0.5 rounded-full text-[10px] font-extrabold w-max">
-                                ${o.status}
-                            </span>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2 text-xs shadow-sm">
+                        <div class="flex justify-between border-b border-slate-200 pb-2">
+                            <span class="font-extrabold text-brand-navy">Order: ${o.id}</span>
+                            <span class="bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">${o.status}</span>
                         </div>
-
-                        <div class="space-y-2">
-                            ${o.items.map(i => `
-                                <div class="flex items-center gap-3">
-                                    <img src="${i.imageUrl}" class="w-8 h-8 object-cover rounded-lg bg-white border border-slate-200 shrink-0">
-                                    <div class="flex-grow min-w-0">
-                                        <p class="font-bold text-brand-navy truncate">${i.title}</p>
-                                        <p class="text-slate-400 text-[10px]">${i.qty}x &bull; ${formatMoney(i.priceUSD)}</p>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-
-                        <div class="border-t border-slate-200/80 pt-2 flex flex-col sm:flex-row sm:items-center justify-between text-[11px] gap-2">
-                            <div class="text-slate-500 font-medium">
-                                No. Resi (${o.courierName}): <span class="text-brand-orangeRed font-bold font-mono">${o.trackingNumber}</span>
-                            </div>
-                            <div class="font-extrabold text-brand-navy text-xs">
-                                Total: <span class="text-brand-orangeRed">${formatMoney(o.totalUSD)}</span>
-                            </div>
-                        </div>
+                        <div class="font-bold text-brand-orangeRed">Total: ${formatMoney(o.totalUSD)}</div>
                     </div>
                 `).join('');
             }
         }
 
         function switchTab(tabName) {
-            document.querySelectorAll('.sidebar-item').forEach(el => {
-                el.classList.remove('active', 'text-brand-orangeRed');
-                el.classList.add('text-slate-400');
-            });
-
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active', 'text-brand-orangeRed'));
             document.getElementById('tabContentHome').classList.add('hidden');
             document.getElementById('tabContentOrders').classList.add('hidden');
             document.getElementById('tabContentMyListings').classList.add('hidden');
 
-            const itemMap = {
-                'home': 'tab-home',
-                'orders': 'tab-orders',
-                'my-listings': 'tab-my-listings'
-            };
-
+            const itemMap = { 'home': 'tab-home', 'orders': 'tab-orders', 'my-listings': 'tab-my-listings' };
             const activeBtn = document.getElementById(itemMap[tabName]);
-            if (activeBtn) {
-                activeBtn.classList.add('active');
-                activeBtn.classList.remove('text-slate-400');
-            }
+            if (activeBtn) activeBtn.classList.add('active');
 
-            if (tabName === 'home') {
-                document.getElementById('tabContentHome').classList.remove('hidden');
-            } else if (tabName === 'orders') {
-                document.getElementById('tabContentOrders').classList.remove('hidden');
-                renderOrders();
-            } else if (tabName === 'my-listings') {
-                document.getElementById('tabContentMyListings').classList.remove('hidden');
-                renderMyListings();
-            }
+            if (tabName === 'home') document.getElementById('tabContentHome').classList.remove('hidden');
+            else if (tabName === 'orders') { document.getElementById('tabContentOrders').classList.remove('hidden'); renderOrders(); }
+            else if (tabName === 'my-listings') { document.getElementById('tabContentMyListings').classList.remove('hidden'); renderMyListings(); }
         }
 
         function renderUserNav() {
-            document.getElementById('userSidebarName').innerText = currentUser.name;
+            if (currentUser) document.getElementById('userSidebarName').innerText = currentUser.name;
+            else document.getElementById('userSidebarName').innerText = 'Masuk';
         }
 
-        function openAuthModal() {
-            document.getElementById('authModal').classList.remove('hidden');
-        }
+        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
+        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
 
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.add('hidden');
-        }
-
-        function handleAuthSubmit(e) {
+        async function handleAuthSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
-            const name = document.getElementById('authName').value;
-            const country = document.getElementById('authCountry').value;
-
-            currentUser = { id: 'user_' + Date.now(), name, email, country };
-            saveState();
-            renderUserNav();
-            closeAuthModal();
-            showToast(`Masuk berhasil! Selamat datang ${name}`, 'success');
-        }
-
-        function loginDemo(role) {
-            if (role === 'buyer') {
-                currentUser = { id: 'user_buyer_demo', name: 'Alun Pembeli', email: 'alun@gmail.com', country: 'ID' };
-            } else {
-                currentUser = { id: 'seller_kenji', name: 'Kenji JasaTip JP', email: 'kenji@jastip.jp', country: 'JP' };
-            }
-            saveState();
-            renderUserNav();
-            renderMyListings();
-            closeAuthModal();
-            showToast(`Masuk sebagai ${currentUser.name}`, 'success');
+            const msgEl = document.getElementById('authMessage');
+            if (!_supabase) { msgEl.innerText = 'Supabase belum terhubung.'; return; }
+            msgEl.innerText = 'Mengirim tautan login...';
+            const { error } = await _supabase.auth.signInWithOtp({ email });
+            if (error) msgEl.innerText = 'Gagal: ' + error.message;
+            else { msgEl.innerText = 'Cek email Anda untuk link login!'; showToast('Email terkirim!', 'success'); }
         }
 
         function openProductDetail(id) {
             const p = products.find(prod => prod.id === id);
             if (!p) return;
-
             const body = document.getElementById('productModalBody');
             body.innerHTML = `
                 <button onclick="closeProductDetail()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="rounded-2xl overflow-hidden bg-slate-50 h-56 md:h-full relative border border-slate-100">
-                        <img src="${p.imageUrl}" class="w-full h-full object-cover">
-                        <div class="absolute top-3 left-3 bg-brand-navy/95 px-2.5 py-1 rounded-lg text-xs font-extrabold text-white">
-                            ${p.originFlag}${p.originName}
-                        </div>
-                    </div>
-
+                    <img src="${p.imageUrl}" class="w-full h-56 md:h-full object-cover rounded-xl">
                     <div class="space-y-4 text-xs font-medium">
-                        <span class="bg-brand-orangeRed/10 text-brand-orangeRed font-black px-2.5 py-1 rounded-full text-[9px] uppercase tracking-wider">${p.category}</span>
-                        <h2 class="text-base font-extrabold text-brand-navy leading-snug">${p.title}</h2>
-
-                        <div class="text-xl font-black text-brand-orangeRed">
-                            ${formatMoney(p.priceUSD)}
-                        </div>
-
-                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 space-y-1">
-                            <p class="text-slate-700 font-extrabold flex items-center gap-1.5"><i class="fa-solid fa-store text-brand-orangeRed"></i> ${p.sellerName}</p>
-                            <p class="text-[10px] text-slate-400">${p.sellerRole}</p>
-                            <p class="text-[10px] text-slate-500 pt-1 font-semibold"><i class="fa-regular fa-calendar-check text-brand-orangeRed"></i> Perkiraan pengiriman: ${p.deliveryDate}</p>
-                        </div>
-
-                        <p class="text-slate-500 leading-relaxed">${p.description}</p>
-
-                        <button onclick="addToCart('${p.id}'); closeProductDetail();" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-cart-plus"></i> Masukkan ke Keranjang Belanja
-                        </button>
+                        <span class="bg-brand-orangeRed/10 text-brand-orangeRed font-black px-2 py-1 rounded text-[9px]">${p.category}</span>
+                        <h2 class="text-base font-extrabold text-brand-navy">${p.title}</h2>
+                        <div class="text-xl font-black text-brand-orangeRed">${formatMoney(p.priceUSD)}</div>
+                        <p class="text-slate-500 leading-relaxed">${p.description || 'Tidak ada deskripsi tambahan.'}</p>
+                        <button onclick="addToCart('${p.id}'); closeProductDetail();" class="w-full bg-brand-orangeRed text-white font-extrabold py-3 rounded-xl">Tambah ke Keranjang</button>
                     </div>
                 </div>
             `;
-
             document.getElementById('productModal').classList.remove('hidden');
         }
 
-        function closeProductDetail() {
-            document.getElementById('productModal').classList.add('hidden');
-        }
-
-        function startCountdown() {
-            setInterval(() => {
-                const timerEl = document.getElementById('flashSaleTimer');
-                if (!timerEl) return;
-                let [h, m, s] = timerEl.innerText.split(':').map(Number);
-                s--;
-                if (s < 0) { s = 59; m--; }
-                if (m < 0) { m = 59; h--; }
-                if (h < 0) { h = 2; }
-                timerEl.innerText = [h, m, s].map(n => String(n).padStart(2, '0')).join(':');
-            }, 1000);
-        }
+        function closeProductDetail() { document.getElementById('productModal').classList.add('hidden'); }
 
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-
-            let bg = 'bg-white border-slate-200 text-slate-600 shadow-xl';
-            let icon = '<i class="fa-solid fa-info-circle text-blue-500 text-sm"></i>';
-
-            if (type === 'success') {
-                bg = 'bg-emerald-50 border-emerald-200 text-emerald-800 shadow-xl';
-                icon = '<i class="fa-solid fa-check-circle text-emerald-600 text-sm"></i>';
-            } else if (type === 'error') {
-                bg = 'bg-red-50 border-red-200 text-red-800 shadow-xl';
-                icon = '<i class="fa-solid fa-triangle-exclamation text-red-500 text-sm"></i>';
-            }
-
-            toast.className = `flex items-center gap-2 px-4 py-3 rounded-xl border text-xs font-extrabold backdrop-blur-sm transition duration-300 transform translate-y-2 opacity-0 pointer-events-auto ${bg}`;
-            toast.innerHTML = `${icon} <span>${message}</span>`;
-
+            let bg = 'bg-white border-slate-200 text-slate-600';
+            if (type === 'success') bg = 'bg-emerald-50 border-emerald-200 text-emerald-800';
+            else if (type === 'error') bg = 'bg-red-50 border-red-200 text-red-800';
+            toast.className = `flex items-center gap-2 px-4 py-3 rounded-xl border text-xs font-extrabold shadow-xl transition pointer-events-auto ${bg}`;
+            toast.innerHTML = `<span>${message}</span>`;
             container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-0', 'translate-y-2');
-            }, 50);
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
+            setTimeout(() => toast.remove(), 3500);
         }
     </script>
 </body>
