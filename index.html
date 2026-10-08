@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JT ID — JasaTitip Global</title>
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -56,14 +58,10 @@
         
         <!-- LOGO & BRANDING (Visible only on Desktop) -->
         <div class="hidden md:flex items-center gap-3 px-6 mb-8">
-            <!-- Custom SVG matching image_0.png branding with custom circle & swoosh -->
             <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Navy 'J' and Coral/Red 'T' background curve swoosh -->
                 <path d="M15,55 C15,75 45,85 75,60" stroke="#FF5F3F" stroke-width="5" stroke-linecap="round" fill="none"/>
                 <circle cx="15" cy="55" r="4" fill="#FF5F3F" />
-                <!-- Letter J -->
                 <path d="M40,25 L40,55 C40,65 30,68 25,62" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                <!-- Letter T -->
                 <path d="M48,25 L75,25 M61,25 L61,65" stroke="#FF5F3F" stroke-width="9" stroke-linecap="round" fill="none"/>
             </svg>
             <div>
@@ -124,11 +122,9 @@
             </div>
             
             <div class="flex items-center gap-4">
-                <!-- MULTI-CURRENCY CONVERTER -->
                 <div class="flex items-center gap-1">
                     <span class="text-[10px] text-slate-400">Mata Uang:</span>
                     <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-slate-800 text-brand-orangeRed text-[11px] font-bold py-1 px-2.5 rounded-lg border border-slate-700 cursor-pointer focus:outline-none">
-                        <!-- Populated dynamically by script -->
                     </select>
                 </div>
                 <div class="hidden sm:flex items-center gap-3 text-[11px]">
@@ -140,7 +136,6 @@
 
         <!-- MOBILE & MAIN HEADER SEARCH -->
         <header class="bg-white py-4 px-4 md:px-8 shadow-sm border-b border-slate-100 flex items-center justify-between gap-4 sticky top-0 z-30">
-            <!-- Mobile Brand Mark -->
             <div class="md:hidden flex items-center gap-1.5 shrink-0">
                 <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15,55 C15,75 45,85 75,60" stroke="#FF5F3F" stroke-width="5" stroke-linecap="round" fill="none"/>
@@ -162,7 +157,6 @@
                 </button>
             </div>
 
-            <!-- Mobile Add Listing Trigger -->
             <button onclick="openSellModal()" class="md:hidden bg-brand-orangeRed hover:bg-brand-orangeDark text-white p-2.5 rounded-xl shadow-lg shadow-brand-orangeRed/30 shrink-0">
                 <i class="fa-solid fa-plus-circle text-lg"></i>
             </button>
@@ -195,7 +189,6 @@
                     </div>
                 </div>
 
-                <!-- FLASH SALE COUNTDOWN (embedded overlay) -->
                 <div class="absolute top-6 right-6 hidden lg:flex flex-col items-center bg-brand-navyDark/95 border border-brand-orangeRed/30 p-4 rounded-xl text-center">
                     <span class="text-[10px] font-bold text-brand-orangeRed uppercase tracking-wider mb-1"><i class="fa-solid fa-bolt"></i> Flash Sale Selesai Dalam</span>
                     <div id="flashSaleTimer" class="font-mono text-xl font-black text-white tracking-widest">01:24:15</div>
@@ -213,15 +206,10 @@
                 <span class="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100/60 text-slate-700 flex items-center gap-1 text-[11px]"><i class="fa-solid fa-shipping-fast text-blue-500"></i> J&T Global</span>
             </div>
 
-            <!-- TABS & VIEWS AREA -->
-            
             <!-- MARKETPLACE (Home) TAB Content -->
             <div id="tabContentHome" class="space-y-6">
                 
-                <!-- CATEGORIES AND FILTER PANELS -->
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm" id="catalog">
-                    
-                    <!-- RUTE / COUNTRY FILTER PILLS -->
                     <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-2 lg:pb-0 text-xs">
                         <span class="text-slate-400 font-extrabold uppercase text-[9px] shrink-0 mr-1.5">Filter Negara:</span>
                         <button onclick="setCountryFilter('ALL')" id="filter-country-ALL" class="country-pill active bg-brand-navy text-white font-bold px-3 py-1.5 rounded-lg transition shrink-0">
@@ -250,7 +238,6 @@
                         </button>
                     </div>
 
-                    <!-- SORTING DROPDOWN -->
                     <div class="flex items-center justify-between lg:justify-end gap-3 text-xs shrink-0 border-t lg:border-t-0 pt-2 lg:pt-0">
                         <span class="text-slate-400 font-bold uppercase text-[9px]">Urutkan:</span>
                         <select id="sortSelect" onchange="filterProducts()" class="bg-slate-50 text-slate-700 border border-slate-200 font-semibold py-1.5 px-3 rounded-lg outline-none focus:border-brand-navy cursor-pointer">
@@ -263,12 +250,9 @@
 
                 </div>
 
-                <!-- PRODUCT GRID -->
                 <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <!-- Dynamic product cards render here -->
                 </div>
 
-                <!-- EMPTY STATE -->
                 <div id="emptyCatalogState" class="hidden text-center py-16 bg-white rounded-xl border border-slate-200/60 space-y-3">
                     <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
                         <i class="fa-solid fa-box-open"></i>
@@ -288,7 +272,6 @@
                     <p class="text-xs text-slate-400 mb-6">Lacak perjalanan pengiriman jastip dan kurir antarnegara Anda secara langsung.</p>
 
                     <div id="ordersList" class="space-y-4">
-                        <!-- Dynamic orders are rendered here -->
                     </div>
                 </div>
             </div>
@@ -308,7 +291,6 @@
                         </button>
                     </div>
 
-                    <!-- Stats Card -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
                             <span class="text-[9px] font-black uppercase text-slate-400 block tracking-wider">Total Barang Ditawarkan</span>
@@ -325,7 +307,6 @@
                     </div>
 
                     <div id="myListingsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Dynamic seller items go here -->
                     </div>
                 </div>
             </div>
@@ -365,7 +346,7 @@
 
     </div>
 
-    <!-- MODAL: LOGIN / REGISTER (Auth) -->
+    <!-- MODAL: LOGIN / REGISTER -->
     <div id="authModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
         <div class="bg-white border border-slate-100 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
             <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
@@ -426,7 +407,7 @@
         </div>
     </div>
 
-    <!-- MODAL: BUKA LAPAK / TITIP JUAL BARANG -->
+    <!-- MODAL: BUKA LAPAK -->
     <div id="sellModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
         <div class="bg-white border border-slate-100 rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl relative my-8">
             <button onclick="closeSellModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
@@ -487,7 +468,6 @@
                     </div>
                 </div>
 
-                <!-- LIVE ESTIMATOR CALCULATOR -->
                 <div class="bg-slate-50 border border-slate-200/60 p-3 rounded-xl space-y-2">
                     <div class="flex justify-between text-slate-400">
                         <span>Harga Kotor Barang</span>
@@ -526,14 +506,13 @@
         </div>
     </div>
 
-    <!-- MODAL: DETIL BARANG (Quick View) -->
+    <!-- MODAL: DETIL BARANG -->
     <div id="productModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
         <div class="bg-white border border-slate-100 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative my-8" id="productModalBody">
-            <!-- Populated dynamically via Script -->
         </div>
     </div>
 
-    <!-- WISHLIST/CART DRAWER (Right Slidin) -->
+    <!-- CART DRAWER -->
     <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white border-l border-slate-100 shadow-2xl transform translate-x-full transition duration-300 ease-in-out flex flex-col">
         <div class="p-4 border-b border-slate-200 flex items-center justify-between">
             <h3 class="font-extrabold text-brand-navy flex items-center gap-2">
@@ -543,7 +522,6 @@
         </div>
 
         <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
-            <!-- Populated dynamically -->
         </div>
 
         <div class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 text-xs">
@@ -577,7 +555,7 @@
         </div>
     </div>
 
-    <!-- MODAL: CHECKOUT & MULTI-METODE PEMBAYARAN -->
+    <!-- MODAL: CHECKOUT -->
     <div id="checkoutModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
         <div class="bg-white border border-slate-100 rounded-2xl max-w-3xl w-full p-6 space-y-4 shadow-2xl relative my-8">
             <button onclick="closeCheckoutModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
@@ -590,8 +568,6 @@
             </div>
 
             <form onsubmit="handleProcessOrder(event)" class="space-y-4 text-xs">
-                
-                <!-- DESTINATION Form -->
                 <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
                     <h4 class="font-extrabold text-brand-navy flex items-center gap-1.5 text-xs">
                         <i class="fa-solid fa-location-dot text-brand-orangeRed"></i> Alamat Pengiriman
@@ -617,7 +593,6 @@
                     <textarea id="shipAddress" required rows="2" placeholder="Masukkan alamat lengkap (Jalan, No. Rumah, Kecamatan, Kota)" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800"></textarea>
                 </div>
 
-                <!-- CARRIER GATEWAY -->
                 <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
                     <h4 class="font-extrabold text-brand-navy flex items-center gap-1.5 text-xs">
                         <i class="fa-solid fa-truck-fast text-brand-orangeRed"></i> Pilihan Ekspedisi Kurir Aliansi
@@ -632,13 +607,11 @@
                     </select>
                 </div>
 
-                <!-- ALL WORLD PAYMENT METHODS -->
                 <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
                     <h4 class="font-extrabold text-brand-navy flex items-center gap-1.5 text-xs">
                         <i class="fa-solid fa-wallet text-brand-orangeRed"></i> Metode Pembayaran Global & Lokal
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px]">
-                        
                         <label class="flex items-center gap-2.5 p-2.5 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-slate-300">
                             <input type="radio" name="paymentMethod" value="CARDS" checked class="text-brand-orangeRed">
                             <div>
@@ -670,11 +643,9 @@
                                 <span class="text-slate-400 text-[10px] block">Sistem Escrow JT ID Aman</span>
                             </div>
                         </label>
-
                     </div>
                 </div>
 
-                <!-- FINALS SUMMARY -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 space-y-1.5">
                     <div class="flex justify-between text-slate-400">
                         <span>Harga Belanjaan</span>
@@ -701,11 +672,21 @@
         </div>
     </div>
 
-    <!-- TOAST/NOTIFIKASI BANNER -->
+    <!-- TOAST NOTIFIKASI BANNER -->
     <div id="toastContainer" class="fixed bottom-20 md:bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
     <!-- MAIN JAVASCRIPT APPLICATION -->
     <script>
+        // ==========================================
+        // KONFIGURASI SUPABASE CLOUD (SUDAH TERHUBUNG)
+        // ==========================================
+        const SUPABASE_URL = "https://mijuxsfstrfqwdlaquvn.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_key_kamu_di_sini"; 
+        
+        const _supabase = (typeof supabase !== 'undefined')
+            ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
+            : null;
+
         // GLOBALS CURRENCY Engine
         const CURRENCIES = {
             IDR: { symbol: 'Rp ', rate: 15800, flag: '🇮🇩', name: 'Indonesian Rupiah' },
@@ -851,7 +832,6 @@
             startCountdown();
         });
 
-        // POPULATE CURRENCY options
         function initCurrenciesSelector() {
             const selector = document.getElementById('currencySelector');
             selector.innerHTML = Object.keys(CURRENCIES).map(code => {
@@ -869,7 +849,6 @@
             showToast(`Mata uang diubah ke ${CURRENCIES[code].name} (${code})`, 'success');
         }
 
-        // FORMAT CURRENCY HELPER
         function formatMoney(amountUSD) {
             const curr = CURRENCIES[currentCurrency] || CURRENCIES.IDR;
             const converted = amountUSD * curr.rate;
@@ -883,7 +862,6 @@
             }
         }
 
-        // LOCAL STORAGE FALLBACK PERSISTENCE
         function loadState() {
             const savedProds = localStorage.getItem('jt_id_products');
             products = savedProds ? JSON.parse(savedProds) : INITIAL_PRODUCTS;
@@ -905,7 +883,6 @@
             localStorage.setItem('jt_id_user', JSON.stringify(currentUser));
         }
 
-        // INTERACTIVE CATALOG RENDER
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             const empty = document.getElementById('emptyCatalogState');
@@ -931,15 +908,11 @@
             grid.innerHTML = filtered.map(p => `
                 <div class="bg-white border border-slate-200/60 hover:border-brand-orangeRed/40 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between group">
                     <div>
-                        <!-- IMAGE CAROUSEL PORT -->
                         <div class="relative h-44 overflow-hidden bg-slate-50 border-b border-slate-100">
                             <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            
-                            <!-- Origin tag badge -->
                             <div class="absolute top-2.5 left-2.5 bg-brand-navy/90 backdrop-blur-sm px-2 py-1 rounded-lg border border-slate-700/50 text-[10px] font-extrabold text-white flex items-center gap-1.5 shadow">
                                 <span>${p.originFlag}</span> <span>${p.originName}</span>
                             </div>
-                            <!-- Category stamp badge -->
                             <div class="absolute bottom-2.5 right-2.5 bg-brand-orangeRed text-white text-[9px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
                                 ${p.category}
                             </div>
@@ -948,7 +921,6 @@
                             </div>
                         </div>
 
-                        <!-- TEXTS DETAILS -->
                         <div class="p-4 space-y-2">
                             <h3 class="font-extrabold text-brand-navy text-xs sm:text-sm line-clamp-2 leading-snug hover:text-brand-orangeRed transition">${p.title}</h3>
                             <div class="flex items-center gap-1.5 text-[10px] text-slate-400 font-medium">
@@ -961,7 +933,6 @@
                         </div>
                     </div>
 
-                    <!-- BOTTOM BUY CONTROLS -->
                     <div class="p-4 pt-0 border-t border-slate-100/60 mt-3 flex items-center justify-between gap-2">
                         <div>
                             <span class="text-[8px] text-slate-400 uppercase font-black block">HARGA JUAL</span>
@@ -998,7 +969,6 @@
             renderProducts();
         }
 
-        // CART LOGICS
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
@@ -1088,7 +1058,7 @@
         function applyVoucher() {
             const code = document.getElementById('voucherInput').value.trim().toUpperCase();
             if (code === 'JTID2026' || code === 'BEBASONGKIR') {
-                discountRate = 0.15; // apply 15% discount
+                discountRate = 0.15;
                 showToast('Kupon voucher 15% berhasil digunakan!', 'success');
             } else {
                 discountRate = 0;
@@ -1097,7 +1067,6 @@
             updateCartTotals();
         }
 
-        // CHECKOUT & GATEWAYS
         function openCheckoutModal() {
             if (cart.length === 0) {
                 showToast('Keranjang Anda kosong! Tambahkan barang jastip dahulu.', 'error');
@@ -1158,7 +1127,6 @@
             showToast(`Selesai! Pesanan #${orderId} telah diproses. Resi Tracking: ${trackingNum}`, 'success');
         }
 
-        // ADD LISTING Form Logic
         function openSellModal() {
             document.getElementById('sellModal').classList.remove('hidden');
             calculateSellerPayout();
@@ -1220,7 +1188,6 @@
             showToast('Barang jastip Anda berhasil dipublikasikan gratis!', 'success');
         }
 
-        // RENDER MY LISTINGS
         function renderMyListings() {
             const container = document.getElementById('myListingsContainer');
             const myProds = products.filter(p => p.sellerId === currentUser.id);
@@ -1256,7 +1223,6 @@
             showToast('Barang tawaran berhasil dihapus', 'success');
         }
 
-        // TRACK ORDERS LOGICS
         function renderOrders() {
             const container = document.getElementById('ordersList');
             document.getElementById('activeOrdersBadge').innerText = orders.length;
@@ -1311,7 +1277,6 @@
             }
         }
 
-        // TABS SWITCHER
         function switchTab(tabName) {
             document.querySelectorAll('.sidebar-item').forEach(el => {
                 el.classList.remove('active', 'text-brand-orangeRed');
@@ -1345,7 +1310,6 @@
             }
         }
 
-        // AUTH & PROFILE SIGN INS
         function renderUserNav() {
             document.getElementById('userSidebarName').innerText = currentUser.name;
         }
@@ -1384,7 +1348,6 @@
             showToast(`Masuk sebagai ${currentUser.name}`, 'success');
         }
 
-        // DETAIL SCREEN QUICK VIEW
         function openProductDetail(id) {
             const p = products.find(prod => prod.id === id);
             if (!p) return;
@@ -1431,7 +1394,6 @@
             document.getElementById('productModal').classList.add('hidden');
         }
 
-        // COUNTDOWN TIMER
         function startCountdown() {
             setInterval(() => {
                 const timerEl = document.getElementById('flashSaleTimer');
@@ -1445,7 +1407,6 @@
             }, 1000);
         }
 
-        // TOAST NOTIFIER HELPER
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
