@@ -454,12 +454,21 @@
             <h3 class="text-base font-extrabold text-brand-navy border-b border-slate-100 pb-3">Checkout & Pengiriman Global</h3>
             <form onsubmit="handleProcessOrder(event)" class="space-y-4 text-xs">
                 <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                    <h4 class="font-extrabold text-brand-navy">Alamat Penerima</h4>
+                    <h4 class="font-extrabold text-brand-navy">Informasi Penerima & Kontak</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <input type="text" id="shipName" required placeholder="Nama Lengkap" class="bg-white border border-slate-200 rounded-lg px-3 py-2">
-                        <input type="tel" id="shipPhone" required placeholder="No HP" class="bg-white border border-slate-200 rounded-lg px-3 py-2">
+                        <div>
+                            <label class="block font-bold text-slate-500 mb-1">Nama Lengkap</label>
+                            <input type="text" id="shipName" required placeholder="Nama penerima" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-500 mb-1">Nomor WhatsApp / HP</label>
+                            <input type="tel" id="shipPhone" required placeholder="Contoh: 081234567890" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5">
+                        </div>
                     </div>
-                    <textarea id="shipAddress" required rows="2" placeholder="Alamat lengkap tujuan pengiriman" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2"></textarea>
+                    <div>
+                        <label class="block font-bold text-slate-500 mb-1">Alamat Lengkap Pengiriman</label>
+                        <textarea id="shipAddress" required rows="2" placeholder="Nama jalan, nomor rumah, kecamatan, kota, kode pos" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5"></textarea>
+                    </div>
                 </div>
                 <button type="submit" class="w-full bg-brand-orangeRed text-white font-extrabold py-3.5 rounded-xl shadow-lg">Selesaikan Transaksi</button>
             </form>
@@ -811,9 +820,11 @@
         function handleProcessOrder(e) {
             e.preventDefault();
             const orderId = 'JTID-' + Math.floor(100000 + Math.random() * 900000);
+            const phone = document.getElementById('shipPhone').value;
             const newOrder = {
                 id: orderId,
                 date: new Date().toLocaleDateString('id-ID'),
+                phone: phone,
                 items: [...cart],
                 status: 'Diproses',
                 trackingNumber: 'DHL-' + Math.floor(100000000 + Math.random() * 900000000),
@@ -947,6 +958,7 @@
                             <span class="font-extrabold text-brand-navy">Order: ${o.id}</span>
                             <span class="bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">${o.status}</span>
                         </div>
+                        <div class="text-slate-500 font-medium">No. WhatsApp/HP: <strong class="text-slate-700">${o.phone || '-'}</strong></div>
                         <div class="font-bold text-brand-orangeRed">Total: ${formatMoney(o.totalUSD)}</div>
                     </div>
                 `).join('');
