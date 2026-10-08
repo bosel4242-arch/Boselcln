@@ -23,8 +23,12 @@
                             navyDark: '#0E1F38',
                             orangeRed: '#FF5F3F',
                             orangeDark: '#E0482B',
-                            slateBg: '#F4F6F9',
+                            slateBg: '#EEF2F7',
                         }
+                    },
+                    boxShadow: {
+                        '3d': '0 10px 25px -5px rgba(27, 54, 93, 0.15), 0 8px 10px -6px rgba(27, 54, 93, 0.1)',
+                        '3d-hover': '0 20px 35px -5px rgba(255, 95, 63, 0.25), 0 10px 15px -5px rgba(27, 54, 93, 0.1)',
                     }
                 }
             }
@@ -34,16 +38,27 @@
         .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .sidebar-item.active { background-color: rgba(255, 95, 63, 0.1); color: #FF5F3F; border-left: 4px solid #FF5F3F; }
+        .sidebar-item.active { background: linear-gradient(135deg, rgba(255,95,63,0.15) 0%, rgba(255,95,63,0.05) 100%); color: #FF5F3F; border-left: 4px solid #FF5F3F; }
+        .card-3d { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(0); }
+        .card-3d:hover { transform: translateY(-6px); }
+        
+        /* Style Logo Kurir & Bank Realistik */
+        .badge-jne { background: #CC0000; color: #FFFFFF; font-weight: 900; }
+        .badge-jnt { background: #FF3333; color: #FFFFFF; font-weight: 900; }
+        .badge-sicepat { background: #FF6600; color: #FFFFFF; font-weight: 900; }
+        .badge-bca { background: #0060AF; color: #FFFFFF; font-weight: 900; }
+        .badge-mandiri { background: #FFB500; color: #003366; font-weight: 900; }
+        .badge-bri { background: #00529C; color: #FFFFFF; font-weight: 900; }
+        .badge-bni { background: #F15A22; color: #FFFFFF; font-weight: 900; }
     </style>
 </head>
 <body class="bg-brand-slateBg text-slate-800 font-sans antialiased min-h-screen flex flex-col md:flex-row selection:bg-brand-orangeRed selection:text-white">
 
     <!-- SIDEBAR NAV -->
-    <aside class="fixed md:sticky bottom-0 md:top-0 left-0 z-40 w-full md:w-64 h-16 md:h-screen bg-brand-navy text-white flex flex-row md:flex-col justify-between md:justify-start border-t md:border-t-0 md:border-r border-slate-700/30 shrink-0 md:py-6">
+    <aside class="fixed md:sticky bottom-0 md:top-0 left-0 z-40 w-full md:w-64 h-16 md:h-screen bg-brand-navy text-white flex flex-row md:flex-col justify-between md:justify-start border-t md:border-t-0 md:border-r border-slate-700/40 shrink-0 md:py-6 shadow-2xl">
         
         <div class="hidden md:flex items-center justify-center px-6 mb-8">
-            <svg class="w-12 h-12" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-12 h-12 drop-shadow-[0_5px_5px_rgba(255,95,63,0.4)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M30,35 L45,35 L85,35 C90,35 95,38 90,43 L80,50 L30,50 Z" fill="#FF5F3F"/>
                 <path d="M32,28 L40,28 L35,42 L27,42 Z" fill="#FF5F3F"/>
                 <path d="M82,38 L87,41 L82,44 Z" fill="#0E1F38"/>
@@ -60,7 +75,7 @@
             <button onclick="switchTab('orders')" id="tab-orders" class="sidebar-item w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-slate-400 hover:text-white transition">
                 <div class="relative">
                     <i class="fa-solid fa-box text-base"></i>
-                    <span id="activeOrdersBadge" class="hidden absolute -top-1.5 -right-2 bg-brand-orangeRed text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                    <span id="activeOrdersBadge" class="hidden absolute -top-1.5 -right-2 bg-brand-orangeRed text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-md">0</span>
                 </div>
                 <span class="text-[10px] md:text-xs tracking-wide">Pesanan Saya</span>
             </button>
@@ -71,7 +86,7 @@
             <button onclick="toggleCartDrawer()" class="sidebar-item w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-slate-400 hover:text-white transition">
                 <div class="relative">
                     <i class="fa-solid fa-cart-shopping text-base"></i>
-                    <span id="cartBadge" class="absolute -top-1.5 -right-2 bg-brand-orangeRed text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                    <span id="cartBadge" class="absolute -top-1.5 -right-2 bg-brand-orangeRed text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-md">0</span>
                 </div>
                 <span class="text-[10px] md:text-xs tracking-wide">Keranjang</span>
             </button>
@@ -82,7 +97,7 @@
         </nav>
 
         <div class="hidden md:block px-6 mt-auto">
-            <button onclick="openSellModal()" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+            <button onclick="openSellModal()" class="w-full bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark hover:from-brand-orangeDark hover:to-brand-orangeRed text-white font-bold text-xs py-3.5 rounded-xl shadow-[0_6px_20px_rgba(255,95,63,0.4)] transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-plus-circle"></i>
                 <span>Tambah Penawaran</span>
             </button>
@@ -92,21 +107,21 @@
     <!-- CONTENT WRAPPER -->
     <div class="flex-1 flex flex-col md:pl-0 pb-16 md:pb-0 overflow-x-hidden min-h-screen">
 
-        <div class="bg-brand-navyDark text-xs py-2.5 px-4 md:px-8 border-b border-slate-700/20 text-slate-300 flex items-center justify-between z-30">
+        <div class="bg-brand-navyDark text-xs py-2.5 px-4 md:px-8 border-b border-slate-700/20 text-slate-300 flex items-center justify-between z-30 shadow-inner">
             <div class="flex items-center gap-2 text-slate-300 text-[11px] font-medium">
-                <i class="fa-solid fa-location-dot text-brand-orangeRed"></i>
+                <i class="fa-solid fa-location-dot text-brand-orangeRed animate-bounce"></i>
                 <span>Dikirim ke <strong class="text-white">Jakarta Barat, IDN</strong></span>
             </div>
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-1">
                     <span class="text-[10px] text-slate-400">Mata Uang Transaksi:</span>
-                    <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-slate-800 text-brand-orangeRed text-[11px] font-bold py-1 px-2.5 rounded-lg border border-slate-700 cursor-pointer focus:outline-none">
+                    <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-slate-800 text-brand-orangeRed text-[11px] font-bold py-1 px-2.5 rounded-lg border border-slate-700 cursor-pointer focus:outline-none shadow-sm">
                     </select>
                 </div>
             </div>
         </div>
 
-        <header class="bg-white py-4 px-4 md:px-8 shadow-sm border-b border-slate-100 flex items-center justify-between gap-4 sticky top-0 z-30">
+        <header class="bg-white/90 backdrop-blur-md py-4 px-4 md:px-8 shadow-md border-b border-slate-200/80 flex items-center justify-between gap-4 sticky top-0 z-30">
             <div class="md:hidden flex items-center shrink-0">
                 <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M30,35 L45,35 L85,35 C90,35 95,38 90,43 L80,50 L30,50 Z" fill="#FF5F3F"/>
@@ -117,44 +132,46 @@
                 </svg>
             </div>
 
-            <div class="flex-1 max-w-2xl mx-auto flex items-center bg-slate-100 rounded-xl border border-slate-200/80 overflow-hidden">
+            <div class="flex-1 max-w-2xl mx-auto flex items-center bg-slate-100 rounded-2xl border border-slate-300/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)] overflow-hidden">
                 <div class="flex items-center justify-center pl-3">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm"></i>
                 </div>
                 <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Cari barang impor atau lokal..." class="w-full bg-transparent border-0 py-2.5 px-3 text-slate-700 placeholder-slate-400 focus:ring-0 outline-none text-xs">
-                <button class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white text-xs font-bold px-5 py-2.5 h-full transition shadow">
+                <button class="bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark hover:from-brand-orangeDark hover:to-brand-orangeRed text-white text-xs font-bold px-5 py-2.5 h-full transition shadow">
                     Cari
                 </button>
             </div>
 
-            <button onclick="openSellModal()" class="md:hidden bg-brand-orangeRed hover:bg-brand-orangeDark text-white p-2.5 rounded-xl shadow-lg shrink-0">
+            <button onclick="openSellModal()" class="md:hidden bg-brand-orangeRed text-white p-2.5 rounded-xl shadow-lg shrink-0">
                 <i class="fa-solid fa-plus-circle text-lg"></i>
             </button>
         </header>
 
         <main class="flex-grow p-4 md:p-8 space-y-6">
 
-            <!-- HERO BANNER + CTA & BUKTI SOSIAL -->
-            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-navy via-slate-900 to-brand-navy text-white p-6 md:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-orangeRed/10 rounded-full blur-3xl"></div>
-                <div class="relative z-10 max-w-xl space-y-3">
-                    <div class="inline-flex items-center gap-1.5 bg-brand-orangeRed/25 border border-brand-orangeRed/30 text-brand-orangeRed text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+            <!-- 3D HERO BANNER -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-navy via-slate-900 to-brand-navyDark text-white p-6 md:p-10 shadow-[0_20px_50px_rgba(27,54,93,0.3)] border border-slate-700/50 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-brand-orangeRed/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-10 -top-10 w-60 h-60 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 max-w-xl space-y-4">
+                    <div class="inline-flex items-center gap-1.5 bg-brand-orangeRed/20 border border-brand-orangeRed/40 text-brand-orangeRed text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
                         <i class="fa-solid fa-globe"></i> Global Multi-Currency JasTip
                     </div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
+                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight drop-shadow-md">
                         Marketplace Belanja & Titip Lintas <span class="text-brand-orangeRed">195+ Negara</span>
                     </h1>
-                    <p class="text-slate-300 text-xs leading-relaxed">
-                        Semua transaksi otomatis dikonversi secara real-time ke mata uang pilihan Anda. Nikmati kemudahan berbelanja dan pasang iklan gratis.
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        Semua transaksi otomatis dikonversi secara real-time ke mata uang pilihan Anda dengan sistem pengamanan escrow terbaik.
                     </p>
                     <div class="pt-2">
-                        <a href="#catalog" class="inline-flex items-center gap-2 bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold text-xs px-6 py-3.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
-                            <i class="fa-solid fa-rocket"></i> Titip & Belanja Sekarang
+                        <a href="#catalog" class="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark hover:from-brand-orangeDark hover:to-brand-orangeRed text-white font-extrabold text-xs px-7 py-4 rounded-2xl shadow-[0_8px_20px_rgba(255,95,63,0.5)] transition transform hover:-translate-y-1 active:translate-y-0.5">
+                            <i class="fa-solid fa-rocket text-sm"></i> Titip & Belanja Sekarang
                         </a>
                     </div>
                 </div>
 
-                <div class="relative z-10 w-full md:w-auto bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 space-y-3 shrink-0 max-w-xs">
+                <div class="relative z-10 w-full md:w-auto bg-white/10 backdrop-blur-xl p-5 rounded-3xl border border-white/20 shadow-[0_15px_30px_rgba(0,0,0,0.3)] space-y-3 shrink-0 max-w-xs transform md:rotate-2 hover:rotate-0 transition duration-300">
                     <div class="flex items-center gap-1 text-amber-400 text-xs">
                         <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         <span class="text-white font-bold text-[11px] ml-1">4.9 / 5.0</span>
@@ -167,10 +184,10 @@
             </div>
 
             <!-- SLOT KOTAK IKLAN / BANNER SPONSOR -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 text-center shadow-sm">
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-4 text-center shadow-3d">
                 <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">- Ruang Iklan / Sponsor -</span>
-                <div class="bg-slate-50 border border-dashed border-slate-300 rounded-xl py-6 px-4 flex flex-col items-center justify-center text-slate-400 text-xs gap-1">
-                    <i class="fa-solid fa-rectangle-ad text-brand-orangeRed text-xl mb-1"></i>
+                <div class="bg-gradient-to-b from-slate-50 to-slate-100 border border-dashed border-slate-300 rounded-2xl py-6 px-4 flex flex-col items-center justify-center text-slate-400 text-xs gap-1 shadow-inner">
+                    <i class="fa-solid fa-rectangle-ad text-brand-orangeRed text-2xl mb-1 drop-shadow"></i>
                     <span class="font-bold text-slate-700">Tempat Banner Iklan / Google AdSense</span>
                     <span class="text-[10px] text-slate-400">Tempel kode script iklan Anda di bagian ini nanti.</span>
                 </div>
@@ -178,21 +195,21 @@
 
             <!-- PASAR GLOBAL TAB -->
             <div id="tabContentHome" class="space-y-6">
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm" id="catalog">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-3d" id="catalog">
                     <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-2 lg:pb-0 text-xs">
                         <span class="text-slate-400 font-extrabold uppercase text-[9px] shrink-0 mr-1.5">Filter Negara:</span>
-                        <button onclick="setCountryFilter('ALL')" id="filter-country-ALL" class="country-pill active bg-brand-navy text-white font-bold px-3 py-1.5 rounded-lg transition shrink-0">🌏 Semua</button>
-                        <button onclick="setCountryFilter('JP')" id="filter-country-JP" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇯🇵 Jepang</button>
-                        <button onclick="setCountryFilter('KR')" id="filter-country-KR" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇰🇷 Korea</button>
-                        <button onclick="setCountryFilter('US')" id="filter-country-US" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇺🇸 Amerika</button>
-                        <button onclick="setCountryFilter('SG')" id="filter-country-SG" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇸🇬 Singapura</button>
-                        <button onclick="setCountryFilter('ID')" id="filter-country-ID" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇮🇩 Indonesia</button>
-                        <button onclick="setCountryFilter('GLOBAL')" id="filter-country-GLOBAL" class="country-pill bg-slate-50 text-slate-600 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🌍 Lainnya</button>
+                        <button onclick="setCountryFilter('ALL')" id="filter-country-ALL" class="country-pill active bg-brand-navy text-white font-bold px-3.5 py-2 rounded-xl transition shrink-0 shadow-md">🌏 Semua</button>
+                        <button onclick="setCountryFilter('JP')" id="filter-country-JP" class="country-pill bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3.5 py-2 rounded-xl transition shrink-0">🇯🇵 Jepang</button>
+                        <button onclick="setCountryFilter('KR')" id="filter-country-KR" class="country-pill bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3.5 py-2 rounded-xl transition shrink-0">🇰🇷 Korea</button>
+                        <button onclick="setCountryFilter('US')" id="filter-country-US" class="country-pill bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3.5 py-2 rounded-xl transition shrink-0">🇺🇸 Amerika</button>
+                        <button onclick="setCountryFilter('SG')" id="filter-country-SG" class="country-pill bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3.5 py-2 rounded-xl transition shrink-0">🇸🇬 Singapura</button>
+                        <button onclick="setCountryFilter('ID')" id="filter-country-ID" class="country-pill bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3.5 py-2 rounded-xl transition shrink-0">🇮🇩 Indonesia</button>
+                        <button onclick="setCountryFilter('GLOBAL')" id="filter-country-GLOBAL" class="country-pill bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3.5 py-2 rounded-xl transition shrink-0">🌍 Lainnya</button>
                     </div>
 
                     <div class="flex items-center justify-between lg:justify-end gap-3 text-xs shrink-0 border-t lg:border-t-0 pt-2 lg:pt-0">
                         <span class="text-slate-400 font-bold uppercase text-[9px]">Urutkan:</span>
-                        <select id="sortSelect" onchange="filterProducts()" class="bg-slate-50 text-slate-700 border border-slate-200 font-semibold py-1.5 px-3 rounded-lg outline-none">
+                        <select id="sortSelect" onchange="filterProducts()" class="bg-slate-100 text-slate-700 border border-slate-200 font-semibold py-2 px-3 rounded-xl outline-none shadow-sm cursor-pointer">
                             <option value="newest">Paling Baru</option>
                             <option value="price-low">Harga Terendah</option>
                             <option value="price-high">Harga Tertinggi</option>
@@ -202,30 +219,30 @@
 
                 <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
 
-                <div id="emptyCatalogState" class="text-center py-16 bg-white rounded-xl border border-slate-200/60 space-y-3">
-                    <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
+                <div id="emptyCatalogState" class="text-center py-16 bg-white rounded-3xl border border-slate-200/80 shadow-3d space-y-3">
+                    <div class="w-16 h-16 bg-brand-orangeRed/10 text-brand-orangeRed rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
                         <i class="fa-solid fa-box-open"></i>
                     </div>
                     <h3 class="text-base font-bold text-slate-700">Belum Ada Barang Jastip / Iklan</h3>
                     <p class="text-xs text-slate-400">Jadilah yang pertama menambahkan penawaran jastip atau produk jualan Anda di sini!</p>
-                    <button onclick="openSellModal()" class="mt-2 bg-brand-orangeRed text-white text-xs font-bold px-4 py-2 rounded-xl shadow">Tambah Penawaran</button>
+                    <button onclick="openSellModal()" class="mt-2 bg-brand-orangeRed text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-lg">Tambah Penawaran</button>
                 </div>
             </div>
 
             <!-- PESANAN SAYA TAB -->
             <div id="tabContentOrders" class="hidden space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-3d">
                     <h2 class="text-base font-extrabold text-brand-navy flex items-center gap-2 mb-1">
                         <i class="fa-solid fa-truck-ramp-box text-brand-orangeRed"></i> Riwayat & Status Pesanan Saya
                     </h2>
-                    <p class="text-xs text-slate-400 mb-6">Lacak perjalanan pengiriman jastip Anda.</p>
+                    <p class="text-xs text-slate-400 mb-6">Lacak perjalanan pengiriman jastip Anda secara real-time.</p>
                     <div id="ordersList" class="space-y-4"></div>
                 </div>
             </div>
 
             <!-- LAPAK SAYA TAB -->
             <div id="tabContentMyListings" class="hidden space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-3d">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                         <div>
                             <h2 class="text-base font-extrabold text-brand-navy flex items-center gap-2 mb-1">
@@ -233,21 +250,21 @@
                             </h2>
                             <p class="text-xs text-slate-400">Kelola barang titipan / jualan Anda di sini.</p>
                         </div>
-                        <button onclick="openSellModal()" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg">
+                        <button onclick="openSellModal()" class="bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark text-white font-bold text-xs px-5 py-3 rounded-xl transition shadow-lg flex items-center gap-2">
                             <i class="fa-solid fa-plus-circle"></i> Tambah Lapak Jual Baru
                         </button>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/60 shadow-sm">
                             <span class="text-[9px] font-black uppercase text-slate-400 block tracking-wider">Total Barang Ditawarkan</span>
                             <div id="sellerTotalListings" class="text-2xl font-black text-brand-navy mt-1">0</div>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/60 shadow-sm">
                             <span class="text-[9px] font-black uppercase text-slate-400 block tracking-wider">Pasang Iklan</span>
                             <div class="text-xl font-black text-emerald-500 mt-1">100% GRATIS</div>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/60 shadow-sm">
                             <span class="text-[9px] font-black uppercase text-slate-400 block tracking-wider">Komisi Platform</span>
                             <div class="text-xl font-black text-brand-orangeRed mt-1">5% <span class="text-xs font-normal text-slate-400">(Saat Terjual)</span></div>
                         </div>
@@ -269,8 +286,8 @@
     </div>
 
     <!-- MODAL: LOGIN / REGISTER -->
-    <div id="authModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
-        <div class="bg-white border border-slate-100 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+    <div id="authModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
+        <div class="bg-white border border-slate-100 rounded-3xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
             <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
 
             <div id="authLoggedOutView" class="space-y-4">
@@ -280,11 +297,11 @@
                 </div>
 
                 <div class="space-y-2">
-                    <button onclick="signInWithProvider('google')" class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-2.5 px-4 rounded-xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
+                    <button onclick="signInWithProvider('google')" class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-2xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
                         <i class="fa-brands fa-google text-red-500 text-sm"></i>
                         <span>Lanjutkan dengan Google</span>
                     </button>
-                    <button onclick="signInWithProvider('facebook')" class="w-full bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold py-2.5 px-4 rounded-xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
+                    <button onclick="signInWithProvider('facebook')" class="w-full bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold py-3 px-4 rounded-2xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
                         <i class="fa-brands fa-facebook text-sm"></i>
                         <span>Lanjutkan dengan Facebook</span>
                     </button>
@@ -299,9 +316,9 @@
                 <form onsubmit="sendEmailCode(event)" class="space-y-3 text-xs">
                     <div>
                         <label class="block font-bold text-slate-500 mb-1">Email Anda</label>
-                        <input type="email" id="authEmail" required placeholder="nama@surel.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
+                        <input type="email" id="authEmail" required placeholder="nama@surel.com" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
                     </div>
-                    <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition">
+                    <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
                         Kirim Link Masuk
                     </button>
                 </form>
@@ -316,7 +333,7 @@
                     <h3 id="profileNameDisplay" class="text-base font-extrabold text-brand-navy">Pengguna</h3>
                     <p id="profileEmailDisplay" class="text-xs text-slate-400">email@domain.com</p>
                 </div>
-                <button onclick="handleLogout()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2.5 rounded-xl text-xs transition border border-red-200 flex items-center justify-center gap-2">
+                <button onclick="handleLogout()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 rounded-2xl text-xs transition border border-red-200 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Keluar dari Akun</span>
                 </button>
@@ -325,12 +342,12 @@
     </div>
 
     <!-- MODAL: BUKA LAPAK -->
-    <div id="sellModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
-        <div class="bg-white border border-slate-100 rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl relative my-8">
+    <div id="sellModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
+        <div class="bg-white border border-slate-100 rounded-3xl max-w-xl w-full p-6 space-y-4 shadow-2xl relative my-8">
             <button onclick="closeSellModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
 
             <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
-                <div class="w-10 h-10 bg-brand-orangeRed/10 text-brand-orangeRed rounded-xl flex items-center justify-center text-lg shadow-sm">
+                <div class="w-10 h-10 bg-brand-orangeRed/10 text-brand-orangeRed rounded-2xl flex items-center justify-center text-lg shadow-sm">
                     <i class="fa-solid fa-box-archive"></i>
                 </div>
                 <div>
@@ -342,13 +359,13 @@
             <form onsubmit="handleCreateListing(event)" class="space-y-3.5 text-xs">
                 <div>
                     <label class="block font-bold text-slate-500 mb-1">Nama Produk / Barang JasaTip</label>
-                    <input type="text" id="sellTitle" required placeholder="Mis: Tokyo Banana / Kain Tenun Asli" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-orangeRed">
+                    <input type="text" id="sellTitle" required placeholder="Mis: Tokyo Banana / Kain Tenun Asli" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-orangeRed">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block font-bold text-slate-500 mb-1">Negara Asal Barang</label>
-                        <select id="sellOriginCountry" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
+                        <select id="sellOriginCountry" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-slate-800 focus:outline-none">
                             <option value="ID">🇮🇩 Indonesia</option>
                             <option value="JP">🇯🇵 Jepang</option>
                             <option value="KR">🇰🇷 Korea Selatan</option>
@@ -361,7 +378,7 @@
                     </div>
                     <div>
                         <label class="block font-bold text-slate-500 mb-1">Kategori</label>
-                        <select id="sellCategory" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
+                        <select id="sellCategory" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-slate-800 focus:outline-none">
                             <option value="Makanan & Makanan Ringan">Makanan & Snack</option>
                             <option value="Skincare & Kosmetik">Skincare & Kosmetik</option>
                             <option value="Fashion & Pakaian">Fashion & Pakaian</option>
@@ -375,17 +392,17 @@
                     <div>
                         <label id="sellPriceLabel" class="block font-bold text-slate-500 mb-1">Harga Jual (dalam IDR)</label>
                         <div class="relative">
-                            <span id="sellSymbolPrefix" class="absolute left-3 top-2.5 text-slate-400 font-bold">Rp</span>
-                            <input type="number" id="sellPriceInput" step="any" min="1" required oninput="calculateSellerPayout()" placeholder="100000" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-slate-800 focus:outline-none">
+                            <span id="sellSymbolPrefix" class="absolute left-3.5 top-3 text-slate-400 font-bold">Rp</span>
+                            <input type="number" id="sellPriceInput" step="any" min="1" required oninput="calculateSellerPayout()" placeholder="100000" class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-3.5 py-3 text-slate-800 focus:outline-none">
                         </div>
                     </div>
                     <div>
                         <label class="block font-bold text-slate-500 mb-1">Estimasi Tiba / Dikirim</label>
-                        <input type="date" id="sellDeliveryDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none">
+                        <input type="date" id="sellDeliveryDate" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-slate-800 focus:outline-none">
                     </div>
                 </div>
 
-                <div class="bg-slate-50 border border-slate-200/60 p-3 rounded-xl space-y-2">
+                <div class="bg-slate-50 border border-slate-200/60 p-3.5 rounded-2xl space-y-2 shadow-inner">
                     <div class="flex justify-between text-slate-400">
                         <span>Harga Kotor Barang</span>
                         <span id="calcGross">$0.00</span>
@@ -402,15 +419,15 @@
 
                 <div>
                     <label class="block font-bold text-slate-500 mb-1"><i class="fa-solid fa-camera text-brand-orangeRed"></i> Upload Foto Barang dari Galeri HP</label>
-                    <input type="file" id="sellImageFile" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-slate-700 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-orangeRed file:text-white hover:file:bg-brand-orangeDark cursor-pointer">
+                    <input type="file" id="sellImageFile" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-700 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-orangeRed file:text-white hover:file:bg-brand-orangeDark cursor-pointer">
                 </div>
 
                 <div>
                     <label class="block font-bold text-slate-500 mb-1">Deskripsi & Catatan Barang</label>
-                    <textarea id="sellDescription" rows="2" placeholder="Sebutkan varian, ukuran, rasa, atau detail ketentuan jastip..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none"></textarea>
+                    <textarea id="sellDescription" rows="2" placeholder="Sebutkan varian, ukuran, rasa, atau detail ketentuan jastip..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-2.5 text-slate-800 focus:outline-none"></textarea>
                 </div>
 
-                <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition">
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark hover:from-brand-orangeDark hover:to-brand-orangeRed text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
                     Publikasikan JasaTip Sekarang
                 </button>
             </form>
@@ -418,59 +435,117 @@
     </div>
 
     <!-- MODAL: DETIL BARANG -->
-    <div id="productModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
-        <div class="bg-white border border-slate-100 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative my-8" id="productModalBody"></div>
+    <div id="productModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
+        <div class="bg-white border border-slate-100 rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative my-8" id="productModalBody"></div>
     </div>
 
     <!-- CART DRAWER -->
-    <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white border-l border-slate-100 shadow-2xl transform translate-x-full transition duration-300 ease-in-out flex flex-col">
-        <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white border-l border-slate-200 shadow-2xl transform translate-x-full transition duration-300 ease-in-out flex flex-col">
+        <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
             <h3 class="font-extrabold text-brand-navy flex items-center gap-2">
                 <i class="fa-solid fa-cart-shopping text-brand-orangeRed"></i> Keranjang JasTip Global
             </h3>
             <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar"></div>
-        <div class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 text-xs">
+        <div class="p-4 border-t border-slate-200 bg-slate-50 space-y-3 text-xs shadow-lg">
             <div class="flex gap-2">
-                <input type="text" id="voucherInput" placeholder="KODE VOUCHER (Mis: JTID2026)" class="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800 font-bold uppercase placeholder-slate-400 focus:outline-none">
-                <button onclick="applyVoucher()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold px-3 py-2 rounded-lg">Gunakan</button>
+                <input type="text" id="voucherInput" placeholder="KODE VOUCHER (Mis: JTID2026)" class="flex-1 bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-bold uppercase placeholder-slate-400 focus:outline-none">
+                <button onclick="applyVoucher()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold px-3 py-2.5 rounded-xl">Gunakan</button>
             </div>
             <div class="space-y-1.5 text-slate-500 font-medium">
                 <div class="flex justify-between"><span>Nilai Belanjaan</span><span id="cartSubtotal" class="font-bold text-slate-700">$0.00</span></div>
                 <div class="flex justify-between text-brand-orangeRed"><span>Diskon Voucher</span><span id="cartDiscount">-$0.00</span></div>
                 <div class="border-t border-slate-200 pt-2 flex justify-between font-extrabold text-brand-navy text-sm"><span>Total Keseluruhan</span><span id="cartGrandTotal" class="text-brand-orangeRed">$0.00</span></div>
             </div>
-            <button onclick="openCheckoutModal()" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition">
+            <button onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
                 Lanjutkan Ke Checkout & Pengiriman
             </button>
         </div>
     </div>
 
-    <!-- MODAL: CHECKOUT -->
-    <div id="checkoutModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
-        <div class="bg-white border border-slate-100 rounded-2xl max-w-3xl w-full p-6 space-y-4 shadow-2xl relative my-8">
+    <!-- MODAL: CHECKOUT DENGAN PILIHAN KURIR & KARTU ATM REALISTIK -->
+    <div id="checkoutModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
+        <div class="bg-white border border-slate-100 rounded-3xl max-w-3xl w-full p-6 space-y-4 shadow-2xl relative my-8">
             <button onclick="closeCheckoutModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
             <h3 class="text-base font-extrabold text-brand-navy border-b border-slate-100 pb-3">Checkout & Pengiriman Global</h3>
             <form onsubmit="handleProcessOrder(event)" class="space-y-4 text-xs">
-                <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                    <h4 class="font-extrabold text-brand-navy">Informasi Penerima & Kontak</h4>
+                
+                <!-- Info Kontak & Alamat -->
+                <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                    <h4 class="font-extrabold text-brand-navy">1. Informasi Penerima & WhatsApp</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block font-bold text-slate-500 mb-1">Nama Lengkap</label>
-                            <input type="text" id="shipName" required placeholder="Nama penerima" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5">
+                            <input type="text" id="shipName" required placeholder="Nama penerima" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5">
                         </div>
                         <div>
                             <label class="block font-bold text-slate-500 mb-1">Nomor WhatsApp / HP</label>
-                            <input type="tel" id="shipPhone" required placeholder="Contoh: 081234567890" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5">
+                            <input type="tel" id="shipPhone" required placeholder="Contoh: 081234567890" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5">
                         </div>
                     </div>
                     <div>
                         <label class="block font-bold text-slate-500 mb-1">Alamat Lengkap Pengiriman</label>
-                        <textarea id="shipAddress" required rows="2" placeholder="Nama jalan, nomor rumah, kecamatan, kota, kode pos" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5"></textarea>
+                        <textarea id="shipAddress" required rows="2" placeholder="Nama jalan, nomor rumah, kecamatan, kota, kode pos" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5"></textarea>
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-brand-orangeRed text-white font-extrabold py-3.5 rounded-xl shadow-lg">Selesaikan Transaksi</button>
+
+                <!-- Pilihan Kurir Pengiriman dengan Logo Realistik -->
+                <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                    <h4 class="font-extrabold text-brand-navy">2. Pilih Ekspedisi Pengiriman Lokal / Domestik</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <label class="flex items-center gap-3 p-3 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-brand-orangeRed transition">
+                            <input type="radio" name="courier" value="JNE" checked class="text-brand-orangeRed focus:ring-0">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] badge-jne">JNE</span>
+                                <span class="font-bold text-slate-700">REG / YES</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-brand-orangeRed transition">
+                            <input type="radio" name="courier" value="JNT" class="text-brand-orangeRed focus:ring-0">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] badge-jnt">J&T</span>
+                                <span class="font-bold text-slate-700">Express</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-brand-orangeRed transition">
+                            <input type="radio" name="courier" value="SICEPAT" class="text-brand-orangeRed focus:ring-0">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] badge-sicepat">SI</span>
+                                <span class="font-bold text-slate-700">SiCepat</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pilihan Pembayaran Kartu ATM / Bank dengan Lambang Realistik -->
+                <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                    <h4 class="font-extrabold text-brand-navy">3. Pilih Metode Pembayaran Kartu ATM / Transfer Bank</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <label class="flex flex-col items-center justify-center p-3 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-brand-orangeRed transition text-center gap-1.5">
+                            <input type="radio" name="paymentMethod" value="BCA" checked class="text-brand-orangeRed focus:ring-0">
+                            <span class="px-3 py-1 rounded text-[10px] badge-bca shadow-sm">BCA ATM</span>
+                            <span class="text-[10px] text-slate-500 font-bold">Debit / Virtual</span>
+                        </label>
+                        <label class="flex flex-col items-center justify-center p-3 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-brand-orangeRed transition text-center gap-1.5">
+                            <input type="radio" name="paymentMethod" value="MANDIRI" class="text-brand-orangeRed focus:ring-0">
+                            <span class="px-3 py-1 rounded text-[10px] badge-mandiri shadow-sm">MANDIRI</span>
+                            <span class="text-[10px] text-slate-500 font-bold">Kartu ATM</span>
+                        </label>
+                        <label class="flex flex-col items-center justify-center p-3 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-brand-orangeRed transition text-center gap-1.5">
+                            <input type="radio" name="paymentMethod" value="BRI" class="text-brand-orangeRed focus:ring-0">
+                            <span class="px-3 py-1 rounded text-[10px] badge-bri shadow-sm">BRI BRILink</span>
+                            <span class="text-[10px] text-slate-500 font-bold">ATM / VA</span>
+                        </label>
+                        <label class="flex flex-col items-center justify-center p-3 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-brand-orangeRed transition text-center gap-1.5">
+                            <input type="radio" name="paymentMethod" value="BNI" class="text-brand-orangeRed focus:ring-0">
+                            <span class="px-3 py-1 rounded text-[10px] badge-bni shadow-sm">BNI VA</span>
+                            <span class="text-[10px] text-slate-500 font-bold">TapCash / ATM</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark text-white font-extrabold py-3.5 rounded-2xl shadow-lg">Selesaikan Transaksi</button>
             </form>
         </div>
     </div>
@@ -693,18 +768,18 @@
 
             empty.classList.add('hidden');
             grid.innerHTML = filtered.map(p => `
-                <div class="bg-white border border-slate-200/60 hover:border-brand-orangeRed/40 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between group">
+                <div class="card-3d bg-white border border-slate-200/80 hover:border-brand-orangeRed/50 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.06)] flex flex-col justify-between group">
                     <div>
-                        <div class="relative h-44 overflow-hidden bg-slate-50 border-b border-slate-100">
-                            <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute top-2.5 left-2.5 bg-brand-navy/90 px-2 py-1 rounded-lg text-[10px] font-extrabold text-white flex items-center gap-1.5 shadow">
+                        <div class="relative h-48 overflow-hidden bg-slate-100 border-b border-slate-100">
+                            <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <div class="absolute top-3 left-3 bg-brand-navy/90 backdrop-blur-md px-2.5 py-1 rounded-xl text-[10px] font-extrabold text-white flex items-center gap-1.5 shadow-md">
                                 <span>${p.originFlag}</span> <span>${p.originName}</span>
                             </div>
-                            <div class="absolute bottom-2.5 right-2.5 bg-brand-orangeRed text-white text-[9px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                            <div class="absolute bottom-3 right-3 bg-brand-orangeRed text-white text-[9px] font-extrabold px-3 py-1 rounded-full shadow-md">
                                 ${p.category}
                             </div>
                         </div>
-                        <div class="p-4 space-y-2">
+                        <div class="p-5 space-y-2">
                             <h3 class="font-extrabold text-brand-navy text-xs sm:text-sm line-clamp-2 leading-snug">${p.title}</h3>
                             <div class="flex items-center gap-1.5 text-[10px] text-slate-400 font-medium">
                                 <i class="fa-solid fa-user-check text-slate-400"></i>
@@ -713,14 +788,14 @@
                             <p class="text-[10px] text-slate-500 font-semibold"><i class="fa-solid fa-plane-arrival text-brand-orangeRed"></i> Estimasi Kirim: ${p.deliveryDate}</p>
                         </div>
                     </div>
-                    <div class="p-4 pt-0 border-t border-slate-100/60 mt-3 flex items-center justify-between gap-2">
+                    <div class="p-5 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between gap-2">
                         <div>
                             <span class="text-[8px] text-slate-400 uppercase font-black block">HARGA JUAL</span>
                             <span class="text-sm font-extrabold text-brand-orangeRed">${formatMoney(p.priceUSD)}</span>
                         </div>
-                        <div class="flex items-center gap-1">
-                            <button onclick="openProductDetail('${p.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-extrabold px-3 py-2 rounded-xl">Detil</button>
-                            <button onclick="addToCart('${p.id}')" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white text-[11px] font-extrabold px-3 py-2 rounded-xl shadow-md">+ Keranjang</button>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="openProductDetail('${p.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-extrabold px-3.5 py-2.5 rounded-xl transition">Detil</button>
+                            <button onclick="addToCart('${p.id}')" class="bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark text-white text-[11px] font-extrabold px-3.5 py-2.5 rounded-xl shadow-[0_4px_12px_rgba(255,95,63,0.3)] transition transform hover:-translate-y-0.5">+ Keranjang</button>
                         </div>
                     </div>
                 </div>
@@ -731,9 +806,13 @@
 
         function setCountryFilter(code) {
             activeCountryFilter = code;
-            document.querySelectorAll('.country-pill').forEach(el => el.classList.remove('active', 'bg-brand-navy', 'text-white'));
+            document.querySelectorAll('.country-pill').forEach(el => el.classList.remove('active', 'bg-brand-navy', 'text-white', 'shadow-md'));
+            document.querySelectorAll('.country-pill').forEach(el => el.classList.add('bg-slate-100', 'text-slate-600'));
             const activeBtn = document.getElementById(`filter-country-${code}`);
-            if (activeBtn) activeBtn.classList.add('active', 'bg-brand-navy', 'text-white');
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+                activeBtn.classList.add('active', 'bg-brand-navy', 'text-white', 'shadow-md');
+            }
             renderProducts();
         }
 
@@ -766,13 +845,13 @@
                 container.innerHTML = `<div class="text-center py-12 text-slate-400 text-xs font-semibold">Keranjang kosong</div>`;
             } else {
                 container.innerHTML = cart.map(item => `
-                    <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs shadow-sm">
-                        <img src="${item.imageUrl}" class="w-12 h-12 object-cover rounded-lg">
+                    <div class="flex items-center gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs shadow-sm">
+                        <img src="${item.imageUrl}" class="w-12 h-12 object-cover rounded-xl shadow">
                         <div class="flex-grow min-w-0">
                             <h4 class="font-extrabold text-brand-navy truncate">${item.title}</h4>
                             <p class="text-brand-orangeRed font-extrabold">${formatMoney(item.priceUSD)}</p>
                         </div>
-                        <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-lg border border-slate-200 shrink-0">
+                        <div class="flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border border-slate-200 shrink-0 shadow-sm">
                             <button onclick="updateQty('${item.id}', -1)" class="font-bold">-</button>
                             <span class="font-bold">${item.qty}</span>
                             <button onclick="updateQty('${item.id}', 1)" class="font-bold">+</button>
@@ -821,13 +900,17 @@
             e.preventDefault();
             const orderId = 'JTID-' + Math.floor(100000 + Math.random() * 900000);
             const phone = document.getElementById('shipPhone').value;
+            const courier = document.querySelector('input[name="courier"]:checked').value;
+            const payment = document.querySelector('input[name="paymentMethod"]:checked').value;
+
             const newOrder = {
                 id: orderId,
                 date: new Date().toLocaleDateString('id-ID'),
                 phone: phone,
+                courier: courier,
+                payment: payment,
                 items: [...cart],
                 status: 'Diproses',
-                trackingNumber: 'DHL-' + Math.floor(100000000 + Math.random() * 900000000),
                 totalUSD: cart.reduce((sum, item) => sum + (item.priceUSD * item.qty), 0)
             };
             orders.unshift(newOrder);
@@ -923,13 +1006,13 @@
                 container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400 text-xs">Anda belum memajang produk di lapak.</div>`;
             } else {
                 container.innerHTML = myProds.map(p => `
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center gap-3 text-xs shadow-sm">
-                        <img src="${p.imageUrl}" class="w-12 h-12 object-cover rounded-lg">
+                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 flex items-center gap-3 text-xs shadow-sm">
+                        <img src="${p.imageUrl}" class="w-12 h-12 object-cover rounded-xl shadow">
                         <div class="flex-grow min-w-0">
                             <h4 class="font-extrabold text-brand-navy truncate">${p.title}</h4>
                             <p class="text-brand-orangeRed font-extrabold">${formatMoney(p.priceUSD)}</p>
                         </div>
-                        <button onclick="deleteListing('${p.id}')" class="text-red-500 p-2"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deleteListing('${p.id}')" class="text-red-500 p-2 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 `).join('');
             }
@@ -953,12 +1036,16 @@
                 container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs font-semibold">Belum ada pesanan aktif.</div>`;
             } else {
                 container.innerHTML = orders.map(o => `
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2 text-xs shadow-sm">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2 text-xs shadow-sm">
                         <div class="flex justify-between border-b border-slate-200 pb-2">
                             <span class="font-extrabold text-brand-navy">Order: ${o.id}</span>
-                            <span class="bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">${o.status}</span>
+                            <span class="bg-emerald-100 text-emerald-600 px-2.5 py-1 rounded-full font-bold shadow-sm">${o.status}</span>
                         </div>
-                        <div class="text-slate-500 font-medium">No. WhatsApp/HP: <strong class="text-slate-700">${o.phone || '-'}</strong></div>
+                        <div class="flex justify-between text-slate-500 font-medium">
+                            <span>Kurir: <strong class="text-slate-700">${o.courier || 'JNE'}</strong></span>
+                            <span>Pembayaran: <strong class="text-slate-700">${o.payment || 'BCA'}</strong></span>
+                        </div>
+                        <div class="text-slate-500 font-medium">WhatsApp: <strong class="text-slate-700">${o.phone || '-'}</strong></div>
                         <div class="font-bold text-brand-orangeRed">Total: ${formatMoney(o.totalUSD)}</div>
                     </div>
                 `).join('');
@@ -992,13 +1079,13 @@
             body.innerHTML = `
                 <button onclick="closeProductDetail()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <img src="${p.imageUrl}" class="w-full h-56 md:h-full object-cover rounded-xl">
+                    <img src="${p.imageUrl}" class="w-full h-56 md:h-full object-cover rounded-2xl shadow-lg">
                     <div class="space-y-4 text-xs font-medium">
-                        <span class="bg-brand-orangeRed/10 text-brand-orangeRed font-black px-2 py-1 rounded text-[9px]">${p.category}</span>
+                        <span class="bg-brand-orangeRed/10 text-brand-orangeRed font-black px-2.5 py-1 rounded-lg text-[9px]">${p.category}</span>
                         <h2 class="text-base font-extrabold text-brand-navy">${p.title}</h2>
                         <div class="text-xl font-black text-brand-orangeRed">${formatMoney(p.priceUSD)}</div>
                         <p class="text-slate-500 leading-relaxed">${p.description || 'Tidak ada deskripsi tambahan.'}</p>
-                        <button onclick="addToCart('${p.id}'); closeProductDetail();" class="w-full bg-brand-orangeRed text-white font-extrabold py-3 rounded-xl">Tambah ke Keranjang</button>
+                        <button onclick="addToCart('${p.id}'); closeProductDetail();" class="w-full bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark text-white font-extrabold py-3.5 rounded-2xl shadow-lg">Tambah ke Keranjang</button>
                     </div>
                 </div>
             `;
@@ -1010,10 +1097,10 @@
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            let bg = 'bg-white border-slate-200 text-slate-600';
-            if (type === 'success') bg = 'bg-emerald-50 border-emerald-200 text-emerald-800';
-            else if (type === 'error') bg = 'bg-red-50 border-red-200 text-red-800';
-            toast.className = `flex items-center gap-2 px-4 py-3 rounded-xl border text-xs font-extrabold shadow-xl transition pointer-events-auto ${bg}`;
+            let bg = 'bg-white border-slate-200 text-slate-600 shadow-xl';
+            if (type === 'success') bg = 'bg-emerald-50 border-emerald-200 text-emerald-800 shadow-xl';
+            else if (type === 'error') bg = 'bg-red-50 border-red-200 text-red-800 shadow-xl';
+            toast.className = `flex items-center gap-2 px-4 py-3 rounded-2xl border text-xs font-extrabold transition pointer-events-auto ${bg}`;
             toast.innerHTML = `<span>${message}</span>`;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3500);
