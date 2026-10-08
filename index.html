@@ -1,224 +1,310 @@
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Link YouTube, Facebook, dan TikTok Bosel42.">
-<title>Bosel42 - Link Saya</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
-<style>
-  /* Layout: satu kolom sempit ala layar HP; kepala profil rata kiri, tombol link besar, lalu langkah mendukung */
-  :root {
-    --bg: #eef1f6;
-    --surface: #ffffff;
-    --ink: #101828;
-    --muted: #5b6577;
-    --line: #d9dfea;
-    --accent: #2f5bff;
-    --accent-ink: #ffffff;
-    --fb: #1b6ef3;
-    --yt: #e02b20;
-    --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-    --font-body: "DM Sans", "Segoe UI", system-ui, sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #0c1220;
-      --surface: #151d30;
-      --ink: #eef2fb;
-      --muted: #9aa6bd;
-      --line: #263250;
-      --accent: #7b97ff;
-      --accent-ink: #0c1220;
-      --fb: #5b9bff;
-      --yt: #ff6a5e;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #0c1220;
-    --surface: #151d30;
-    --ink: #eef2fb;
-    --muted: #9aa6bd;
-    --line: #263250;
-    --accent: #7b97ff;
-    --accent-ink: #0c1220;
-    --fb: #5b9bff;
-    --yt: #ff6a5e;
-    color-scheme: dark;
-  }
-
-  * { box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.5;
-    padding-inline: 16px;
-    padding-block: 32px 48px;
-  }
-  .wrap { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
-
-  header { display: flex; flex-direction: column; gap: 14px; }
-  .avatar {
-    width: 72px; height: 72px; border-radius: 22px;
-    background: var(--accent); color: var(--accent-ink);
-    display: grid; place-items: center;
-    font-family: var(--font-display); font-weight: 800; font-size: 30px;
-  }
-  h1 {
-    font-family: var(--font-display); font-weight: 800;
-    font-size: clamp(30px, 8vw, 38px); line-height: 1.05; letter-spacing: -0.02em;
-    margin: 0; text-wrap: balance;
-  }
-  .bio { margin: 0; color: var(--muted); max-width: 40ch; }
-
-  .links { display: flex; flex-direction: column; gap: 12px; }
-  .link {
-    display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 14px;
-    padding: 14px 16px; background: var(--surface);
-    border: 1px solid var(--line); border-radius: 16px;
-    color: inherit; text-decoration: none;
-    transition: transform .15s ease, border-color .15s ease;
-  }
-  .link:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .link:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-  .glyph {
-    width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
-    background: color-mix(in srgb, var(--c) 14%, var(--surface));
-    color: var(--c);
-  }
-  .glyph svg { width: 22px; height: 22px; }
-  .link-title { font-weight: 700; line-height: 1.25; }
-  .link-desc { font-size: 14px; color: var(--muted); line-height: 1.35; }
-  .link-text { min-width: 0; }
-  .arrow { color: var(--muted); font-size: 20px; }
-
-  h2 {
-    font-family: var(--font-display); font-weight: 600; font-size: 20px;
-    letter-spacing: -0.01em; margin: 0 0 12px;
-  }
-  .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: s; }
-  .steps li {
-    counter-increment: s; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; align-items: start;
-    color: var(--ink);
-  }
-  .steps li::before {
-    content: counter(s); width: 28px; height: 28px; border-radius: 50%;
-    display: grid; place-items: center; font-weight: 700; font-size: 14px;
-    border: 1.5px solid var(--accent); color: var(--accent);
-  }
-  .steps span { padding-top: 2px; }
-
-  .share { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-  .btn {
-    font: inherit; font-weight: 700; cursor: pointer;
-    padding: 12px 18px; border-radius: 12px; border: 0;
-    background: var(--accent); color: var(--accent-ink);
-  }
-  .status { color: var(--muted); font-size: 14px; }
-  footer { color: var(--muted); font-size: 13px; }
-
-  @media (prefers-reduced-motion: reduce) { .link { transition: none; } }
-</style>
-<style>body{margin:0}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JT ID — JasaTitip Global</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#1B365D',     // Navy Blue
+                            navyDark: '#0E1F38', // Deep Navy
+                            orangeRed: '#FF5F3F',// Coral Red-Orange Logo Color
+                            orangeDark: '#E0482B',
+                            slateBg: '#F4F6F9',  // Light Clean Base
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .sidebar-item.active {
+            background-color: rgba(255, 95, 63, 0.12);
+            color: #FF5F3F;
+            border-left: 4px solid #FF5F3F;
+        }
+    </style>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <div class="avatar" id="avatar" aria-hidden="true"></div>
-    <h1 id="name"></h1>
-    <p class="bio" id="bio"></p>
-  </header>
+<body class="bg-brand-slateBg text-slate-800 font-sans antialiased min-h-screen flex flex-col md:flex-row selection:bg-brand-orangeRed selection:text-white">
 
-  <nav aria-label="Link konten">
-    <div class="links" id="links"></div>
-  </nav>
+    <!-- SIDEBAR NAVIGATION (Desktop Left / Mobile Bottom Dock) -->
+    <aside class="fixed md:sticky bottom-0 md:top-0 left-0 z-40 w-full md:w-64 h-16 md:h-screen bg-brand-navy text-white flex flex-row md:flex-col justify-between md:justify-start border-t md:border-t-0 md:border-r border-slate-700/30 shrink-0 md:py-6 shadow-xl">
+        
+        <!-- LOGO BRANDING (Desktop) -->
+        <div class="hidden md:flex items-center gap-3 px-6 mb-8">
+            <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15,55 C15,75 45,85 75,60" stroke="#FF5F3F" stroke-width="6" stroke-linecap="round" fill="none"/>
+                <circle cx="15" cy="55" r="4.5" fill="#FF5F3F"/>
+                <path d="M40,25 L40,55 C40,65 30,68 25,62" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <path d="M48,25 L75,25 M61,25 L61,65" stroke="#FF5F3F" stroke-width="9" stroke-linecap="round" fill="none"/>
+            </svg>
+            <div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xl font-black tracking-tight text-white">JT <span class="text-brand-orangeRed">ID</span></span>
+                </div>
+                <p class="text-[9px] text-slate-400 tracking-wider uppercase font-semibold">JasaTitip Global</p>
+            </div>
+        </div>
 
-  <section>
-    <h2>Suka kontennya?</h2>
-    <ol class="steps">
-      <li><span>Tonton Reels atau video sampai habis.</span></li>
-      <li><span>Tekan suka, tulis komentar, lalu ikuti akunnya.</span></li>
-      <li><span>Bagikan ke teman yang cocok dengan topiknya.</span></li>
-    </ol>
-  </section>
+        <!-- NAVIGATION LINKS -->
+        <nav class="flex-1 w-full flex flex-row md:flex-col justify-around md:justify-start gap-1">
+            <button onclick="switchTab('home')" id="tab-home" class="sidebar-item active w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-xs md:text-sm font-semibold transition">
+                <i class="fa-solid fa-store text-base"></i>
+                <span data-i18n="navMarket" class="text-[10px] md:text-xs tracking-wide">Pasar Global</span>
+            </button>
+            <button onclick="switchTab('requests')" id="tab-requests" class="sidebar-item w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-hand-holding-heart text-base"></i>
+                <span data-i18n="navRequests" class="text-[10px] md:text-xs tracking-wide">Request Titip</span>
+            </button>
+            <button onclick="switchTab('orders')" id="tab-orders" class="sidebar-item w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-slate-400 hover:text-white transition">
+                <div class="relative">
+                    <i class="fa-solid fa-box text-base"></i>
+                    <span id="activeOrdersBadge" class="hidden absolute -top-1.5 -right-2 bg-brand-orangeRed text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </div>
+                <span data-i18n="navOrders" class="text-[10px] md:text-xs tracking-wide">Pesanan Saya</span>
+            </button>
+            <button onclick="switchTab('my-listings')" id="tab-my-listings" class="sidebar-item w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-shop text-base"></i>
+                <span data-i18n="navListings" class="text-[10px] md:text-xs tracking-wide">Lapak Saya</span>
+            </button>
+            <button onclick="toggleCartDrawer()" class="sidebar-item w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-slate-400 hover:text-white transition">
+                <div class="relative">
+                    <i class="fa-solid fa-cart-shopping text-base"></i>
+                    <span id="cartBadge" class="absolute -top-1.5 -right-2 bg-brand-orangeRed text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </div>
+                <span data-i18n="navCart" class="text-[10px] md:text-xs tracking-wide">Keranjang</span>
+            </button>
+            <button onclick="openAuthModal()" class="sidebar-item w-full py-2.5 md:py-3.5 px-3 md:px-6 flex flex-col md:flex-row items-center gap-1 md:gap-3 text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-user-circle text-base"></i>
+                <span id="userSidebarName" class="text-[10px] md:text-xs tracking-wide truncate max-w-[80px] md:max-w-none">Akun</span>
+            </button>
+        </nav>
 
-  <section class="share">
-    <button class="btn" id="copy" type="button">Salin link halaman ini</button>
-    <span class="status" id="status" role="status"></span>
-  </section>
+        <!-- DESKTOP CTA BUTTON -->
+        <div class="hidden md:block px-6 mt-auto">
+            <button onclick="openSellModal()" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs py-3 rounded-xl shadow-lg shadow-brand-orangeRed/30 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-plus-circle"></i>
+                <span data-i18n="ctaAddListing">Tambah Penawaran</span>
+            </button>
+        </div>
+    </aside>
 
-  <footer>Semua penonton di halaman ini datang dari orang sungguhan yang kamu ajak.</footer>
-</div>
+    <!-- MAIN BODY WRAPPER -->
+    <div class="flex-1 flex flex-col md:pl-0 pb-16 md:pb-0 overflow-x-hidden min-h-screen">
 
-<script>
-  // Ubah bagian ini: nama, bio, dan link akunmu.
-  var PROFILE = {
-    name: "Bosel42",
-    bio: "Video dan Reels terbaru ada di sini. Tonton, ikuti, dan subscribe supaya tidak ketinggalan.",
-    links: [
-      { kind: "yt", title: "Tonton video di YouTube", desc: "Semua video di channel @bosel42", url: "https://www.youtube.com/@bosel42" },
-      { kind: "yt", title: "Subscribe channel YouTube", desc: "Satu ketukan, lalu konfirmasi", url: "https://www.youtube.com/@bosel42?sub_confirmation=1" },
-      { kind: "fb", title: "Tonton Reels dan ikuti di Facebook", desc: "Reels dan update terbaru", url: "https://www.facebook.com/share/1FedngTcEh/" },
-      { kind: "tt", title: "Ikuti di TikTok", desc: "Video pendek di @prlvdsyafaa04", url: "https://www.tiktok.com/@prlvdsyafaa04" }
-    ]
-  };
+        <!-- TOP UTILITY BAR -->
+        <div class="bg-brand-navyDark text-xs py-2 px-4 md:px-8 border-b border-slate-700/20 text-slate-300 flex items-center justify-between z-30">
+            <div class="flex items-center gap-2 text-slate-300 text-[11px] font-medium">
+                <i class="fa-solid fa-location-dot text-brand-orangeRed"></i>
+                <span><span data-i18n="shipTo">Dikirim ke</span> <strong class="text-white">Jakarta Barat, IDN</strong></span>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- LANGUAGE TOGGLE -->
+                <button onclick="toggleLanguage()" id="langToggleBtn" class="bg-slate-800 text-slate-200 text-[10px] font-bold py-1 px-2 rounded-md border border-slate-700 hover:bg-slate-700">
+                    🇮🇩 ID
+                </button>
+                <!-- CURRENCY CONVERTER -->
+                <div class="flex items-center gap-1">
+                    <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-slate-800 text-brand-orangeRed text-[11px] font-bold py-1 px-2 rounded-lg border border-slate-700 cursor-pointer focus:outline-none">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+            </div>
+        </div>
 
-  var ICON = {
-    fb: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10-6.5a1 1 0 0 0 0-1.72l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>',
-    yt: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7zm6 2.2v5.6a.5.5 0 0 0 .76.43l4.6-2.8a.5.5 0 0 0 0-.86l-4.6-2.8A.5.5 0 0 0 10 9.2z"/></svg>'
-  };
-  ICON.tt = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 3h2.6a4.4 4.4 0 0 0 3.4 3.9v2.7a7 7 0 0 1-3.4-1V15a5.5 5.5 0 1 1-5.5-5.5c.3 0 .6 0 .9.1v2.8a2.7 2.7 0 1 0 1.9 2.6V3z"/></svg>';
-  var COLOR = { fb: "var(--fb)", yt: "var(--yt)", tt: "var(--ink)" };
+        <!-- MAIN SEARCH HEADER -->
+        <header class="bg-white py-3.5 px-4 md:px-8 shadow-sm border-b border-slate-100 flex items-center justify-between gap-4 sticky top-0 z-30">
+            <!-- Mobile Logo -->
+            <div class="md:hidden flex items-center gap-1.5 shrink-0">
+                <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15,55 C15,75 45,85 75,60" stroke="#FF5F3F" stroke-width="5"/>
+                    <circle cx="15" cy="55" r="4" fill="#FF5F3F"/>
+                    <path d="M40,25 L40,55 M61,25 L61,65" stroke="#1B365D" stroke-width="9"/>
+                </svg>
+                <span class="font-black text-brand-navy tracking-tight">JT <span class="text-brand-orangeRed">ID</span></span>
+            </div>
 
-  document.getElementById("name").textContent = PROFILE.name;
-  document.getElementById("bio").textContent = PROFILE.bio;
-  document.getElementById("avatar").textContent = PROFILE.name.trim().charAt(0).toUpperCase();
+            <!-- SEARCH BAR WITH CATEGORY SELECT -->
+            <div class="flex-1 max-w-2xl mx-auto flex items-center bg-slate-100 rounded-xl border border-slate-200/80 overflow-hidden">
+                <div class="hidden sm:block pl-3 border-r border-slate-200/80 pr-1">
+                    <select id="searchCategory" onchange="filterProducts()" class="bg-transparent text-[11px] font-bold text-slate-600 outline-none cursor-pointer">
+                        <option value="ALL">Semua Kategori</option>
+                        <option value="Makanan & Makanan Ringan">Makanan & Snack</option>
+                        <option value="Skincare & Kosmetik">Skincare & Kosmetik</option>
+                        <option value="Fashion & Pakaian">Fashion & Pakaian</option>
+                        <option value="Elektronik & Gadget">Elektronik & Gadget</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-center pl-3">
+                    <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs"></i>
+                </div>
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Cari barang impor atau produk Indonesia..." class="w-full bg-transparent border-0 py-2 px-2.5 text-slate-700 placeholder-slate-400 focus:ring-0 outline-none text-xs">
+                <button onclick="filterProducts()" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white text-xs font-bold px-4 py-2.5 h-full transition shadow">
+                    Cari
+                </button>
+            </div>
 
-  var box = document.getElementById("links");
-  PROFILE.links.forEach(function (l) {
-    var a = document.createElement("a");
-    a.className = "link";
-    a.href = l.url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    var g = document.createElement("span");
-    g.className = "glyph";
-    g.style.setProperty("--c", COLOR[l.kind] || "var(--accent)");
-    g.innerHTML = ICON[l.kind] || ICON.fb;
-    var t = document.createElement("span");
-    t.className = "link-text";
-    var t1 = document.createElement("div");
-    t1.className = "link-title";
-    t1.textContent = l.title;
-    var t2 = document.createElement("div");
-    t2.className = "link-desc";
-    t2.textContent = l.desc;
-    t.appendChild(t1);
-    t.appendChild(t2);
-    var ar = document.createElement("span");
-    ar.className = "arrow";
-    ar.setAttribute("aria-hidden", "true");
-    ar.textContent = "→";
-    a.appendChild(g);
-    a.appendChild(t);
-    a.appendChild(ar);
-    box.appendChild(a);
-  });
+            <button onclick="openSellModal()" class="md:hidden bg-brand-orangeRed hover:bg-brand-orangeDark text-white p-2 rounded-xl shadow-md shrink-0">
+                <i class="fa-solid fa-plus text-base"></i>
+            </button>
+        </header>
 
-  document.getElementById("copy").addEventListener("click", function () {
-    var s = document.getElementById("status");
-    var url = window.location.href;
-    function ok() { s.textContent = "Link tersalin."; }
-    function fail() { s.textContent = "Salin manual dari kolom alamat browser."; }
-    try {
-      navigator.clipboard.writeText(url).then(ok, fail);
-    } catch (e) { fail(); }
-  });
-</script>
-</body>
-</html>
+        <!-- MAIN SCROLLABLE CONTENT -->
+        <main class="flex-grow p-4 md:p-8 space-y-6">
+
+            <!-- HERO PROMO BANNER -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-navy via-slate-900 to-brand-navy text-white p-6 md:p-8 shadow-xl">
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-orangeRed/10 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10 max-w-2xl space-y-3">
+                    <div class="inline-flex items-center gap-1.5 bg-brand-orangeRed/20 border border-brand-orangeRed/30 text-brand-orangeRed text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+                        <i class="fa-solid fa-globe"></i> Global JasaTip Alliance
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
+                        Marketplace & JasTip Lintas <span class="text-brand-orangeRed">195+ Negara</span>
+                    </h1>
+                    <p data-i18n="heroDesc" class="text-slate-300 text-xs leading-relaxed max-w-lg">
+                        Belanja produk impor dari luar negeri dan ekspor barang asli Indonesia secara aman dengan 12 kurir global resmi. Pasang iklan gratis dan dapatkan perlindungan escrow.
+                    </p>
+                    <div class="flex items-center gap-3 pt-1">
+                        <button onclick="openSellModal()" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-orangeRed/20">
+                            <i class="fa-solid fa-bullhorn"></i> <span data-i18n="ctaAddListing">Tambah Penawaran</span>
+                        </button>
+                        <button onclick="switchTab('requests')" class="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-4 py-2.5 rounded-xl border border-white/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-hand-holding-heart text-brand-orangeRed"></i> Request Titip Beli
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FLASH SALE OVERLAY -->
+                <div class="absolute top-6 right-6 hidden lg:flex flex-col items-center bg-brand-navyDark/95 border border-brand-orangeRed/30 p-3.5 rounded-xl text-center">
+                    <span class="text-[10px] font-bold text-brand-orangeRed uppercase tracking-wider mb-1"><i class="fa-solid fa-bolt"></i> Flash Sale Selesai Dalam</span>
+                    <div id="flashSaleTimer" class="font-mono text-xl font-black text-white tracking-widest">01:24:15</div>
+                </div>
+            </div>
+
+            <!-- COURIER PARTNERS STRIP -->
+            <div class="bg-white border border-slate-100 rounded-xl p-3 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-slate-500 text-xs font-bold shadow-sm">
+                <span class="text-[10px] font-black text-brand-navy/70 uppercase tracking-widest flex items-center gap-1.5 mr-2">
+                    <i class="fa-solid fa-truck-fast text-brand-orangeRed"></i> Aliansi Kurir Global:
+                </span>
+                <span class="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100 text-slate-700 text-[10px]"><i class="fa-solid fa-box text-yellow-500"></i> DHL Express</span>
+                <span class="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100 text-slate-700 text-[10px]"><i class="fa-solid fa-plane text-purple-400"></i> FedEx Int'l</span>
+                <span class="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100 text-slate-700 text-[10px]"><i class="fa-solid fa-truck text-amber-500"></i> UPS Worldwide</span>
+                <span class="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100 text-slate-700 text-[10px]"><i class="fa-solid fa-shipping-fast text-blue-500"></i> J&T Global</span>
+            </div>
+
+            <!-- TAB 1: MARKETPLACE CATALOG -->
+            <div id="tabContentHome" class="space-y-6">
+                
+                <!-- TOOLBAR & FILTERS -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm" id="catalog">
+                    
+                    <!-- COUNTRY FILTER PILLS -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-2 lg:pb-0 text-xs">
+                        <span class="text-slate-400 font-extrabold uppercase text-[9px] shrink-0 mr-1">Filter Negara:</span>
+                        <button onclick="setCountryFilter('ALL')" id="filter-country-ALL" class="country-pill active bg-brand-navy text-white font-bold px-3 py-1.5 rounded-lg transition shrink-0">
+                            🌏 Semua
+                        </button>
+                        <button onclick="setCountryFilter('JP')" id="filter-country-JP" class="country-pill bg-slate-50 text-slate-600 border border-slate-200/60 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇯🇵 Jepang</button>
+                        <button onclick="setCountryFilter('KR')" id="filter-country-KR" class="country-pill bg-slate-50 text-slate-600 border border-slate-200/60 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇰🇷 Korea</button>
+                        <button onclick="setCountryFilter('US')" id="filter-country-US" class="country-pill bg-slate-50 text-slate-600 border border-slate-200/60 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇺🇸 Amerika</button>
+                        <button onclick="setCountryFilter('TH')" id="filter-country-TH" class="country-pill bg-slate-50 text-slate-600 border border-slate-200/60 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇹🇭 Thailand</button>
+                        <button onclick="setCountryFilter('SG')" id="filter-country-SG" class="country-pill bg-slate-50 text-slate-600 border border-slate-200/60 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇸🇬 Singapura</button>
+                        <button onclick="setCountryFilter('ID')" id="filter-country-ID" class="country-pill bg-slate-50 text-slate-600 border border-slate-200/60 font-bold px-3 py-1.5 rounded-lg transition shrink-0">🇮🇩 Indonesia</button>
+                    </div>
+
+                    <!-- SORT SELECTOR -->
+                    <div class="flex items-center justify-between lg:justify-end gap-3 text-xs shrink-0 border-t lg:border-t-0 pt-2 lg:pt-0">
+                        <span class="text-slate-400 font-bold uppercase text-[9px]">Urutkan:</span>
+                        <select id="sortSelect" onchange="filterProducts()" class="bg-slate-50 text-slate-700 border border-slate-200 font-semibold py-1.5 px-3 rounded-lg outline-none cursor-pointer">
+                            <option value="newest">Paling Baru</option>
+                            <option value="price-low">Harga Terendah</option>
+                            <option value="price-high">Harga Tertinggi</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- PRODUCT GRID -->
+                <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Dynamic Product Cards -->
+                </div>
+
+                <!-- EMPTY STATE -->
+                <div id="emptyCatalogState" class="hidden text-center py-16 bg-white rounded-xl border border-slate-200/60 space-y-3">
+                    <div class="w-14 h-14 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-xl">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-700">Tidak ada barang ditemukan</h3>
+                    <p class="text-xs text-slate-400">Coba ubah kata kunci atau ganti filter negara asal.</p>
+                </div>
+
+            </div>
+
+            <!-- TAB 2: REQUEST TITIP BELI -->
+            <div id="tabContentRequests" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h2 class="text-base font-extrabold text-brand-navy flex items-center gap-2">
+                                <i class="fa-solid fa-hand-holding-heart text-brand-orangeRed"></i> Permintaan Titip Beli (Buyer Requests)
+                            </h2>
+                            <p class="text-xs text-slate-400">Pembeli mencari produk tertentu. Traveler yang sedang di luar negeri dapat mengambil pesanan ini.</p>
+                        </div>
+                        <button onclick="openCreateRequestModal()" class="bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-brand-orangeRed/20">
+                            <i class="fa-solid fa-plus-circle"></i> Buat Request Barang Baru
+                        </button>
+                    </div>
+
+                    <div id="requestsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Dynamic Requests -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: PESANAN SAYA -->
+            <div id="tabContentOrders" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+                    <h2 class="text-base font-extrabold text-brand-navy flex items-center gap-2 mb-1">
+                        <i class="fa-solid fa-truck-ramp-box text-brand-orangeRed"></i> Riwayat & Pelacakan Pesanan Saya
+                    </h2>
+                    <p class="text-xs text-slate-400 mb-6">Lacak status perjalanan jastip dan kurir antarnegara Anda secara langsung.</p>
+
+                    <div id="ordersList" class="space-y-4">
+                        <!-- Dynamic Orders -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: LAPAK SAYA -->
+            <div id="tabContentMyListings" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h2 class="text-base font-extrabold text-brand-navy flex items-center gap-2 mb-1">
