@@ -137,6 +137,7 @@
 
         <main class="flex-grow p-4 md:p-8 space-y-6">
 
+            <!-- HERO BANNER -->
             <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-navy via-slate-900 to-brand-navy text-white p-6 md:p-8 shadow-xl">
                 <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-orangeRed/10 rounded-full blur-3xl"></div>
                 <div class="relative z-10 max-w-2xl space-y-3">
@@ -149,6 +150,16 @@
                     <p class="text-slate-300 text-xs leading-relaxed max-w-lg">
                         Semua transaksi otomatis dikonversi secara real-time ke mata uang pilihan Anda. Nikmati kemudahan berbelanja dan pasang iklan gratis.
                     </p>
+                </div>
+            </div>
+
+            <!-- SLOT KOTAK IKLAN / BANNER SPONSOR -->
+            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 text-center shadow-sm">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">- Ruang Iklan / Sponsor -</span>
+                <div class="bg-slate-50 border border-dashed border-slate-300 rounded-xl py-6 px-4 flex flex-col items-center justify-center text-slate-400 text-xs gap-1">
+                    <i class="fa-solid fa-rectangle-ad text-brand-orangeRed text-xl mb-1"></i>
+                    <span class="font-bold text-slate-700">Tempat Banner Iklan / Google AdSense</span>
+                    <span class="text-[10px] text-slate-400">Tempel kode script iklan Anda di bagian ini nanti.</span>
                 </div>
             </div>
 
@@ -447,7 +458,6 @@
         let discountRate = 0;
         let currentUser = null;
 
-        // Kosong murni tanpa data contoh (produk awal diset kosong)
         const INITIAL_PRODUCTS = [];
 
         document.addEventListener('DOMContentLoaded', async () => {
