@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JT ID — JasaTitip Global</title>
+    <title>JT ID — JasaTitip Global & Terpercaya</title>
     <!-- Supabase JS Client CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Tailwind CSS CDN -->
@@ -42,7 +42,6 @@
     <!-- SIDEBAR NAV -->
     <aside class="fixed md:sticky bottom-0 md:top-0 left-0 z-40 w-full md:w-64 h-16 md:h-screen bg-brand-navy text-white flex flex-row md:flex-col justify-between md:justify-start border-t md:border-t-0 md:border-r border-slate-700/30 shrink-0 md:py-6">
         
-        <!-- LOGO SAJA (TEKS JT ID DIHAPUS) -->
         <div class="hidden md:flex items-center justify-center px-6 mb-8">
             <svg class="w-12 h-12" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M30,35 L45,35 L85,35 C90,35 95,38 90,43 L80,50 L30,50 Z" fill="#FF5F3F"/>
@@ -108,7 +107,6 @@
         </div>
 
         <header class="bg-white py-4 px-4 md:px-8 shadow-sm border-b border-slate-100 flex items-center justify-between gap-4 sticky top-0 z-30">
-            <!-- MOBILE LOGO SAJA (TEKS JT ID DIHAPUS) -->
             <div class="md:hidden flex items-center shrink-0">
                 <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M30,35 L45,35 L85,35 C90,35 95,38 90,43 L80,50 L30,50 Z" fill="#FF5F3F"/>
@@ -136,19 +134,35 @@
 
         <main class="flex-grow p-4 md:p-8 space-y-6">
 
-            <!-- HERO BANNER -->
-            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-navy via-slate-900 to-brand-navy text-white p-6 md:p-8 shadow-xl">
+            <!-- HERO BANNER + CTA & BUKTI SOSIAL -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-navy via-slate-900 to-brand-navy text-white p-6 md:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-orangeRed/10 rounded-full blur-3xl"></div>
-                <div class="relative z-10 max-w-2xl space-y-3">
+                <div class="relative z-10 max-w-xl space-y-3">
                     <div class="inline-flex items-center gap-1.5 bg-brand-orangeRed/25 border border-brand-orangeRed/30 text-brand-orangeRed text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
                         <i class="fa-solid fa-globe"></i> Global Multi-Currency JasTip
                     </div>
                     <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
                         Marketplace Belanja & Titip Lintas <span class="text-brand-orangeRed">195+ Negara</span>
                     </h1>
-                    <p class="text-slate-300 text-xs leading-relaxed max-w-lg">
+                    <p class="text-slate-300 text-xs leading-relaxed">
                         Semua transaksi otomatis dikonversi secara real-time ke mata uang pilihan Anda. Nikmati kemudahan berbelanja dan pasang iklan gratis.
                     </p>
+                    <div class="pt-2">
+                        <a href="#catalog" class="inline-flex items-center gap-2 bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold text-xs px-6 py-3.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-rocket"></i> Titip & Belanja Sekarang
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative z-10 w-full md:w-auto bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 space-y-3 shrink-0 max-w-xs">
+                    <div class="flex items-center gap-1 text-amber-400 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <span class="text-white font-bold text-[11px] ml-1">4.9 / 5.0</span>
+                    </div>
+                    <p class="text-[11px] text-slate-200 italic leading-snug">
+                        "Barang sampai Jakarta dengan aman tanpa cacat. Admin responsif dan fee jastipnya paling transparan!"
+                    </p>
+                    <div class="text-[10px] text-brand-orangeRed font-extrabold">— Siska, Pelanggan Setia</div>
                 </div>
             </div>
 
@@ -259,14 +273,12 @@
         <div class="bg-white border border-slate-100 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
             <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
 
-            <!-- Tampilan Saat Belum Login -->
             <div id="authLoggedOutView" class="space-y-4">
                 <div class="text-center space-y-1">
                     <h3 class="text-base font-extrabold text-brand-navy">Masuk / Daftar Akun JT ID</h3>
                     <p class="text-xs text-slate-400">Pilih metode masuk untuk melanjutkan ke platform.</p>
                 </div>
 
-                <!-- Provider Login Buttons -->
                 <div class="space-y-2">
                     <button onclick="signInWithProvider('google')" class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-2.5 px-4 rounded-xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
                         <i class="fa-brands fa-google text-red-500 text-sm"></i>
@@ -296,7 +308,6 @@
                 <div id="authMessage" class="text-center text-[11px] text-slate-500 font-medium"></div>
             </div>
 
-            <!-- Tampilan Saat Sudah Login -->
             <div id="authLoggedInView" class="hidden space-y-4 text-center">
                 <div class="w-14 h-14 bg-brand-orangeRed/10 text-brand-orangeRed rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
                     <i class="fa-solid fa-user-check"></i>
@@ -567,9 +578,7 @@
             msgEl.innerText = 'Mengirim tautan masuk...';
             const { error } = await _supabase.auth.signInWithOtp({
                 email,
-                options: {
-                    emailRedirectTo: window.location.origin
-                }
+                options: { emailRedirectTo: window.location.origin }
             });
 
             if (error) {
@@ -584,9 +593,7 @@
             if (!_supabase) { showToast('Supabase belum terhubung', 'error'); return; }
             const { error } = await _supabase.auth.signInWithOAuth({
                 provider: provider,
-                options: {
-                    redirectTo: window.location.origin
-                }
+                options: { redirectTo: window.location.origin }
             });
             if (error) showToast('Gagal masuk: ' + error.message, 'error');
         }
