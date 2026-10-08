@@ -259,20 +259,58 @@
     <div id="authModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
         <div class="bg-white border border-slate-100 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
             <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
-            <div class="text-center space-y-1">
-                <h3 class="text-base font-extrabold text-brand-navy">Masuk / Daftar Akun JT ID</h3>
-                <p class="text-xs text-slate-400">Masukkan email Anda untuk menerima tautan masuk instan via Supabase Auth.</p>
-            </div>
-            <form onsubmit="handleAuthSubmit(event)" class="space-y-4 text-xs">
-                <div>
-                    <label class="block font-bold text-slate-500 mb-1">Email Anda</label>
-                    <input type="email" id="authEmail" required placeholder="nama@surel.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
+
+            <!-- Tampilan Saat Belum Login -->
+            <div id="authLoggedOutView" class="space-y-4">
+                <div class="text-center space-y-1">
+                    <h3 class="text-base font-extrabold text-brand-navy">Masuk / Daftar Akun JT ID</h3>
+                    <p class="text-xs text-slate-400">Pilih metode masuk untuk melanjutkan ke platform.</p>
                 </div>
-                <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition">
-                    Kirim Link Masuk
+
+                <!-- Provider Login Buttons -->
+                <div class="space-y-2">
+                    <button onclick="signInWithProvider('google')" class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-2.5 px-4 rounded-xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-brands fa-google text-red-500 text-sm"></i>
+                        <span>Lanjutkan dengan Google</span>
+                    </button>
+                    <button onclick="signInWithProvider('facebook')" class="w-full bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold py-2.5 px-4 rounded-xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-brands fa-facebook text-sm"></i>
+                        <span>Lanjutkan dengan Facebook</span>
+                    </button>
+                </div>
+
+                <div class="relative flex py-1 items-center">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink mx-3 text-[10px] font-bold text-slate-400 uppercase">atau email</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                <form onsubmit="sendEmailCode(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-500 mb-1">Email Anda</label>
+                        <input type="email" id="authEmail" required placeholder="nama@surel.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
+                    </div>
+                    <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3 rounded-xl shadow-lg transition">
+                        Kirim Link Masuk
+                    </button>
+                </form>
+                <div id="authMessage" class="text-center text-[11px] text-slate-500 font-medium"></div>
+            </div>
+
+            <!-- Tampilan Saat Sudah Login -->
+            <div id="authLoggedInView" class="hidden space-y-4 text-center">
+                <div class="w-14 h-14 bg-brand-orangeRed/10 text-brand-orangeRed rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div>
+                    <h3 id="profileNameDisplay" class="text-base font-extrabold text-brand-navy">Pengguna</h3>
+                    <p id="profileEmailDisplay" class="text-xs text-slate-400">email@domain.com</p>
+                </div>
+                <button onclick="handleLogout()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2.5 rounded-xl text-xs transition border border-red-200 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Keluar dari Akun</span>
                 </button>
-            </form>
-            <div id="authMessage" class="text-center text-[11px] text-slate-500 font-medium"></div>
+            </div>
         </div>
     </div>
 
@@ -462,23 +500,106 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             initCurrenciesSelector();
+            loadState();
+
             if (_supabase) {
                 const { data: { session } } = await _supabase.auth.getSession();
-                if (session && session.user) {
-                    currentUser = {
-                        id: session.user.id,
-                        name: session.user.email.split('@')[0],
-                        email: session.user.email
-                    };
-                }
+                setUserFromSession(session);
+
+                _supabase.auth.onAuthStateChange((event, session) => {
+                    setUserFromSession(session);
+                    renderMyListings();
+                });
+            } else {
+                renderUserNav();
             }
-            loadState();
-            renderUserNav();
+
             renderProducts();
             renderOrders();
             renderMyListings();
             updateCartBadges();
         });
+
+        function setUserFromSession(session) {
+            if (session && session.user) {
+                currentUser = {
+                    id: session.user.id,
+                    name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+                    email: session.user.email
+                };
+            } else {
+                currentUser = null;
+            }
+            renderUserNav();
+            showAuthStep();
+        }
+
+        function showAuthStep() {
+            const loggedOutView = document.getElementById('authLoggedOutView');
+            const loggedInView = document.getElementById('authLoggedInView');
+            if (!loggedOutView || !loggedInView) return;
+
+            if (currentUser) {
+                loggedOutView.classList.add('hidden');
+                loggedInView.classList.remove('hidden');
+                document.getElementById('profileNameDisplay').innerText = currentUser.name;
+                document.getElementById('profileEmailDisplay').innerText = currentUser.email;
+            } else {
+                loggedOutView.classList.remove('hidden');
+                loggedInView.classList.add('hidden');
+            }
+        }
+
+        function openAuthModal() {
+            showAuthStep();
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        async function sendEmailCode(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const msgEl = document.getElementById('authMessage');
+            if (!_supabase) { msgEl.innerText = 'Supabase belum terhubung.'; return; }
+
+            msgEl.innerText = 'Mengirim tautan masuk...';
+            const { error } = await _supabase.auth.signInWithOtp({
+                email,
+                options: {
+                    emailRedirectTo: window.location.origin
+                }
+            });
+
+            if (error) {
+                msgEl.innerText = 'Gagal: ' + error.message;
+            } else {
+                msgEl.innerText = 'Tautan masuk telah dikirim! Silakan periksa email Anda.';
+                showToast('Email terkirim! Cek kotak masuk/spam.', 'success');
+            }
+        }
+
+        async function signInWithProvider(provider) {
+            if (!_supabase) { showToast('Supabase belum terhubung', 'error'); return; }
+            const { error } = await _supabase.auth.signInWithOAuth({
+                provider: provider,
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+            if (error) showToast('Gagal masuk: ' + error.message, 'error');
+        }
+
+        async function handleLogout() {
+            if (_supabase) {
+                await _supabase.auth.signOut();
+                setUserFromSession(null);
+                closeAuthModal();
+                showToast('Berhasil keluar akun.', 'success');
+            }
+        }
 
         function initCurrenciesSelector() {
             const selector = document.getElementById('currencySelector');
@@ -844,20 +965,6 @@
         function renderUserNav() {
             if (currentUser) document.getElementById('userSidebarName').innerText = currentUser.name;
             else document.getElementById('userSidebarName').innerText = 'Masuk';
-        }
-
-        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
-        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-
-        async function handleAuthSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const msgEl = document.getElementById('authMessage');
-            if (!_supabase) { msgEl.innerText = 'Supabase belum terhubung.'; return; }
-            msgEl.innerText = 'Mengirim tautan login...';
-            const { error } = await _supabase.auth.signInWithOtp({ email });
-            if (error) msgEl.innerText = 'Gagal: ' + error.message;
-            else { msgEl.innerText = 'Cek email Anda untuk link login!'; showToast('Email terkirim!', 'success'); }
         }
 
         function openProductDetail(id) {
