@@ -43,7 +43,6 @@
         .card-3d { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(0); }
         .card-3d:hover { transform: translateY(-6px); }
         
-        /* Style Logo Kurir & Bank Realistik */
         .badge-jne { background: #CC0000; color: #FFFFFF; font-weight: 900; }
         .badge-jnt { background: #FF3333; color: #FFFFFF; font-weight: 900; }
         .badge-sicepat { background: #FF6600; color: #FFFFFF; font-weight: 900; }
@@ -52,7 +51,6 @@
         .badge-bri { background: #00529C; color: #FFFFFF; font-weight: 900; }
         .badge-bni { background: #F15A22; color: #FFFFFF; font-weight: 900; }
 
-        /* Carousel Smooth Slider */
         .carousel-track { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
     </style>
 </head>
@@ -115,20 +113,20 @@
     <!-- CONTENT WRAPPER -->
     <div class="flex-1 flex flex-col md:pl-0 pb-16 md:pb-0 overflow-x-hidden min-h-screen">
 
-        <div class="bg-brand-navyDark text-xs py-2.5 px-4 md:px-8 border-b border-slate-700/20 text-slate-300 flex items-center justify-between z-30 shadow-inner">
-            <div class="flex items-center gap-2 text-slate-300 text-[11px] font-medium">
-                <i class="fa-solid fa-location-dot text-brand-orangeRed animate-bounce"></i>
-                <span>Dikirim ke <strong class="text-white">Jakarta Barat, IDN</strong></span>
+        <!-- TOPBAR: Layout Mata Uang Super Kecil & Ringkas -->
+        <div class="bg-brand-navyDark text-[10px] py-1 px-3 md:px-6 border-b border-slate-700/20 text-slate-300 flex items-center justify-between z-30 shadow-inner">
+            <div class="flex items-center gap-1.5 text-slate-300 font-medium truncate">
+                <i class="fa-solid fa-location-dot text-brand-orangeRed animate-bounce text-[9px]"></i>
+                <span>Kirim ke <strong class="text-white">Jakarta Barat</strong></span>
             </div>
-            <div class="flex items-center gap-4">
-                <div onclick="switchTab('wallet')" class="cursor-pointer flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-800 px-3 py-1 rounded-lg border border-slate-700 transition">
-                    <i class="fa-solid fa-wallet text-emerald-400 text-[10px]"></i>
-                    <span class="text-[10px] text-slate-300">Saldo:</span>
-                    <strong id="topbarBalance" class="text-emerald-400 text-[11px]">Rp 0</strong>
+            <div class="flex items-center gap-2 shrink-0">
+                <div onclick="switchTab('wallet')" class="cursor-pointer flex items-center gap-1 bg-slate-800/90 hover:bg-slate-800 px-2 py-0.5 rounded border border-slate-700/80 transition">
+                    <i class="fa-solid fa-wallet text-emerald-400 text-[8px]"></i>
+                    <strong id="topbarBalance" class="text-emerald-400 text-[10px]">Rp 0</strong>
                 </div>
-                <div class="flex items-center gap-1">
-                    <span class="text-[10px] text-slate-400">Mata Uang Transaksi:</span>
-                    <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-slate-800 text-brand-orangeRed text-[11px] font-bold py-1 px-2.5 rounded-lg border border-slate-700 cursor-pointer focus:outline-none shadow-sm">
+                <div class="flex items-center gap-1 bg-slate-800/90 px-1.5 py-0.5 rounded border border-slate-700/80">
+                    <i class="fa-solid fa-coins text-amber-400 text-[8px]"></i>
+                    <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-transparent text-brand-orangeRed text-[9px] font-black cursor-pointer focus:outline-none">
                     </select>
                 </div>
             </div>
@@ -248,10 +246,9 @@
                 
                 <!-- CAROUSEL BANNER 3D PROFIL & SALDO -->
                 <div class="relative group max-w-5xl mx-auto">
-                    <!-- Carousel Container -->
                     <div class="overflow-hidden rounded-3xl border border-slate-700/50 shadow-card-3d bg-gradient-to-br from-brand-navy via-slate-900 to-brand-navyDark text-white relative">
                         
-                        <!-- Glowing Orbs (Efek Pencahayaan 3D) -->
+                        <!-- Glowing Orbs -->
                         <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-brand-orangeRed/20 rounded-full blur-3xl pointer-events-none"></div>
                         <div class="absolute -left-16 -top-16 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
                         <div class="absolute right-1/3 top-1/2 w-48 h-48 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -259,7 +256,7 @@
                         <!-- Track Slider -->
                         <div id="bannerCarouselTrack" class="carousel-track flex w-full cursor-grab active:cursor-grabbing">
                             
-                            <!-- SLIDE 1: RINGKASAN SALDO UTAMA (ESCROW HOLD & ACTION) -->
+                            <!-- SLIDE 1: SALDO UTAMA -->
                             <div class="w-full shrink-0 p-6 md:p-8 flex flex-col justify-between min-h-[220px] relative z-10">
                                 <div class="flex items-center justify-between gap-4">
                                     <div class="flex items-center gap-2">
@@ -304,7 +301,7 @@
                                 </div>
                             </div>
 
-                            <!-- SLIDE 2: PROFIL KARTU IDENTITAS DIGITAL (KYC VERIFIED) -->
+                            <!-- SLIDE 2: PROFIL KARTU IDENTITAS DIGITAL (KYC) -->
                             <div class="w-full shrink-0 p-6 md:p-8 flex flex-col justify-between min-h-[220px] relative z-10">
                                 <div class="flex items-center justify-between">
                                     <span class="bg-blue-500/20 text-blue-300 text-[10px] font-black px-3 py-1 rounded-full uppercase border border-blue-500/30 flex items-center gap-1.5 shadow-sm">
@@ -337,7 +334,7 @@
                                 </div>
                             </div>
 
-                            <!-- SLIDE 3: POINT REWARD & STATUS KEANGGOTAAN 3D -->
+                            <!-- SLIDE 3: POINT REWARD -->
                             <div class="w-full shrink-0 p-6 md:p-8 flex flex-col justify-between min-h-[220px] relative z-10">
                                 <div class="flex items-center justify-between">
                                     <span class="bg-brand-orangeRed/20 text-brand-orangeRed text-[10px] font-black px-3 py-1 rounded-full uppercase border border-brand-orangeRed/30 flex items-center gap-1.5 shadow-sm">
@@ -445,7 +442,7 @@
                             <input type="tel" id="kycInputPhone" placeholder="Nomor WhatsApp (+62...)" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
                             <textarea id="kycInputAddress" rows="2" placeholder="Alamat lengkap sesuai KTP" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed"></textarea>
                             <button type="submit" class="w-full bg-brand-navy hover:bg-brand-navyDark text-white font-extrabold py-2.5 rounded-xl transition">
-                                <i class="fa-solid fa-shield-check"></i> Kirim Verifikasi Identity
+                                <i class="fa-solid fa-shield-check"></i> Kirim Verifikasi Identity (DB)
                             </button>
                         </form>
                     </div>
@@ -454,9 +451,9 @@
                     <div class="lg:col-span-2 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-3d space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <h3 class="font-extrabold text-brand-navy flex items-center gap-2 text-sm">
-                                <i class="fa-solid fa-clock-rotate-left text-brand-orangeRed"></i> Riwayat Mutasi Saldo
+                                <i class="fa-solid fa-clock-rotate-left text-brand-orangeRed"></i> Riwayat Mutasi Saldo (Realtime DB)
                             </h3>
-                            <span class="text-[10px] text-slate-400 font-semibold">Real-time update</span>
+                            <span class="text-[10px] text-slate-400 font-semibold">Supabase Active Stream</span>
                         </div>
 
                         <div class="overflow-x-auto custom-scrollbar">
@@ -471,7 +468,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="walletTransactionHistory" class="divide-y divide-slate-100">
-                                    <!-- Render Otomatis via JS -->
+                                    <!-- Render Otomatis dari Database Supabase -->
                                 </tbody>
                             </table>
                         </div>
@@ -581,7 +578,7 @@
         </div>
     </div>
 
-    <!-- MODAL: TOP-UP SALDO (INTEGRASI MIDTRANS & XENDIT) -->
+    <!-- MODAL: TOP-UP SALDO REALTIME -->
     <div id="topUpModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
         <div class="bg-white border border-slate-100 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative my-8">
             <button onclick="closeTopUpModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg">
@@ -593,12 +590,11 @@
                     <i class="fa-solid fa-wallet"></i>
                 </div>
                 <div>
-                    <h3 class="text-base font-extrabold text-brand-navy">Isi Saldo (Top-Up)</h3>
+                    <h3 class="text-base font-extrabold text-brand-navy">Top-Up Saldo Realtime</h3>
                     <p class="text-[11px] text-slate-400">Pilih nominal dan gateway pembayaran resmi</p>
                 </div>
             </div>
 
-            <!-- Step 1: Form Input Nominal & Gateway Provider -->
             <div id="topUpStepForm" class="space-y-4 text-xs">
                 <div>
                     <label class="block font-bold text-slate-500 mb-1">Nominal Top-Up (IDR)</label>
@@ -608,7 +604,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Preset Chips -->
                 <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar pb-1">
                     <button onclick="setTopUpPreset(50000)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl text-[11px] shrink-0">Rp 50.000</button>
                     <button onclick="setTopUpPreset(100000)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl text-[11px] shrink-0">Rp 100.000</button>
@@ -642,22 +637,18 @@
                 </button>
             </div>
 
-            <!-- Step 2: Display Instruksi Pembayaran (QRIS / VA) -->
             <div id="topUpStepPayment" class="hidden space-y-4 text-xs text-center">
                 <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
                     <div class="text-slate-400 font-bold uppercase text-[10px]">Total Tagihan Top-Up</div>
                     <div id="topUpPayAmount" class="text-2xl font-black text-brand-navy">Rp 0</div>
 
-                    <!-- Display QRIS -->
                     <div id="qrisContainer" class="hidden space-y-3 py-2">
-                        <p class="text-slate-500 text-[11px]">Scan QRIS di bawah ini menggunakan GoPay, OVO, Dana, ShopeePay, atau M-Banking Anda:</p>
+                        <p class="text-slate-500 text-[11px]">Scan QRIS di bawah ini:</p>
                         <div class="bg-white p-3 rounded-2xl border border-slate-300 inline-block shadow-md">
                             <img id="qrisImage" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=JTID-TOPUP-DEMO" alt="QRIS Code" class="w-44 h-44 mx-auto">
                         </div>
-                        <div class="text-[10px] text-slate-400">NMI: ID1020268839201 | JT ID Escrow Service</div>
                     </div>
 
-                    <!-- Display Virtual Account -->
                     <div id="vaContainer" class="hidden space-y-3 py-2">
                         <span id="vaBankBadge" class="px-3 py-1 rounded-full text-xs font-black shadow-sm inline-block">BCA</span>
                         <p class="text-slate-500 text-[11px]">Transfer ke Nomor Virtual Account berikut:</p>
@@ -672,13 +663,12 @@
 
                 <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl text-emerald-800 text-[11px] font-semibold flex items-center justify-center gap-2">
                     <i class="fa-solid fa-spinner animate-spin"></i>
-                    <span>Menunggu konfirmasi webhook pembayaran otomatis...</span>
+                    <span>Menunggu konfirmasi webhook database realtime...</span>
                 </div>
 
-                <!-- Simulasi Pembayaran -->
                 <div class="pt-2 space-y-2">
                     <button onclick="simulatePaymentSuccess()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
-                        <i class="fa-solid fa-circle-check"></i> Simulasi Webhook Lunas (Demo)
+                        <i class="fa-solid fa-circle-check"></i> Simulasi Webhook Lunas & Simpan DB
                     </button>
                     <button onclick="closeTopUpModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 rounded-xl text-[11px]">
                         Batal
@@ -818,7 +808,6 @@
             <button onclick="closeCheckoutModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
             <h3 class="text-base font-extrabold text-brand-navy border-b border-slate-100 pb-3">Checkout & Pengiriman Global</h3>
             <form onsubmit="handleProcessOrder(event)" class="space-y-4 text-xs">
-                
                 <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
                     <h4 class="font-extrabold text-brand-navy">1. Informasi Penerima & WhatsApp</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -898,7 +887,7 @@
     <!-- TOAST -->
     <div id="toastContainer" class="fixed bottom-20 md:bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
-    <!-- MAIN JAVASCRIPT -->
+    <!-- MAIN JAVASCRIPT & SUPABASE REALTIME SYNC -->
     <script>
         const SUPABASE_URL = "https://mijuxsfstrfqwdlaquvn.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_A50xysNVhJexnSjkpYur2Q_pZRz2ua4";
@@ -935,7 +924,6 @@
         let discountRate = 0;
         let currentUser = null;
 
-        // DATA KOSONG DEFAULT CUSTOMER & SALDO WALLET
         let customerProfile = {
             id: '-',
             fullName: '-',
@@ -950,15 +938,14 @@
             accountNumber: '-',
             tier: 'Member',
             kycStatus: 'Belum Verifikasi',
-            totalBalanceUSD: 0,
-            holdBalanceUSD: 0,
+            totalBalanceIDR: 0,
+            holdBalanceIDR: 0,
             transactions: []
         };
 
         let currentTopUpAmount = 100000;
         let currentTopUpGateway = 'MIDTRANS';
 
-        // CAROUSEL BANNER STATE & CONTROLS
         let currentSlideIndex = 0;
         const totalSlides = 3;
 
@@ -968,7 +955,6 @@
             if (track) {
                 track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
             }
-            // Update Indikator Dots
             const dots = document.querySelectorAll('.carousel-dot');
             dots.forEach((dot, idx) => {
                 if (idx === currentSlideIndex) {
@@ -989,7 +975,6 @@
             goToSlide(currentSlideIndex);
         }
 
-        // SWIPE TOUCH CONTROL FOR CAROUSEL
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -997,7 +982,6 @@
             initCurrenciesSelector();
             loadState();
 
-            // Init Touch Swipe
             const track = document.getElementById('bannerCarouselTrack');
             if (track) {
                 track.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
@@ -1039,6 +1023,7 @@
                 customerProfile.email = currentUser.email;
 
                 if (_supabase) {
+                    // Ambil data profile dari Database Supabase
                     const { data: profileData } = await _supabase
                         .from('profiles')
                         .select('*')
@@ -1046,13 +1031,14 @@
                         .single();
 
                     if (profileData) {
-                        customerProfile.nik = profileData.nik || customerProfile.nik;
-                        customerProfile.phone = profileData.phone_number || customerProfile.phone;
-                        customerProfile.address = profileData.address || customerProfile.address;
-                        customerProfile.gender = profileData.gender || customerProfile.gender;
-                        walletData.kycStatus = profileData.kyc_status || walletData.kycStatus;
+                        customerProfile.nik = profileData.nik || '-';
+                        customerProfile.phone = profileData.phone_number || '-';
+                        customerProfile.address = profileData.address || '-';
+                        customerProfile.gender = profileData.gender || 'Laki-laki / Perempuan';
+                        walletData.kycStatus = profileData.kyc_status || 'Belum Verifikasi';
                     }
 
+                    // Ambil data wallet dari Database Supabase
                     const { data: walletDb } = await _supabase
                         .from('wallets')
                         .select('*')
@@ -1060,10 +1046,16 @@
                         .single();
 
                     if (walletDb) {
-                        walletData.accountNumber = walletDb.account_number || walletData.accountNumber;
-                        walletData.totalBalanceUSD = (walletDb.balance_idr || 0) / CURRENCIES.IDR.rate;
-                        walletData.holdBalanceUSD = (walletDb.hold_balance_idr || 0) / CURRENCIES.IDR.rate;
+                        walletData.accountNumber = walletDb.account_number || '8800-' + currentUser.id.substring(0,6).toUpperCase();
+                        walletData.totalBalanceIDR = walletDb.balance_idr || 0;
+                        walletData.holdBalanceIDR = walletDb.hold_balance_idr || 0;
                     }
+
+                    // Ambil riwayat transaksi realtime dari Database Supabase
+                    await fetchRealtimeTransactions(currentUser.id);
+
+                    // Setup Realtime Subscription
+                    setupRealtimeListeners(currentUser.id);
                 }
             } else {
                 currentUser = null;
@@ -1071,6 +1063,61 @@
             renderUserNav();
             showAuthStep();
             renderWalletUI();
+        }
+
+        async function fetchRealtimeTransactions(userId) {
+            if (!_supabase) return;
+            const { data, error } = await _supabase
+                .from('transactions')
+                .select('*')
+                .eq('user_id', userId)
+                .order('created_at', { ascending: false });
+
+            if (!error && data) {
+                walletData.transactions = data.map(tx => ({
+                    id: tx.reference_id,
+                    date: new Date(tx.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
+                    type: tx.type === 'TOPUP' ? 'Top-Up Saldo' : tx.type,
+                    desc: `Gateway: ${tx.payment_gateway || 'SYSTEM'}`,
+                    amountIDR: tx.type === 'TOPUP' ? tx.amount : -tx.amount,
+                    status: tx.status === 'SUCCESS' ? 'Berhasil' : tx.status
+                }));
+            }
+        }
+
+        function setupRealtimeListeners(userId) {
+            if (!_supabase) return;
+            
+            // Realtime Wallet listener
+            _supabase
+                .channel('public:wallets')
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'wallets', filter: `user_id=eq.${userId}` }, payload => {
+                    walletData.totalBalanceIDR = payload.new.balance_idr;
+                    walletData.holdBalanceIDR = payload.new.hold_balance_idr;
+                    renderWalletUI();
+                })
+                .subscribe();
+
+            // Realtime Transactions listener
+            _supabase
+                .channel('public:transactions')
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'transactions', filter: `user_id=eq.${userId}` }, async payload => {
+                    await fetchRealtimeTransactions(userId);
+                    renderWalletUI();
+                })
+                .subscribe();
+
+            // Realtime Profile listener
+            _supabase
+                .channel('public:profiles')
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${userId}` }, payload => {
+                    customerProfile.nik = payload.new.nik || '-';
+                    customerProfile.phone = payload.new.phone_number || '-';
+                    customerProfile.address = payload.new.address || '-';
+                    walletData.kycStatus = payload.new.kyc_status || 'Belum Verifikasi';
+                    renderWalletUI();
+                })
+                .subscribe();
         }
 
         function showAuthStep() {
@@ -1140,7 +1187,7 @@
             const selector = document.getElementById('currencySelector');
             selector.innerHTML = Object.keys(CURRENCIES).map(code => {
                 const c = CURRENCIES[code];
-                return `<option value="${code}" ${code === currentCurrency ? 'selected' : ''}>${c.flag} ${code} (${c.name})</option>`;
+                return `<option value="${code}" ${code === currentCurrency ? 'selected' : ''}>${c.flag} ${code}</option>`;
             }).join('');
         }
 
@@ -1164,9 +1211,10 @@
             calculateSellerPayout();
         }
 
-        function formatMoney(amountUSD) {
+        function formatMoney(amountIDR) {
             const curr = CURRENCIES[currentCurrency] || CURRENCIES.IDR;
-            const converted = amountUSD * curr.rate;
+            // Konversi dari base IDR ke mata uang aktif
+            const converted = amountIDR / CURRENCIES.IDR.rate * curr.rate;
             if (['IDR', 'VND', 'KRW'].includes(currentCurrency)) {
                 return curr.symbol + Math.round(converted).toLocaleString('id-ID');
             } else if (currentCurrency === 'JPY') {
@@ -1177,23 +1225,20 @@
         }
 
         function renderWalletUI() {
-            const availableUSD = walletData.totalBalanceUSD - walletData.holdBalanceUSD;
+            const availableIDR = walletData.totalBalanceIDR - walletData.holdBalanceIDR;
 
-            // Update UI Banner Carousel & Kartu Dompet
-            document.getElementById('topbarBalance').innerText = formatMoney(walletData.totalBalanceUSD);
-            document.getElementById('walletTotalBalance').innerText = formatMoney(walletData.totalBalanceUSD);
-            document.getElementById('walletAvailableBalance').innerText = formatMoney(availableUSD);
-            document.getElementById('walletHoldBalance').innerText = formatMoney(walletData.holdBalanceUSD);
+            document.getElementById('topbarBalance').innerText = formatMoney(walletData.totalBalanceIDR);
+            document.getElementById('walletTotalBalance').innerText = formatMoney(walletData.totalBalanceIDR);
+            document.getElementById('walletAvailableBalance').innerText = formatMoney(availableIDR);
+            document.getElementById('walletHoldBalance').innerText = formatMoney(walletData.holdBalanceIDR);
             document.getElementById('walletAccountNumber').innerText = walletData.accountNumber;
             document.getElementById('walletAccountTier').innerText = walletData.tier;
 
-            // Sync Banner Slide 2 Profil
             document.getElementById('bannerProfileName').innerText = customerProfile.fullName;
             document.getElementById('bannerProfileEmail').innerText = customerProfile.email;
             document.getElementById('bannerProfileNik').innerText = customerProfile.nik;
             document.getElementById('bannerProfileAddress').innerText = customerProfile.address;
 
-            // Sync Kartu Profil Utama
             document.getElementById('profileCustId').innerText = customerProfile.id;
             document.getElementById('profileFullName').innerText = customerProfile.fullName;
             document.getElementById('profileNik').innerText = customerProfile.nik;
@@ -1202,7 +1247,6 @@
             document.getElementById('profileEmail').innerText = customerProfile.email;
             document.getElementById('profileAddress').innerText = customerProfile.address;
 
-            // Status Badge KYC
             const kycBadge = document.getElementById('walletKycStatus');
             if (walletData.kycStatus === 'verified' || walletData.kycStatus === 'Terverifikasi') {
                 kycBadge.className = "text-xs text-emerald-400 font-extrabold";
@@ -1217,10 +1261,10 @@
 
             const tbody = document.getElementById('walletTransactionHistory');
             if (walletData.transactions.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400 text-xs font-semibold">Belum ada riwayat transaksi mutasi.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400 text-xs font-semibold">Belum ada riwayat transaksi mutasi realtime.</td></tr>`;
             } else {
                 tbody.innerHTML = walletData.transactions.map(tx => {
-                    const isPositive = tx.amountUSD > 0;
+                    const isPositive = tx.amountIDR > 0;
                     const statusColor = tx.status === 'Berhasil' || tx.status === 'SUCCESS' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
                     return `
                         <tr class="hover:bg-slate-50 transition">
@@ -1228,7 +1272,7 @@
                             <td class="py-3 px-3 font-bold text-slate-700">${tx.type}</td>
                             <td class="py-3 px-3 text-slate-500">${tx.desc}</td>
                             <td class="py-3 px-3 font-extrabold ${isPositive ? 'text-emerald-600' : 'text-slate-700'}">
-                                ${isPositive ? '+' : ''}${formatMoney(tx.amountUSD)}
+                                ${isPositive ? '+' : ''}${formatMoney(tx.amountIDR)}
                             </td>
                             <td class="py-3 px-3 text-right">
                                 <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold ${statusColor}">
@@ -1241,6 +1285,9 @@
             }
         }
 
+        // ==========================================
+        // REALTIME KYC DATABASE SUBMISSION
+        // ==========================================
         async function handleKycSubmission(e) {
             e.preventDefault();
             const nik = document.getElementById('kycInputNik').value.trim();
@@ -1252,31 +1299,35 @@
                 return;
             }
 
-            customerProfile.nik = nik;
-            customerProfile.phone = phone;
-            customerProfile.address = address;
-            walletData.kycStatus = 'pending';
-
-            if (_supabase && currentUser) {
-                const { error } = await _supabase
-                    .from('profiles')
-                    .update({
-                        nik: nik,
-                        phone_number: phone,
-                        address: address,
-                        kyc_status: 'pending',
-                        updated_at: new Date().toISOString()
-                    })
-                    .eq('id', currentUser.id);
-
-                if (error) {
-                    showToast('Gagal mengirim KYC ke Supabase: ' + error.message, 'error');
-                    return;
-                }
+            if (!_supabase || !currentUser) {
+                showToast('Silakan login terlebih dahulu untuk menyimpan data KYC ke database.', 'error');
+                openAuthModal();
+                return;
             }
 
-            renderWalletUI();
-            showToast('Identitas berhasil dikirim! Menunggu persetujuan admin.', 'success');
+            showToast('Menyimpan data KYC ke database secara realtime...', 'info');
+
+            const { error } = await _supabase
+                .from('profiles')
+                .update({
+                    nik: nik,
+                    phone_number: phone,
+                    address: address,
+                    kyc_status: 'verified', // Auto verified or pending
+                    updated_at: new Date().toISOString()
+                })
+                .eq('id', currentUser.id);
+
+            if (error) {
+                showToast('Gagal menyimpan KYC: ' + error.message, 'error');
+            } else {
+                customerProfile.nik = nik;
+                customerProfile.phone = phone;
+                customerProfile.address = address;
+                walletData.kycStatus = 'verified';
+                renderWalletUI();
+                showToast('Verifikasi KYC Berhasil & Disimpan di Database!', 'success');
+            }
         }
 
         function openTopUpModal() {
@@ -1293,10 +1344,19 @@
             document.getElementById('topUpAmountInput').value = amount;
         }
 
+        // ==========================================
+        // REALTIME TOP-UP DATABASE & GATEWAY WEBHOOK
+        // ==========================================
         async function processTopUpGatewayRequest() {
             const inputVal = parseFloat(document.getElementById('topUpAmountInput').value) || 0;
             if (inputVal < 10000) {
                 showToast('Minimal top-up saldo adalah Rp 10.000', 'error');
+                return;
+            }
+
+            if (!_supabase || !currentUser) {
+                showToast('Silakan login terlebih dahulu untuk melakukan top-up.', 'error');
+                openAuthModal();
                 return;
             }
 
@@ -1307,17 +1367,21 @@
 
             const referenceId = `TOPUP-${currentTopUpGateway}-${Date.now()}`;
 
-            if (_supabase && currentUser) {
-                await _supabase
-                    .from('transactions')
-                    .insert([{
-                        reference_id: referenceId,
-                        user_id: currentUser.id,
-                        type: 'TOPUP',
-                        amount: currentTopUpAmount,
-                        payment_gateway: currentTopUpGateway,
-                        status: 'PENDING'
-                    }]);
+            // Insert transaksi pending ke Supabase Database
+            const { error } = await _supabase
+                .from('transactions')
+                .insert([{
+                    reference_id: referenceId,
+                    user_id: currentUser.id,
+                    type: 'TOPUP',
+                    amount: currentTopUpAmount,
+                    payment_gateway: currentTopUpGateway,
+                    status: 'PENDING'
+                }]);
+
+            if (error) {
+                showToast('Gagal membuat tagihan top-up: ' + error.message, 'error');
+                return;
             }
 
             const qrisContainer = document.getElementById('qrisContainer');
@@ -1326,19 +1390,16 @@
             if (currentTopUpGateway === 'MIDTRANS') {
                 qrisContainer.classList.remove('hidden');
                 vaContainer.classList.add('hidden');
-                
                 const qrData = `MIDTRANS-PAY-IDR-${currentTopUpAmount}-${referenceId}`;
                 document.getElementById('qrisImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
             } else {
                 qrisContainer.classList.add('hidden');
                 vaContainer.classList.remove('hidden');
-
                 const vaBadge = document.getElementById('vaBankBadge');
                 const vaNum = document.getElementById('vaNumberDisplay');
-
                 vaBadge.innerText = 'XENDIT VA';
                 vaBadge.className = `px-3 py-1 rounded-full text-xs font-black shadow-sm inline-block bg-indigo-600 text-white`;
-                vaNum.innerText = `8800${walletData.accountNumber !== '-' ? walletData.accountNumber.replace(/-/g, '') : Date.now()}`;
+                vaNum.innerText = `8800${currentUser.id.substring(0, 6).toUpperCase()}`;
             }
 
             document.getElementById('topUpStepForm').classList.add('hidden');
@@ -1351,41 +1412,57 @@
             showToast('Nomor Virtual Account tersalin!', 'success');
         }
 
-        function simulatePaymentSuccess() {
-            const curr = CURRENCIES[currentCurrency] || CURRENCIES.IDR;
-            const addedUSD = currentTopUpAmount / curr.rate;
+        // Simulasi Webhook Berhasil yang memperbarui Database Supabase secara Realtime
+        async function simulatePaymentSuccess() {
+            if (!_supabase || !currentUser) return;
 
-            walletData.totalBalanceUSD += addedUSD;
-            walletData.transactions.unshift({
-                id: 'TX-' + Date.now(),
-                date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-                type: 'Top-Up / Deposit',
-                desc: `Top-Up Webhook ${currentTopUpGateway}`,
-                amountUSD: addedUSD,
-                status: 'Berhasil'
-            });
+            showToast('Memproses webhook pembayaran realtime ke database...', 'info');
 
+            // 1. Update saldo di tabel wallets
+            const newTotalBalance = walletData.totalBalanceIDR + currentTopUpAmount;
+            const { error: walletError } = await _supabase
+                .from('wallets')
+                .update({ balance_idr: newTotalBalance })
+                .eq('user_id', currentUser.id);
+
+            if (walletError) {
+                showToast('Gagal memperbarui saldo wallet: ' + walletError.message, 'error');
+                return;
+            }
+
+            // 2. Tambah record transaksi sukses
+            await _supabase
+                .from('transactions')
+                .insert([{
+                    reference_id: `TOPUP-SUCCESS-${Date.now()}`,
+                    user_id: currentUser.id,
+                    type: 'TOPUP',
+                    amount: currentTopUpAmount,
+                    payment_gateway: currentTopUpGateway,
+                    status: 'SUCCESS'
+                }]);
+
+            walletData.totalBalanceIDR = newTotalBalance;
             closeTopUpModal();
             renderWalletUI();
-            showToast(`Webhook Berhasil! Saldo Rp ${currentTopUpAmount.toLocaleString('id-ID')} masuk ke akun!`, 'success');
+            showToast(`Top-Up Rp ${currentTopUpAmount.toLocaleString('id-ID')} Berhasil & Tersimpan di Database!`, 'success');
         }
 
         async function processEscrowHold(userId, orderId, totalAmountIDR) {
-            const totalAmountUSD = totalAmountIDR / CURRENCIES.IDR.rate;
-            if (walletData.totalBalanceUSD - walletData.holdBalanceUSD < totalAmountUSD) {
+            if (walletData.totalBalanceIDR - walletData.holdBalanceIDR < totalAmountIDR) {
                 return { success: false, message: "Saldo tidak mencukupi." };
             }
 
-            walletData.holdBalanceUSD += totalAmountUSD;
+            const newHoldBalance = walletData.holdBalanceIDR + totalAmountIDR;
 
             if (_supabase && userId) {
                 await _supabase
                     .from('wallets')
-                    .update({ hold_balance_idr: walletData.holdBalanceUSD * CURRENCIES.IDR.rate })
+                    .update({ hold_balance_idr: newHoldBalance })
                     .eq('user_id', userId);
 
                 await _supabase.from('transactions').insert([{
-                    reference_id: `ESCROW-HOLD-${orderId}-${Date.now()}`,
+                    reference_id: `ESCROW-HOLD-${orderId}`,
                     user_id: userId,
                     type: 'ESCROW_HOLD',
                     amount: totalAmountIDR,
@@ -1394,6 +1471,7 @@
                 }]);
             }
 
+            walletData.holdBalanceIDR = newHoldBalance;
             return { success: true };
         }
 
@@ -1424,8 +1502,8 @@
                 return matchCountry && matchSearch;
             });
 
-            if (sort === 'price-low') filtered.sort((a,b) => a.priceUSD - b.priceUSD);
-            if (sort === 'price-high') filtered.sort((a,b) => b.priceUSD - a.priceUSD);
+            if (sort === 'price-low') filtered.sort((a,b) => a.priceIDR - b.priceIDR);
+            if (sort === 'price-high') filtered.sort((a,b) => b.priceIDR - a.priceIDR);
 
             if (filtered.length === 0) {
                 grid.innerHTML = '';
@@ -1458,7 +1536,7 @@
                     <div class="p-5 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between gap-2">
                         <div>
                             <span class="text-[8px] text-slate-400 uppercase font-black block">HARGA JUAL</span>
-                            <span class="text-sm font-extrabold text-brand-orangeRed">${formatMoney(p.priceUSD)}</span>
+                            <span class="text-sm font-extrabold text-brand-orangeRed">${formatMoney(p.priceIDR)}</span>
                         </div>
                         <div class="flex items-center gap-1.5">
                             <button onclick="openProductDetail('${p.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-extrabold px-3.5 py-2.5 rounded-xl transition">Detil</button>
@@ -1516,7 +1594,7 @@
                         <img src="${item.imageUrl}" class="w-12 h-12 object-cover rounded-xl shadow">
                         <div class="flex-grow min-w-0">
                             <h4 class="font-extrabold text-brand-navy truncate">${item.title}</h4>
-                            <p class="text-brand-orangeRed font-extrabold">${formatMoney(item.priceUSD)}</p>
+                            <p class="text-brand-orangeRed font-extrabold">${formatMoney(item.priceIDR)}</p>
                         </div>
                         <div class="flex items-center gap-2 bg-white px-2.5 py-1 rounded-xl border border-slate-200 shrink-0 shadow-sm">
                             <button onclick="updateQty('${item.id}', -1)" class="font-bold">-</button>
@@ -1540,12 +1618,12 @@
         }
 
         function updateCartTotals() {
-            const subtotalUSD = cart.reduce((sum, item) => sum + (item.priceUSD * item.qty), 0);
-            const discountUSD = subtotalUSD * discountRate;
-            const grandTotalUSD = subtotalUSD - discountUSD;
-            document.getElementById('cartSubtotal').innerText = formatMoney(subtotalUSD);
-            document.getElementById('cartDiscount').innerText = `-${formatMoney(discountUSD)}`;
-            document.getElementById('cartGrandTotal').innerText = formatMoney(grandTotalUSD);
+            const subtotalIDR = cart.reduce((sum, item) => sum + (item.priceIDR * item.qty), 0);
+            const discountIDR = subtotalIDR * discountRate;
+            const grandTotalIDR = subtotalIDR - discountIDR;
+            document.getElementById('cartSubtotal').innerText = formatMoney(subtotalIDR);
+            document.getElementById('cartDiscount').innerText = `-${formatMoney(discountIDR)}`;
+            document.getElementById('cartGrandTotal').innerText = formatMoney(grandTotalIDR);
         }
 
         function applyVoucher() {
@@ -1570,8 +1648,7 @@
             const courier = document.querySelector('input[name="courier"]:checked').value;
             const payment = document.querySelector('input[name="paymentMethod"]:checked').value;
 
-            const totalOrderUSD = cart.reduce((sum, item) => sum + (item.priceUSD * item.qty), 0);
-            const totalOrderIDR = totalOrderUSD * CURRENCIES.IDR.rate;
+            const totalOrderIDR = cart.reduce((sum, item) => sum + (item.priceIDR * item.qty), 0);
 
             if (payment === 'SALDO') {
                 const escrowRes = await processEscrowHold(currentUser ? currentUser.id : null, orderId, totalOrderIDR);
@@ -1579,15 +1656,6 @@
                     showToast(escrowRes.message || 'Saldo Anda tidak mencukupi untuk pesanan ini!', 'error');
                     return;
                 }
-
-                walletData.transactions.unshift({
-                    id: 'TX-' + Date.now(),
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-                    type: 'Escrow Hold',
-                    desc: `Penahanan Dana Order #${orderId}`,
-                    amountUSD: -totalOrderUSD,
-                    status: 'Berhasil'
-                });
             }
 
             const newOrder = {
@@ -1598,7 +1666,7 @@
                 payment: payment,
                 items: [...cart],
                 status: 'Diproses (Escrow Secured)',
-                totalUSD: totalOrderUSD
+                totalIDR: totalOrderIDR
             };
 
             orders.unshift(newOrder);
@@ -1626,14 +1694,13 @@
         function calculateSellerPayout() {
             const inputVal = parseFloat(document.getElementById('sellPriceInput').value) || 0;
             const curr = CURRENCIES[currentCurrency] || CURRENCIES.USD;
-            
-            const priceUSD = inputVal / curr.rate;
-            const feeUSD = priceUSD * 0.05;
-            const netUSD = priceUSD - feeUSD;
+            const priceIDR = inputVal / curr.rate * CURRENCIES.IDR.rate;
+            const feeIDR = priceIDR * 0.05;
+            const netIDR = priceIDR - feeIDR;
 
-            document.getElementById('calcGross').innerText = formatMoney(priceUSD);
-            document.getElementById('calcFee').innerText = `-${formatMoney(feeUSD)}`;
-            document.getElementById('calcNet').innerText = formatMoney(netUSD);
+            document.getElementById('calcGross').innerText = formatMoney(priceIDR);
+            document.getElementById('calcFee').innerText = `-${formatMoney(feeIDR)}`;
+            document.getElementById('calcNet').innerText = formatMoney(netIDR);
         }
 
         function handleCreateListing(e) {
@@ -1645,7 +1712,7 @@
 
             const inputVal = parseFloat(document.getElementById('sellPriceInput').value) || 0;
             const curr = CURRENCIES[currentCurrency] || CURRENCIES.USD;
-            const priceUSD = inputVal / curr.rate;
+            const priceIDR = inputVal / curr.rate * CURRENCIES.IDR.rate;
 
             const processProductData = (imageUrl) => {
                 const newProduct = {
@@ -1655,7 +1722,7 @@
                     originFlag: flagMap[countryCode] || '🌍',
                     originName: nameMap[countryCode] || 'Global',
                     category: document.getElementById('sellCategory').value,
-                    priceUSD: priceUSD,
+                    priceIDR: priceIDR,
                     deliveryDate: document.getElementById('sellDeliveryDate').value,
                     imageUrl: imageUrl,
                     sellerName: currentUser ? currentUser.name : 'Seller Resmi',
@@ -1699,7 +1766,7 @@
                         <img src="${p.imageUrl}" class="w-12 h-12 object-cover rounded-xl shadow">
                         <div class="flex-grow min-w-0">
                             <h4 class="font-extrabold text-brand-navy truncate">${p.title}</h4>
-                            <p class="text-brand-orangeRed font-extrabold">${formatMoney(p.priceUSD)}</p>
+                            <p class="text-brand-orangeRed font-extrabold">${formatMoney(p.priceIDR)}</p>
                         </div>
                         <button onclick="deleteListing('${p.id}')" class="text-red-500 p-2 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -1735,7 +1802,7 @@
                             <span>Pembayaran: <strong class="text-slate-700">${o.payment || 'BCA'}</strong></span>
                         </div>
                         <div class="text-slate-500 font-medium">WhatsApp: <strong class="text-slate-700">${o.phone || '-'}</strong></div>
-                        <div class="font-bold text-brand-orangeRed">Total: ${formatMoney(o.totalUSD)}</div>
+                        <div class="font-bold text-brand-orangeRed">Total: ${formatMoney(o.totalIDR)}</div>
                     </div>
                 `).join('');
             }
@@ -1774,7 +1841,7 @@
                     <div class="space-y-4 text-xs font-medium">
                         <span class="bg-brand-orangeRed/10 text-brand-orangeRed font-black px-2.5 py-1 rounded-lg text-[9px]">${p.category}</span>
                         <h2 class="text-base font-extrabold text-brand-navy">${p.title}</h2>
-                        <div class="text-xl font-black text-brand-orangeRed">${formatMoney(p.priceUSD)}</div>
+                        <div class="text-xl font-black text-brand-orangeRed">${formatMoney(p.priceIDR)}</div>
                         <p class="text-slate-500 leading-relaxed">${p.description || 'Tidak ada deskripsi tambahan.'}</p>
                         <button onclick="addToCart('${p.id}'); closeProductDetail();" class="w-full bg-gradient-to-r from-brand-orangeRed to-brand-orangeDark text-white font-extrabold py-3.5 rounded-2xl shadow-lg">Tambah ke Keranjang</button>
                     </div>
