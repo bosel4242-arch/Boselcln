@@ -886,7 +886,15 @@
     <script>
         const SUPABASE_URL = "https://mijuxsfstrfqwdlaquvn.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_A50xysNVhJexnSjkpYur2Q_pZRz2ua4";
-        const _supabase = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+        
+        // Supabase diinisialisasi dengan persistensi dan pendeteksi sesi URL yang aman
+        const _supabase = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }) : null;
 
         const CURRENCIES = {
             IDR: { symbol: 'Rp ', rate: 15800, flag: '🇮🇩', name: 'Indonesian Rupiah' },
