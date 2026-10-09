@@ -6,6 +6,12 @@
     <title>JT ID — JasaTitip Global & Terpercaya</title>
     <!-- Supabase JS Client CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Midtrans Snap JS (Sandbox Mode) -->
+    <script 
+        type="text/javascript" 
+        src="https://app.sandbox.midtrans.com/snap/snap.js" 
+        data-client-key="SB-Mid-client-Dbh61Pmu4MoEr0huBKuhToeL">
+    </script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -1023,7 +1029,6 @@
                 customerProfile.email = currentUser.email;
 
                 if (_supabase) {
-                    // Ambil data profile dari Database Supabase
                     const { data: profileData } = await _supabase
                         .from('profiles')
                         .select('*')
@@ -1038,7 +1043,6 @@
                         walletData.kycStatus = profileData.kyc_status || 'Belum Verifikasi';
                     }
 
-                    // Ambil data wallet dari Database Supabase
                     const { data: walletDb } = await _supabase
                         .from('wallets')
                         .select('*')
@@ -1051,10 +1055,7 @@
                         walletData.holdBalanceIDR = walletDb.hold_balance_idr || 0;
                     }
 
-                    // Ambil riwayat transaksi realtime dari Database Supabase
                     await fetchRealtimeTransactions(currentUser.id);
-
-                    // Setup Realtime Subscription
                     setupRealtimeListeners(currentUser.id);
                 }
             } else {
@@ -1088,7 +1089,6 @@
         function setupRealtimeListeners(userId) {
             if (!_supabase) return;
             
-            // Realtime Wallet listener
             _supabase
                 .channel('public:wallets')
                 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'wallets', filter: `user_id=eq.${userId}` }, payload => {
@@ -1098,7 +1098,6 @@
                 })
                 .subscribe();
 
-            // Realtime Transactions listener
             _supabase
                 .channel('public:transactions')
                 .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'transactions', filter: `user_id=eq.${userId}` }, async payload => {
@@ -1107,7 +1106,6 @@
                 })
                 .subscribe();
 
-            // Realtime Profile listener
             _supabase
                 .channel('public:profiles')
                 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${userId}` }, payload => {
@@ -1213,7 +1211,6 @@
 
         function formatMoney(amountIDR) {
             const curr = CURRENCIES[currentCurrency] || CURRENCIES.IDR;
-            // Konversi dari base IDR ke mata uang aktif
             const converted = amountIDR / CURRENCIES.IDR.rate * curr.rate;
             if (['IDR', 'VND', 'KRW'].includes(currentCurrency)) {
                 return curr.symbol + Math.round(converted).toLocaleString('id-ID');
@@ -1285,9 +1282,6 @@
             }
         }
 
-        // ==========================================
-        // REALTIME KYC DATABASE SUBMISSION
-        // ==========================================
         async function handleKycSubmission(e) {
             e.preventDefault();
             const nik = document.getElementById('kycInputNik').value.trim();
@@ -1313,7 +1307,7 @@
                     nik: nik,
                     phone_number: phone,
                     address: address,
-                    kyc_status: 'verified', // Auto verified or pending
+                    kyc_status: 'verified',
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', currentUser.id);
@@ -1345,7 +1339,7 @@
         }
 
         // ==========================================
-        // REALTIME TOP-UP DATABASE & GATEWAY WEBHOOK
+        // FUNGSI MIDTRANS SNAP AMAN (TIDAK MEMBUAT LOGOUT)
         // ==========================================
         async function processTopUpGatewayRequest() {
             const inputVal = parseFloat(document.getElementById('topUpAmountInput').value) || 0;
@@ -1363,47 +1357,64 @@
             currentTopUpAmount = inputVal;
             currentTopUpGateway = document.querySelector('input[name="topupGateway"]:checked').value;
 
-            document.getElementById('topUpPayAmount').innerText = 'Rp ' + currentTopUpAmount.toLocaleString('id-ID');
+            if (currentTopUpGateway === 'MIDTRANS') {
+                try {
+                    showToast('Menghubungkan ke Midtrans Snap...', 'info');
+                    
+                    // Memanggil Edge Function Supabase untuk meminta Snap Token Midtrans
+                    const { data, error } = await _supabase.functions.invoke('create-transaction', {
+                        body: { nominal: currentTopUpAmount }
+                    });
 
-            const referenceId = `TOPUP-${currentTopUpGateway}-${Date.now()}`;
+                    if (error) throw error;
+                    if (!data || !data.snap_token) throw new Error('Snap Token tidak ditemukan dari server.');
 
-            // Insert transaksi pending ke Supabase Database
-            const { error } = await _supabase
-                .from('transactions')
-                .insert([{
+                    // Memunculkan Kotak Popup Pembayaran Midtrans Snap
+                    window.snap.pay(data.snap_token, {
+                        onSuccess: function(result) {
+                            showToast('Pembayaran Midtrans Berhasil!', 'success');
+                            closeTopUpModal();
+                            setTimeout(() => window.location.reload(), 1500);
+                        },
+                        onPending: function(result) {
+                            showToast('Menunggu pembayaran selesai...', 'info');
+                        },
+                        onError: function(result) {
+                            showToast('Pembayaran Gagal!', 'error');
+                        },
+                        onClose: function() {
+                            showToast('Jendela pembayaran ditutup.', 'info');
+                        }
+                    });
+
+                } catch (err) {
+                    console.error("Midtrans Error:", err);
+                    // Ditangkap dengan aman TANPA merusak sesi login/logout
+                    showToast('Gagal memproses Midtrans: ' + err.message, 'error');
+                }
+            } else {
+                // Xendit Fallback jika dipilih
+                document.getElementById('topUpPayAmount').innerText = 'Rp ' + currentTopUpAmount.toLocaleString('id-ID');
+                const referenceId = `TOPUP-XENDIT-${Date.now()}`;
+                
+                await _supabase.from('transactions').insert([{
                     reference_id: referenceId,
                     user_id: currentUser.id,
                     type: 'TOPUP',
                     amount: currentTopUpAmount,
-                    payment_gateway: currentTopUpGateway,
+                    payment_gateway: 'XENDIT',
                     status: 'PENDING'
                 }]);
 
-            if (error) {
-                showToast('Gagal membuat tagihan top-up: ' + error.message, 'error');
-                return;
+                document.getElementById('qrisContainer').classList.add('hidden');
+                document.getElementById('vaContainer').classList.remove('hidden');
+                document.getElementById('vaBankBadge').innerText = 'XENDIT VA';
+                document.getElementById('vaBankBadge').className = `px-3 py-1 rounded-full text-xs font-black shadow-sm inline-block bg-indigo-600 text-white`;
+                document.getElementById('vaNumberDisplay').innerText = `8800${currentUser.id.substring(0, 6).toUpperCase()}`;
+
+                document.getElementById('topUpStepForm').classList.add('hidden');
+                document.getElementById('topUpStepPayment').classList.remove('hidden');
             }
-
-            const qrisContainer = document.getElementById('qrisContainer');
-            const vaContainer = document.getElementById('vaContainer');
-
-            if (currentTopUpGateway === 'MIDTRANS') {
-                qrisContainer.classList.remove('hidden');
-                vaContainer.classList.add('hidden');
-                const qrData = `MIDTRANS-PAY-IDR-${currentTopUpAmount}-${referenceId}`;
-                document.getElementById('qrisImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
-            } else {
-                qrisContainer.classList.add('hidden');
-                vaContainer.classList.remove('hidden');
-                const vaBadge = document.getElementById('vaBankBadge');
-                const vaNum = document.getElementById('vaNumberDisplay');
-                vaBadge.innerText = 'XENDIT VA';
-                vaBadge.className = `px-3 py-1 rounded-full text-xs font-black shadow-sm inline-block bg-indigo-600 text-white`;
-                vaNum.innerText = `8800${currentUser.id.substring(0, 6).toUpperCase()}`;
-            }
-
-            document.getElementById('topUpStepForm').classList.add('hidden');
-            document.getElementById('topUpStepPayment').classList.remove('hidden');
         }
 
         function copyVaNumber() {
@@ -1412,13 +1423,11 @@
             showToast('Nomor Virtual Account tersalin!', 'success');
         }
 
-        // Simulasi Webhook Berhasil yang memperbarui Database Supabase secara Realtime
         async function simulatePaymentSuccess() {
             if (!_supabase || !currentUser) return;
 
             showToast('Memproses webhook pembayaran realtime ke database...', 'info');
 
-            // 1. Update saldo di tabel wallets
             const newTotalBalance = walletData.totalBalanceIDR + currentTopUpAmount;
             const { error: walletError } = await _supabase
                 .from('wallets')
@@ -1430,7 +1439,6 @@
                 return;
             }
 
-            // 2. Tambah record transaksi sukses
             await _supabase
                 .from('transactions')
                 .insert([{
@@ -1513,7 +1521,7 @@
 
             empty.classList.add('hidden');
             grid.innerHTML = filtered.map(p => `
-                <div class="card-3d bg-white border border-slate-200/80 hover:border-brand-orangeRed/50 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.06)] flex flex-col justify-between group">
+                <div class="card-3d bg-white border border-slate-200/85 hover:border-brand-orangeRed/50 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.06)] flex flex-col justify-between group">
                     <div>
                         <div class="relative h-48 overflow-hidden bg-slate-100 border-b border-slate-100">
                             <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
