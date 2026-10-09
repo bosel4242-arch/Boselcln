@@ -288,7 +288,7 @@
                             <strong id="walletAvailableBalance" class="text-sm text-white font-extrabold">Rp 0</strong>
                         </div>
                         <div>
-                            <span class="text-[10px] text-slate-400 block font-semibold">Saldo TERTAHAN (HOLD)</span>
+                            <span class="text-[10px] text-slate-400 block font-semibold">Saldo TERTAHAN (HOLD / ESCROW)</span>
                             <strong id="walletHoldBalance" class="text-sm text-amber-400 font-extrabold">Rp 0</strong>
                         </div>
                         <div class="col-span-2 sm:col-span-1">
@@ -907,7 +907,7 @@
                 customerProfile.fullName = currentUser.name;
                 customerProfile.email = currentUser.email;
 
-                // Tarik profil KYC dari DB Supabase jika tersedia
+                // Tarik profil KYC & Dompet dari DB Supabase jika tersedia
                 if (_supabase) {
                     const { data: profileData } = await _supabase
                         .from('profiles')
@@ -920,7 +920,18 @@
                         customerProfile.phone = profileData.phone_number || customerProfile.phone;
                         customerProfile.address = profileData.address || customerProfile.address;
                         walletData.kycStatus = profileData.kyc_status || walletData.kycStatus;
-                        walletData.totalBalanceUSD = (profileData.wallet_balance || 0) / CURRENCIES.IDR.rate;
+                    }
+
+                    const { data: walletDb } = await _supabase
+                        .from('wallets')
+                        .select('*')
+                        .eq('user_id', currentUser.id)
+                        .single();
+
+                    if (walletDb) {
+                        walletData.accountNumber = walletDb.account_number || walletData.accountNumber;
+                        walletData.totalBalanceUSD = (walletDb.balance_idr || 0) / CURRENCIES.IDR.rate;
+                        walletData.holdBalanceUSD = (walletDb.hold_balance_idr || 0) / CURRENCIES.IDR.rate;
                     }
                 }
             } else {
@@ -1219,6 +1230,34 @@
             showToast(`Webhook Berhasil! Saldo Rp ${currentTopUpAmount.toLocaleString('id-ID')} masuk ke akun!`, 'success');
         }
 
+        // FUNGSI PENANAHAN DANA (ESCROW HOLD) SAAT TRANSAKSI
+        async function processEscrowHold(userId, orderId, totalAmountIDR) {
+            const totalAmountUSD = totalAmountIDR / CURRENCIES.IDR.rate;
+            if (walletData.totalBalanceUSD - walletData.holdBalanceUSD < totalAmountUSD) {
+                return { success: false, message: "Saldo tidak mencukupi." };
+            }
+
+            walletData.holdBalanceUSD += totalAmountUSD;
+
+            if (_supabase && userId) {
+                await _supabase
+                    .from('wallets')
+                    .update({ hold_balance_idr: walletData.holdBalanceUSD * CURRENCIES.IDR.rate })
+                    .eq('user_id', userId);
+
+                await _supabase.from('transactions').insert([{
+                    reference_id: `ESCROW-HOLD-${orderId}-${Date.now()}`,
+                    user_id: userId,
+                    type: 'ESCROW_HOLD',
+                    amount: totalAmountIDR,
+                    payment_gateway: 'INTERNAL_ESCROW',
+                    status: 'SUCCESS'
+                }]);
+            }
+
+            return { success: true };
+        }
+
         function loadState() {
             const savedProds = localStorage.getItem('jt_id_products');
             products = savedProds ? JSON.parse(savedProds) : INITIAL_PRODUCTS;
@@ -1385,7 +1424,7 @@
 
         function closeCheckoutModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
 
-        function handleProcessOrder(e) {
+        async function handleProcessOrder(e) {
             e.preventDefault();
             const orderId = 'JTID-' + Math.floor(100000 + Math.random() * 900000);
             const phone = document.getElementById('shipPhone').value;
@@ -1393,10 +1432,23 @@
             const payment = document.querySelector('input[name="paymentMethod"]:checked').value;
 
             const totalOrderUSD = cart.reduce((sum, item) => sum + (item.priceUSD * item.qty), 0);
+            const totalOrderIDR = totalOrderUSD * CURRENCIES.IDR.rate;
 
-            if (payment === 'SALDO' && walletData.totalBalanceUSD < totalOrderUSD) {
-                showToast('Saldo Anda tidak mencukupi untuk pesanan ini!', 'error');
-                return;
+            if (payment === 'SALDO') {
+                const escrowRes = await processEscrowHold(currentUser ? currentUser.id : null, orderId, totalOrderIDR);
+                if (!escrowRes.success) {
+                    showToast(escrowRes.message || 'Saldo Anda tidak mencukupi untuk pesanan ini!', 'error');
+                    return;
+                }
+
+                walletData.transactions.unshift({
+                    id: 'TX-' + Date.now(),
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                    type: 'Escrow Hold',
+                    desc: `Penahanan Dana Order #${orderId}`,
+                    amountUSD: -totalOrderUSD,
+                    status: 'Berhasil'
+                });
             }
 
             const newOrder = {
@@ -1406,21 +1458,9 @@
                 courier: courier,
                 payment: payment,
                 items: [...cart],
-                status: 'Diproses',
+                status: 'Diproses (Escrow Secured)',
                 totalUSD: totalOrderUSD
             };
-
-            if (payment === 'SALDO') {
-                walletData.totalBalanceUSD -= totalOrderUSD;
-                walletData.transactions.unshift({
-                    id: 'TX-' + Date.now(),
-                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-                    type: 'Pembayaran Out',
-                    desc: `Pembayaran Order #${orderId}`,
-                    amountUSD: -totalOrderUSD,
-                    status: 'Berhasil'
-                });
-            }
 
             orders.unshift(newOrder);
             cart = [];
@@ -1429,7 +1469,7 @@
             closeCheckoutModal();
             renderWalletUI();
             switchTab('orders');
-            showToast(`Pesanan #${orderId} berhasil dibuat!`, 'success');
+            showToast(`Pesanan #${orderId} berhasil dibuat & dilindungi Escrow!`, 'success');
         }
 
         function openSellModal() {
