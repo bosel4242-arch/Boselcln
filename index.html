@@ -1162,11 +1162,26 @@
 
         async function signInWithProvider(provider) {
             if (!_supabase) { showToast('Supabase belum terhubung', 'error'); return; }
-            const { error } = await _supabase.auth.signInWithOAuth({
-                provider: provider,
-                options: { redirectTo: window.location.origin }
-            });
-            if (error) showToast('Gagal masuk: ' + error.message, 'error');
+            
+            if (provider === 'google') {
+                // Menggunakan mode skipBrowserRedirect agar popup aman dari looping di mobile
+                const { error } = await _supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        skipBrowserRedirect: true,
+                        redirectTo: window.location.origin
+                    }
+                });
+                if (error) {
+                    showToast('Gagal masuk: ' + error.message, 'error');
+                }
+            } else {
+                const { error } = await _supabase.auth.signInWithOAuth({
+                    provider: provider,
+                    options: { redirectTo: window.location.origin }
+                });
+                if (error) showToast('Gagal masuk: ' + error.message, 'error');
+            }
         }
 
         async function handleLogout() {
