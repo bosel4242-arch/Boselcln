@@ -301,15 +301,16 @@
                 <!-- Section Grid Layout Profil & Transaksi -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     
-                    <!-- Kartu Profil Data Diri Customer -->
+                    <!-- Kartu Profil Data Diri Customer + Form Verifikasi KYC -->
                     <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-3d space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <h3 class="font-extrabold text-brand-navy flex items-center gap-2 text-sm">
-                                <i class="fa-solid fa-id-card text-brand-orangeRed"></i> Profil Data Diri
+                                <i class="fa-solid fa-id-card text-brand-orangeRed"></i> Profil & Verifikasi KYC
                             </h3>
-                            <span class="text-[10px] font-extrabold bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full border border-blue-200">Customer</span>
+                            <span id="profileKycBadge" class="text-[10px] font-extrabold bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full border border-blue-200">Customer</span>
                         </div>
 
+                        <!-- Info Rincian Profil -->
                         <div class="space-y-3 text-xs">
                             <div>
                                 <span class="text-[10px] text-slate-400 font-bold uppercase block">ID Customer</span>
@@ -347,9 +348,16 @@
                             </div>
                         </div>
 
-                        <button onclick="openAuthModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs py-2.5 rounded-xl transition">
-                            Perbarui Data Diri
-                        </button>
+                        <!-- Form Edit / Pengajuan Verifikasi KYC Customer -->
+                        <form onsubmit="handleKycSubmission(event)" class="border-t border-slate-100 pt-3 space-y-2.5 text-xs">
+                            <span class="text-[10px] font-extrabold text-brand-navy block uppercase">Perbarui Data Identitas (KYC)</span>
+                            <input type="text" id="kycInputNik" placeholder="Nomor NIK KTP (16 Digit)" required maxlength="16" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
+                            <input type="tel" id="kycInputPhone" placeholder="Nomor WhatsApp (+62...)" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
+                            <textarea id="kycInputAddress" rows="2" placeholder="Alamat lengkap sesuai KTP" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed"></textarea>
+                            <button type="submit" class="w-full bg-brand-navy hover:bg-brand-navyDark text-white font-extrabold py-2.5 rounded-xl transition">
+                                <i class="fa-solid fa-shield-check"></i> Kirim Verifikasi Identity
+                            </button>
+                        </form>
                     </div>
 
                     <!-- Tabel Riwayat Mutasi Transaksi Saldo -->
@@ -483,7 +491,7 @@
         </div>
     </div>
 
-    <!-- MODAL: TOP-UP SALDO (QRIS & VIRTUAL ACCOUNT) -->
+    <!-- MODAL: TOP-UP SALDO (INTEGRASI MIDTRANS & XENDIT) -->
     <div id="topUpModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
         <div class="bg-white border border-slate-100 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative my-8">
             <button onclick="closeTopUpModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg">
@@ -496,11 +504,11 @@
                 </div>
                 <div>
                     <h3 class="text-base font-extrabold text-brand-navy">Isi Saldo (Top-Up)</h3>
-                    <p class="text-[11px] text-slate-400">Pilih nominal dan metode pembayaran instant</p>
+                    <p class="text-[11px] text-slate-400">Pilih nominal dan gateway pembayaran resmi</p>
                 </div>
             </div>
 
-            <!-- Step 1: Form Input Nominal & Metode -->
+            <!-- Step 1: Form Input Nominal & Gateway Provider -->
             <div id="topUpStepForm" class="space-y-4 text-xs">
                 <div>
                     <label class="block font-bold text-slate-500 mb-1">Nominal Top-Up (IDR)</label>
@@ -519,44 +527,28 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block font-bold text-slate-500">Pilih Metode Pembayaran</label>
+                    <label class="block font-bold text-slate-500">Pilih Payment Gateway Provider</label>
                     <div class="grid grid-cols-2 gap-3">
                         <label class="flex items-center gap-3 p-3 bg-slate-50 border-2 border-slate-200 rounded-2xl cursor-pointer hover:border-emerald-500 transition">
-                            <input type="radio" name="topupMethod" value="QRIS" checked class="text-emerald-500 focus:ring-0">
+                            <input type="radio" name="topupGateway" value="MIDTRANS" checked class="text-emerald-500 focus:ring-0">
                             <div>
-                                <span class="px-2 py-0.5 rounded text-[9px] bg-red-600 text-white font-black">QRIS</span>
-                                <span class="block font-bold text-slate-700 text-[11px] mt-0.5">Scan Semua E-Wallet</span>
+                                <span class="px-2 py-0.5 rounded text-[9px] bg-blue-600 text-white font-black">MIDTRANS</span>
+                                <span class="block font-bold text-slate-700 text-[11px] mt-0.5">Snap & QRIS</span>
                             </div>
                         </label>
 
                         <label class="flex items-center gap-3 p-3 bg-slate-50 border-2 border-slate-200 rounded-2xl cursor-pointer hover:border-emerald-500 transition">
-                            <input type="radio" name="topupMethod" value="BCA" class="text-emerald-500 focus:ring-0">
+                            <input type="radio" name="topupGateway" value="XENDIT" class="text-emerald-500 focus:ring-0">
                             <div>
-                                <span class="px-2 py-0.5 rounded text-[9px] badge-bca">BCA</span>
-                                <span class="block font-bold text-slate-700 text-[11px] mt-0.5">Virtual Account</span>
-                            </div>
-                        </label>
-
-                        <label class="flex items-center gap-3 p-3 bg-slate-50 border-2 border-slate-200 rounded-2xl cursor-pointer hover:border-emerald-500 transition">
-                            <input type="radio" name="topupMethod" value="MANDIRI" class="text-emerald-500 focus:ring-0">
-                            <div>
-                                <span class="px-2 py-0.5 rounded text-[9px] badge-mandiri">MANDIRI</span>
-                                <span class="block font-bold text-slate-700 text-[11px] mt-0.5">Virtual Account</span>
-                            </div>
-                        </label>
-
-                        <label class="flex items-center gap-3 p-3 bg-slate-50 border-2 border-slate-200 rounded-2xl cursor-pointer hover:border-emerald-500 transition">
-                            <input type="radio" name="topupMethod" value="BRI" class="text-emerald-500 focus:ring-0">
-                            <div>
-                                <span class="px-2 py-0.5 rounded text-[9px] badge-bri">BRI</span>
-                                <span class="block font-bold text-slate-700 text-[11px] mt-0.5">BRIVA</span>
+                                <span class="px-2 py-0.5 rounded text-[9px] bg-indigo-600 text-white font-black">XENDIT</span>
+                                <span class="block font-bold text-slate-700 text-[11px] mt-0.5">VA & E-Wallet</span>
                             </div>
                         </label>
                     </div>
                 </div>
 
-                <button onclick="processTopUpRequest()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
-                    Lanjutkan Pembayaran
+                <button onclick="processTopUpGatewayRequest()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
+                    Proses Pembayaran Gateway
                 </button>
             </div>
 
@@ -590,13 +582,13 @@
 
                 <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl text-emerald-800 text-[11px] font-semibold flex items-center justify-center gap-2">
                     <i class="fa-solid fa-spinner animate-spin"></i>
-                    <span>Menunggu konfirmasi pembayaran otomatis...</span>
+                    <span>Menunggu konfirmasi webhook pembayaran otomatis...</span>
                 </div>
 
                 <!-- Simulasi Pembayaran -->
                 <div class="pt-2 space-y-2">
                     <button onclick="simulatePaymentSuccess()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
-                        <i class="fa-solid fa-circle-check"></i> Simulasi Pembayaran Lunas (Demo)
+                        <i class="fa-solid fa-circle-check"></i> Simulasi Webhook Lunas (Demo)
                     </button>
                     <button onclick="closeTopUpModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 rounded-xl text-[11px]">
                         Batal
@@ -871,14 +863,14 @@
             totalBalanceUSD: 1613.92,
             holdBalanceUSD: 31.65,
             transactions: [
-                { id: 'TX-001', date: '09 Okt 2026, 08:30', type: 'Top-Up / Deposit', desc: 'Transfer Bank BCA', amountUSD: 63.29, status: 'Berhasil' },
+                { id: 'TX-001', date: '09 Okt 2026, 08:30', type: 'Top-Up / Deposit', desc: 'Transfer Gateway BCA', amountUSD: 63.29, status: 'Berhasil' },
                 { id: 'TX-002', date: '08 Okt 2026, 14:15', type: 'Pembayaran Out', desc: 'Belanja Merchant X', amountUSD: -15.82, status: 'Berhasil' },
                 { id: 'TX-003', date: '05 Okt 2026, 10:00', type: 'Penarikan / Withdraw', desc: 'Transfer ke Bank Mandiri', amountUSD: -31.65, status: 'Pending' }
             ]
         };
 
         let currentTopUpAmount = 100000;
-        let currentTopUpMethod = 'QRIS';
+        let currentTopUpGateway = 'MIDTRANS';
 
         const INITIAL_PRODUCTS = [];
 
@@ -888,10 +880,10 @@
 
             if (_supabase) {
                 const { data: { session } } = await _supabase.auth.getSession();
-                setUserFromSession(session);
+                await setUserFromSession(session);
 
-                _supabase.auth.onAuthStateChange((event, session) => {
-                    setUserFromSession(session);
+                _supabase.auth.onAuthStateChange(async (event, session) => {
+                    await setUserFromSession(session);
                     renderMyListings();
                 });
             } else {
@@ -905,7 +897,7 @@
             updateCartBadges();
         });
 
-        function setUserFromSession(session) {
+        async function setUserFromSession(session) {
             if (session && session.user) {
                 currentUser = {
                     id: session.user.id,
@@ -914,6 +906,23 @@
                 };
                 customerProfile.fullName = currentUser.name;
                 customerProfile.email = currentUser.email;
+
+                // Tarik profil KYC dari DB Supabase jika tersedia
+                if (_supabase) {
+                    const { data: profileData } = await _supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', currentUser.id)
+                        .single();
+
+                    if (profileData) {
+                        customerProfile.nik = profileData.nik || customerProfile.nik;
+                        customerProfile.phone = profileData.phone_number || customerProfile.phone;
+                        customerProfile.address = profileData.address || customerProfile.address;
+                        walletData.kycStatus = profileData.kyc_status || walletData.kycStatus;
+                        walletData.totalBalanceUSD = (profileData.wallet_balance || 0) / CURRENCIES.IDR.rate;
+                    }
+                }
             } else {
                 currentUser = null;
             }
@@ -1043,10 +1052,23 @@
             document.getElementById('profileEmail').innerText = customerProfile.email;
             document.getElementById('profileAddress').innerText = customerProfile.address;
 
+            // Status Badge KYC
+            const kycBadge = document.getElementById('walletKycStatus');
+            if (walletData.kycStatus === 'verified' || walletData.kycStatus === 'Terverifikasi') {
+                kycBadge.className = "text-sm text-emerald-400 font-extrabold";
+                kycBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Terverifikasi`;
+            } else if (walletData.kycStatus === 'pending') {
+                kycBadge.className = "text-sm text-amber-400 font-extrabold";
+                kycBadge.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> Menunggu Verifikasi`;
+            } else {
+                kycBadge.className = "text-sm text-slate-400 font-extrabold";
+                kycBadge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Belum Verifikasi`;
+            }
+
             const tbody = document.getElementById('walletTransactionHistory');
             tbody.innerHTML = walletData.transactions.map(tx => {
                 const isPositive = tx.amountUSD > 0;
-                const statusColor = tx.status === 'Berhasil' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+                const statusColor = tx.status === 'Berhasil' || tx.status === 'SUCCESS' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
                 return `
                     <tr class="hover:bg-slate-50 transition">
                         <td class="py-3 px-3 text-slate-500 font-medium">${tx.date}</td>
@@ -1065,7 +1087,46 @@
             }).join('');
         }
 
-        /* FUNGSI MODAL TOP-UP SALDO */
+        // FUNGSI PENGAJUAN VERIFIKASI IDENTITAS CUSTOMER (KYC)
+        async function handleKycSubmission(e) {
+            e.preventDefault();
+            const nik = document.getElementById('kycInputNik').value.trim();
+            const phone = document.getElementById('kycInputPhone').value.trim();
+            const address = document.getElementById('kycInputAddress').value.trim();
+
+            if (nik.length !== 16) {
+                showToast('NIK harus terdiri dari 16 digit angka KTP', 'error');
+                return;
+            }
+
+            customerProfile.nik = nik;
+            customerProfile.phone = phone;
+            customerProfile.address = address;
+            walletData.kycStatus = 'pending';
+
+            if (_supabase && currentUser) {
+                const { error } = await _supabase
+                    .from('profiles')
+                    .update({
+                        nik: nik,
+                        phone_number: phone,
+                        address: address,
+                        kyc_status: 'pending',
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', currentUser.id);
+
+                if (error) {
+                    showToast('Gagal mengirim KYC ke Supabase: ' + error.message, 'error');
+                    return;
+                }
+            }
+
+            renderWalletUI();
+            showToast('Identitas berhasil dikirim! Menunggu persetujuan admin.', 'success');
+        }
+
+        /* FUNGSI MODAL TOP-UP SALDO & GATEWAY INTEGRATOR */
         function openTopUpModal() {
             document.getElementById('topUpStepForm').classList.remove('hidden');
             document.getElementById('topUpStepPayment').classList.add('hidden');
@@ -1080,7 +1141,7 @@
             document.getElementById('topUpAmountInput').value = amount;
         }
 
-        function processTopUpRequest() {
+        async function processTopUpGatewayRequest() {
             const inputVal = parseFloat(document.getElementById('topUpAmountInput').value) || 0;
             if (inputVal < 10000) {
                 showToast('Minimal top-up saldo adalah Rp 10.000', 'error');
@@ -1088,18 +1149,34 @@
             }
 
             currentTopUpAmount = inputVal;
-            currentTopUpMethod = document.querySelector('input[name="topupMethod"]:checked').value;
+            currentTopUpGateway = document.querySelector('input[name="topupGateway"]:checked').value;
 
             document.getElementById('topUpPayAmount').innerText = 'Rp ' + currentTopUpAmount.toLocaleString('id-ID');
+
+            const referenceId = `TOPUP-${currentTopUpGateway}-${Date.now()}`;
+
+            // Jika Supabase aktif, buat record transaksi draft PENDING
+            if (_supabase && currentUser) {
+                await _supabase
+                    .from('transactions')
+                    .insert([{
+                        reference_id: referenceId,
+                        user_id: currentUser.id,
+                        type: 'TOPUP',
+                        amount: currentTopUpAmount,
+                        payment_gateway: currentTopUpGateway,
+                        status: 'PENDING'
+                    }]);
+            }
 
             const qrisContainer = document.getElementById('qrisContainer');
             const vaContainer = document.getElementById('vaContainer');
 
-            if (currentTopUpMethod === 'QRIS') {
+            if (currentTopUpGateway === 'MIDTRANS') {
                 qrisContainer.classList.remove('hidden');
                 vaContainer.classList.add('hidden');
                 
-                const qrData = `JTID-PAY-IDR-${currentTopUpAmount}-${Date.now()}`;
+                const qrData = `MIDTRANS-PAY-IDR-${currentTopUpAmount}-${referenceId}`;
                 document.getElementById('qrisImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
             } else {
                 qrisContainer.classList.add('hidden');
@@ -1108,12 +1185,9 @@
                 const vaBadge = document.getElementById('vaBankBadge');
                 const vaNum = document.getElementById('vaNumberDisplay');
 
-                const bankPrefixes = { BCA: '88392', MANDIRI: '89008', BRI: '12883', BNI: '98808' };
-                const prefix = bankPrefixes[currentTopUpMethod] || '88392';
-                
-                vaBadge.innerText = currentTopUpMethod + ' Virtual Account';
-                vaBadge.className = `px-3 py-1 rounded-full text-xs font-black shadow-sm inline-block badge-${currentTopUpMethod.toLowerCase()}`;
-                vaNum.innerText = `${prefix}${walletData.accountNumber.replace(/-/g, '')}`;
+                vaBadge.innerText = 'XENDIT VA';
+                vaBadge.className = `px-3 py-1 rounded-full text-xs font-black shadow-sm inline-block bg-indigo-600 text-white`;
+                vaNum.innerText = `8800${walletData.accountNumber.replace(/-/g, '')}`;
             }
 
             document.getElementById('topUpStepForm').classList.add('hidden');
@@ -1135,14 +1209,14 @@
                 id: 'TX-' + Date.now(),
                 date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
                 type: 'Top-Up / Deposit',
-                desc: `Top-Up via ${currentTopUpMethod}`,
+                desc: `Top-Up Webhook ${currentTopUpGateway}`,
                 amountUSD: addedUSD,
                 status: 'Berhasil'
             });
 
             closeTopUpModal();
             renderWalletUI();
-            showToast(`Top-up sebesar Rp ${currentTopUpAmount.toLocaleString('id-ID')} berhasil masuk ke Saldo!`, 'success');
+            showToast(`Webhook Berhasil! Saldo Rp ${currentTopUpAmount.toLocaleString('id-ID')} masuk ke akun!`, 'success');
         }
 
         function loadState() {
