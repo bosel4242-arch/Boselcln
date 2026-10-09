@@ -517,48 +517,45 @@
 
     </div>
 
-    <!-- MODAL: LOGIN / REGISTER -->
+    <!-- MODAL: LOGIN / REGISTER (KHUSUS EMAIL OTP & MAGIC LINK) -->
     <div id="authModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
         <div class="bg-white border border-slate-100 rounded-3xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
             <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
 
             <div id="authLoggedOutView" class="space-y-4">
                 <div class="text-center space-y-1">
-                    <h3 class="text-base font-extrabold text-brand-navy">Masuk / Daftar Akun JT ID</h3>
-                    <p class="text-xs text-slate-400">Pilih metode masuk untuk melanjutkan ke platform.</p>
-                </div>
-
-                <div class="space-y-2">
-                    <button onclick="signInWithProvider('google')" class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-2xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
-                        <i class="fa-brands fa-google text-red-500 text-sm"></i>
-                        <span>Lanjutkan dengan Google</span>
-                    </button>
-                    <button onclick="signInWithProvider('facebook')" class="w-full bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold py-3 px-4 rounded-2xl shadow-sm text-xs flex items-center justify-center gap-2 transition">
-                        <i class="fa-brands fa-facebook text-sm"></i>
-                        <span>Lanjutkan dengan Facebook</span>
-                    </button>
-                </div>
-
-                <div class="relative flex py-1 items-center">
-                    <div class="flex-grow border-t border-slate-200"></div>
-                    <span class="flex-shrink mx-3 text-[10px] font-bold text-slate-400 uppercase">atau email</span>
-                    <div class="flex-grow border-t border-slate-200"></div>
-                </div>
-
-                <form onsubmit="sendEmailCode(event)" class="space-y-3 text-xs">
-                    <div>
-                        <label class="block font-bold text-slate-500 mb-1">Email Anda</label>
-                        <input type="email" id="authEmail" required placeholder="nama@surel.com" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed">
+                    <div class="w-12 h-12 bg-brand-orangeRed/10 text-brand-orangeRed rounded-2xl flex items-center justify-center mx-auto text-xl mb-2">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
                     </div>
-                    <button type="submit" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition">
-                        Kirim Link Masuk
+                    <h3 class="text-base font-extrabold text-brand-navy">Masuk / Daftar Aman via Email</h3>
+                    <p class="text-xs text-slate-400">Kirim Link Masuk atau Kode OTP langsung ke email Anda.</p>
+                </div>
+
+                <form onsubmit="sendEmailOtp(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-500 mb-1">Alamat Email Aktif</label>
+                        <input type="email" id="authEmail" required placeholder="nama@surel.com" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-slate-800 outline-none focus:ring-1 focus:ring-brand-orangeRed font-medium">
+                    </div>
+                    <button type="submit" id="btnSendOtp" class="w-full bg-brand-orangeRed hover:bg-brand-orangeDark text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Kirim Kode OTP / Link Masuk</span>
                     </button>
                 </form>
+
+                <!-- FORM VERIFIKASI KODE OTP -->
+                <div id="otpVerifySection" class="hidden space-y-3 border-t border-slate-100 pt-3 text-xs">
+                    <p class="text-emerald-600 font-bold text-center">OTP terkirim! Masukkan 6 digit kode dari email:</p>
+                    <input type="text" id="otpCodeInput" placeholder="123456" maxlength="6" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-center text-lg font-mono font-bold tracking-widest text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
+                    <button onclick="verifyOtpCode()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3 rounded-2xl shadow-md transition">
+                        Verifikasi Kode OTP
+                    </button>
+                </div>
+
                 <div id="authMessage" class="text-center text-[11px] text-slate-500 font-medium"></div>
             </div>
 
             <div id="authLoggedInView" class="hidden space-y-4 text-center">
-                <div class="w-14 h-14 bg-brand-orangeRed/10 text-brand-orangeRed rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
+                <div class="w-14 h-14 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
                     <i class="fa-solid fa-user-check"></i>
                 </div>
                 <div>
@@ -887,7 +884,7 @@
         const SUPABASE_URL = "https://mijuxsfstrfqwdlaquvn.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_A50xysNVhJexnSjkpYur2Q_pZRz2ua4";
         
-        // Supabase diinisialisasi dengan persistensi dan pendeteksi sesi URL yang aman
+        // Supabase client diinisialisasi dengan persistensi sesi yang andal
         const _supabase = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
             auth: {
                 persistSession: true,
@@ -926,6 +923,7 @@
         let activeCountryFilter = 'ALL';
         let discountRate = 0;
         let currentUser = null;
+        let activeAuthEmail = '';
 
         let customerProfile = {
             id: '-',
@@ -1140,47 +1138,56 @@
             document.getElementById('authModal').classList.add('hidden');
         }
 
-        async function sendEmailCode(e) {
+        // FUNGSI KIRIM OTP / MAGIC LINK KE EMAIL
+        async function sendEmailOtp(e) {
             e.preventDefault();
-            const email = document.getElementById('authEmail').value;
+            const email = document.getElementById('authEmail').value.trim();
             const msgEl = document.getElementById('authMessage');
             if (!_supabase) { msgEl.innerText = 'Supabase belum terhubung.'; return; }
 
-            msgEl.innerText = 'Mengirim tautan masuk...';
+            activeAuthEmail = email;
+            msgEl.innerText = 'Mengirim kode OTP ke email...';
+
+            // Mengirim OTP Login (Supabase signInWithOtp otomatis mengirimkan kode 6 digit atau Magic Link)
             const { error } = await _supabase.auth.signInWithOtp({
                 email,
-                options: { emailRedirectTo: window.location.origin }
+                options: { shouldCreateUser: true }
             });
 
             if (error) {
                 msgEl.innerText = 'Gagal: ' + error.message;
+                showToast('Gagal mengirim email: ' + error.message, 'error');
             } else {
-                msgEl.innerText = 'Tautan masuk telah dikirim! Silakan periksa email Anda.';
-                showToast('Email terkirim! Cek kotak masuk/spam.', 'success');
+                msgEl.innerText = 'OTP & Link terkirim! Periksa inbox/spam email Anda.';
+                showToast('Kode OTP terkirim ke email Anda!', 'success');
+                // Tampilkan input verifikasi OTP 6 digit
+                document.getElementById('otpVerifySection').classList.remove('hidden');
             }
         }
 
-        async function signInWithProvider(provider) {
-            if (!_supabase) { showToast('Supabase belum terhubung', 'error'); return; }
-            
-            if (provider === 'google') {
-                // Menggunakan mode skipBrowserRedirect agar popup aman dari looping di mobile
-                const { error } = await _supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        skipBrowserRedirect: true,
-                        redirectTo: window.location.origin
-                    }
-                });
-                if (error) {
-                    showToast('Gagal masuk: ' + error.message, 'error');
-                }
+        // FUNGSI VERIFIKASI KODE OTP
+        async function verifyOtpCode() {
+            const token = document.getElementById('otpCodeInput').value.trim();
+            const msgEl = document.getElementById('authMessage');
+            if (!token || token.length < 6) {
+                showToast('Masukkan 6 digit kode OTP dengan benar.', 'error');
+                return;
+            }
+
+            msgEl.innerText = 'Memverifikasi kode...';
+            const { data, error } = await _supabase.auth.verifyOtp({
+                email: activeAuthEmail,
+                token: token,
+                type: 'email'
+            });
+
+            if (error) {
+                msgEl.innerText = 'Verifikasi Gagal: ' + error.message;
+                showToast('Kode OTP salah atau kedaluwarsa.', 'error');
             } else {
-                const { error } = await _supabase.auth.signInWithOAuth({
-                    provider: provider,
-                    options: { redirectTo: window.location.origin }
-                });
-                if (error) showToast('Gagal masuk: ' + error.message, 'error');
+                showToast('Login Berhasil!', 'success');
+                closeAuthModal();
+                await setUserFromSession(data.session);
             }
         }
 
@@ -1350,9 +1357,6 @@
             document.getElementById('topUpAmountInput').value = amount;
         }
 
-        // ==========================================
-        // PROSES MIDTRANS SNAP (MENGGUNAKAN FUNGSI DYNAMIC-RESPONDER)
-        // ==========================================
         async function processTopUpGatewayRequest() {
             const inputVal = parseFloat(document.getElementById('topUpAmountInput').value) || 0;
             if (inputVal < 10000) {
@@ -1372,8 +1376,6 @@
             if (currentTopUpGateway === 'MIDTRANS') {
                 try {
                     showToast('Menghubungkan ke Midtrans Snap...', 'info');
-                    
-                    // Memanggil Supabase Edge Function 'dynamic-responder'
                     const { data, error } = await _supabase.functions.invoke('dynamic-responder', {
                         body: { nominal: currentTopUpAmount }
                     });
@@ -1381,24 +1383,16 @@
                     if (error) throw error;
                     if (!data || !data.snap_token) throw new Error('Snap Token tidak ditemukan dari server.');
 
-                    // Memunculkan Popup Midtrans Snap
                     window.snap.pay(data.snap_token, {
                         onSuccess: function(result) {
                             showToast('Pembayaran Midtrans Berhasil!', 'success');
                             closeTopUpModal();
                             setTimeout(() => window.location.reload(), 1500);
                         },
-                        onPending: function(result) {
-                            showToast('Menunggu pembayaran selesai...', 'info');
-                        },
-                        onError: function(result) {
-                            showToast('Pembayaran Gagal!', 'error');
-                        },
-                        onClose: function() {
-                            showToast('Jendela pembayaran ditutup.', 'info');
-                        }
+                        onPending: function(result) { showToast('Menunggu pembayaran selesai...', 'info'); },
+                        onError: function(result) { showToast('Pembayaran Gagal!', 'error'); },
+                        onClose: function() { showToast('Jendela pembayaran ditutup.', 'info'); }
                     });
-
                 } catch (err) {
                     console.error("Midtrans Error:", err);
                     showToast('Gagal memproses Midtrans: ' + err.message, 'error');
@@ -1435,7 +1429,6 @@
 
         async function simulatePaymentSuccess() {
             if (!_supabase || !currentUser) return;
-
             showToast('Memproses webhook pembayaran realtime ke database...', 'info');
 
             const newTotalBalance = walletData.totalBalanceIDR + currentTopUpAmount;
@@ -1449,16 +1442,14 @@
                 return;
             }
 
-            await _supabase
-                .from('transactions')
-                .insert([{
-                    reference_id: `TOPUP-SUCCESS-${Date.now()}`,
-                    user_id: currentUser.id,
-                    type: 'TOPUP',
-                    amount: currentTopUpAmount,
-                    payment_gateway: currentTopUpGateway,
-                    status: 'SUCCESS'
-                }]);
+            await _supabase.from('transactions').insert([{
+                reference_id: `TOPUP-SUCCESS-${Date.now()}`,
+                user_id: currentUser.id,
+                type: 'TOPUP',
+                amount: currentTopUpAmount,
+                payment_gateway: currentTopUpGateway,
+                status: 'SUCCESS'
+            }]);
 
             walletData.totalBalanceIDR = newTotalBalance;
             closeTopUpModal();
@@ -1474,11 +1465,7 @@
             const newHoldBalance = walletData.holdBalanceIDR + totalAmountIDR;
 
             if (_supabase && userId) {
-                await _supabase
-                    .from('wallets')
-                    .update({ hold_balance_idr: newHoldBalance })
-                    .eq('user_id', userId);
-
+                await _supabase.from('wallets').update({ hold_balance_idr: newHoldBalance }).eq('user_id', userId);
                 await _supabase.from('transactions').insert([{
                     reference_id: `ESCROW-HOLD-${orderId}`,
                     user_id: userId,
