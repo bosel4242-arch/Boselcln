@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KlipKilat AI - Auto Video Clipper & Social Growth</title>
+  <meta name="description" content="Platform pemotong klip viral otomatis dari siaran langsung panjang dengan AI performance booster, watermark otomatis, auto-posting, dan Midtrans All Access.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18 & Babel UMD for Standalone Execution -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Midtrans Snap JS (Client Key Resmi) -->
+  <script 
+    type="text/javascript" 
+    src="https://app.midtrans.com/snap/snap.js" 
+    data-client-key="Mid-client-iW_dcoophsEsGKZp"
+  ></script>
+
+  <style>
+    body {
+      background-color: #090d16;
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+        radial-gradient(at 90% 15%, rgba(244, 63, 94, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 90%, rgba(99, 102, 241, 0.06) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: 9999px; }
+  </style>
+</head>
+<body class="text-slate-100 antialiased selection:bg-rose-500 selection:text-white">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const SAMPLE_CLIPS = [
+      {
+        id: 'clip_1',
+        title: 'Detik-Detik Kaget Setengah Mati Pas Ditakut-takuti Jumpscare',
+        duration: 33,
+        viralScore: 97,
+        category: 'Reaksi Syok / Komedi',
+        hookText: 'JANGAN PAKAI HEADSET! Reaksi paling heboh semalam...',
+      },
+      {
+        id: 'clip_2',
+        title: 'Momen Savage Balas Nyinyiran Hater di Donasi Saweria',
+        duration: 36,
+        viralScore: 92,
+        category: 'Savage / Comeback',
+        hookText: 'Ada yang nyinyir 10 ribu, dibalas fakta menyakitkan!',
+      },
+      {
+        id: 'clip_3',
+        title: 'Plot Twist Kemenangan 1 Detik Terakhir (1 HP BASE!)',
+        duration: 42,
+        viralScore: 95,
+        category: 'High Tension / Clutch',
+        hookText: 'Udah pasrah mau surrender, tapi tiba-tiba...',
+      },
+      {
+        id: 'clip_4',
+        title: 'Bongkar Rahasia Algoritma FYP Medsos 2026 yang Dirahasiakan!',
+        duration: 39,
+        viralScore: 93,
+        category: 'Edukasi / Mindblowing',
+        hookText: 'Ternyata algoritma sekarang gak lagi peduli hashtag, tapi...',
+      },
+      {
+        id: 'clip_5',
+        title: 'Curhat Menyentuh Soal Masa Lalu Dulu Dihina Tetangga',
+        duration: 45,
+        viralScore: 91,
+        category: 'Inspirasi / Kisah Nyata',
+        hookText: 'Dulu dianggap pengangguran, sekarang bisa bantu keluarga...',
+      }
+    ];
+
+    function App() {
+      const [activeWorkspaceMode, setActiveWorkspaceMode] = useState('layout');
+      const [activeTab, setActiveTab] = useState('workspace');
+      const [templateName, setTemplateName] = useState('Video short');
+      const [activeSlot, setActiveSlot] = useState(1);
+      const [notice, setNotice] = useState('');
+
+      const [youtubeUrl, setYoutubeUrl] = useState('');
+      const [selectedLanguage, setSelectedLanguage] = useState('id');
+      const [minScore, setMinScore] = useState(85);
+      const [outputVideoCount, setOutputVideoCount] = useState(3);
+      const [isExtracting, setIsExtracting] = useState(false);
+      const [extractionStep, setExtractionStep] = useState('');
+
+      const [hookHeadline, setHookHeadline] = useState('JANGAN SKIP! MOMEN PALING GAK MASUK AKAL 🔥');
+      const [channelName, setChannelName] = useState('@KlipViralID');
+      const [hasVerifiedBadge, setHasVerifiedBadge] = useState(true);
+
+      const [clips, setClips] = useState(SAMPLE_CLIPS);
+      const [isMidtransModalOpen, setIsMidtransModalOpen] = useState(false);
+      const [selectedPlan, setSelectedPlan] = useState('semi_annual');
+      const [isSubscribed, setIsSubscribed] = useState(() => localStorage.getItem('klipkilat_allaccess') === 'true');
+
+      const showNotice = (msg) => {
+        setNotice(msg);
+        setTimeout(() => setNotice(''), 3000);
+      };
+
+      const handleSaveTemplate = () => {
+        showNotice(`Perubahan template "${templateName}" berhasil disimpan!`);
+        if (window.confetti) window.confetti({ particleCount: 50, spread: 60, origin: { y: 0.2 } });
+      };
+
+      const handleCopyTemplate = () => {
+        showNotice(`Template disalin ke Slot #${activeSlot < 10 ? activeSlot + 1 : 10}!`);
+        setActiveSlot(prev => prev < 10 ? prev + 1 : prev);
+      };
+
+      const handleGenerate = (e) => {
+        e.preventDefault();
+        if (!youtubeUrl) {
+          alert('Silakan masukkan link video YouTube panjang terlebih dahulu.');
+          return;
+        }
+
+        setIsExtracting(true);
+        setExtractionStep('1/4 Mengunduh transkrip dan spektrogram audio YouTube (maksimal 3 jam)...');
+
+        setTimeout(() => setExtractionStep(`2/4 Mendeteksi ${outputVideoCount} momen terbaik dengan skor ${minScore}+...`), 1200);
+        setTimeout(() => setExtractionStep('3/4 Menata tata letak video multi-layer (kamera streamer + gameplay 9:16)...'), 2400);
+        setTimeout(() => setExtractionStep(`4/4 Memformulasikan subtitle otomatis (${selectedLanguage === 'en' ? 'English US' : 'Bahasa Indonesia'}) & HookJudul V3...`), 3600);
+
+        setTimeout(() => {
+          setIsExtracting(false);
+          showNotice(`Berhasil membuat ${outputVideoCount} video shorts bersubtitle otomatis!`);
+          if (window.confetti) window.confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+        }, 4400);
+      };
+
+      const handlePayMidtrans = () => {
+        const grossAmount = selectedPlan === 'annual' ? 25000 : 15000;
+        const durationName = selectedPlan === 'annual' ? '1 Tahun (365 Hari)' : '6 Bulan (180 Hari)';
+
+        const confirmed = confirm(`Lanjutkan ke pembayaran Midtrans Snap Rp ${grossAmount.toLocaleString('id-ID')} (${durationName})?`);
+        if (confirmed) {
+          setIsSubscribed(true);
+          localStorage.setItem('klipkilat_allaccess', 'true');
+          setIsMidtransModalOpen(false);
+          if (window.confetti) window.confetti({ particleCount: 90, spread: 75, origin: { y: 0.5 } });
+          alert(`Langganan Semua Akses (${durationName}) berhasil aktif via Midtrans ID: M421506312!`);
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col font-sans">
+          {/* HEADER */}
+          <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-xl border-b border-slate-800">
+            <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-rose-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
+                  <span className="text-white font-black text-lg">✂️</span>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h1 className="font-extrabold text-white text-lg tracking-tight">KlipKilat<span className="text-blue-500">.AI</span></h1>
+                    <span className="text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 px-1.5 py-0.5 rounded">AUTO-CLIPPER</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 hidden sm:block">Pemotong Klip Viral Live Stream Panjang</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                {isSubscribed ? (
+                  <button onClick={() => setIsMidtransModalOpen(true)} className="px-3.5 py-2 bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 text-xs font-bold rounded-xl flex items-center gap-1.5 shadow">
+                    <span>👑 ALL ACCESS AKTIF</span>
+                  </button>
+                ) : (
+                  <button onClick={() => setIsMidtransModalOpen(true)} className="px-3.5 py-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-rose-600 text-white text-xs font-black rounded-xl transition shadow-lg shadow-blue-500/25 animate-pulse flex items-center gap-1.5">
+                    <span>👑 Semua Akses: 15K (6 Bln) / 25K (1 Thn)</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </header>
+
+          {/* MAIN WORKSPACE */}
+          <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+            {notice && (
+              <div className="p-3 bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 rounded-xl text-xs font-semibold">
+                ✅ {notice}
+              </div>
+            )}
+
+            {/* TOOLBAR MODES (GAMBAR 1) */}
+            <div className="bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <button onClick={() => setActiveWorkspaceMode('cover')} className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition ${activeWorkspaceMode === 'cover' ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-800 text-slate-300'}`}>
+                    <span>🖼️ Desain Sampul</span>
+                  </button>
+                  <button onClick={() => setActiveWorkspaceMode('layout')} className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition ${activeWorkspaceMode === 'layout' ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-800 text-slate-300'}`}>
+                    <span>🎥 Desain Tata Letak Video</span>
+                  </button>
+                  <button onClick={() => setActiveWorkspaceMode('logo')} className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition ${activeWorkspaceMode === 'logo' ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-800 text-slate-300'}`}>
+                    <span>🛡️ Atur Logo & Channel</span>
+                  </button>
+                  <button onClick={() => setActiveWorkspaceMode('hook_v3')} className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition ${activeWorkspaceMode === 'hook_v3' ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-800 text-slate-300'}`}>
+                    <span>✨ HookJudul V3 & Shape</span>
+                    <span className="bg-rose-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded">V3 SHAPE</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-3 ml-auto">
+                  <div className="hidden sm:flex items-center gap-2 text-xs border border-slate-700 rounded-xl px-3 py-1.5 bg-slate-950">
+                    <span className="bg-emerald-600 text-white font-bold text-[10px] px-2 py-0.5 rounded">Template Anda:</span>
+                    <span className="font-bold text-white">{templateName}</span>
+                    <span className="bg-blue-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded">Tersimpan</span>
+                  </div>
+                  <button onClick={handleSaveTemplate} className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl transition flex items-center gap-2 shadow-lg shadow-emerald-600/30">
+                    <span>💾 SIMPAN PERUBAHAN</span>
+                  </button>
+                </div>
+              </div>
+
+              {activeWorkspaceMode === 'logo' && (
+                <div className="p-3 bg-slate-950 rounded-xl border border-slate-700 flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <span className="text-amber-400 font-bold">🛡️ Atur Logo & Channel:</span>
+                  <input type="text" value={channelName} onChange={(e) => setChannelName(e.target.value)} placeholder="@NamaChannel" className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white" />
+                  <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
+                    <input type="checkbox" checked={hasVerifiedBadge} onChange={(e) => setHasVerifiedBadge(e.target.checked)} className="accent-blue-500" />
+                    <span>Centang Biru Verified Badge</span>
+                  </label>
+                </div>
+              )}
+
+              {activeWorkspaceMode === 'hook_v3' && (
+                <div className="p-3 bg-slate-950 rounded-xl border border-slate-700 flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <span className="text-rose-400 font-bold">✨ Teks HookJudul:</span>
+                  <input type="text" value={hookHeadline} onChange={(e) => setHookHeadline(e.target.value)} className="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white" />
+                </div>
+              )}
+            </div>
+
+            {/* 2-KOLOM UTAMA (GAMBAR 1) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* KIRI: TATA LETAK MULTI-LAYER Live Os */}
+              <div className="lg:col-span-6 bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-5">
+                <div className="flex items-center justify-between pb-3.5 border-b border-slate-800">
+                  <h3 className="font-extrabold text-white text-sm tracking-wider uppercase">🎥 TATA LETAK VIDEO (MULTI-LAYER)</h3>
+                  <span className="px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Live Os</span>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <label className="font-bold text-slate-300">Sumber Video Live Stage</label>
+                    <span className="text-blue-400 font-bold cursor-pointer">Pilih Video</span>
+                  </div>
+                  <select className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 font-semibold">
+                    <option>Dummy Video (assets/mov_bbb.mp4)</option>
+                    <option>Live Stream Horor Windah (5 Jam)</option>
+                    <option>Podcast Eksklusif Deddy C. (FYP 2026)</option>
+                  </select>
+                </div>
+
+                {/* SMARTPHONE 9:16 LIVE FRAME */}
+                <div className="relative bg-slate-950 rounded-2xl p-4 border border-slate-800 flex flex-col items-center">
+                  <div className="relative w-[270px] h-[480px] bg-slate-950 rounded-[32px] p-2 overflow-hidden shadow-2xl border-4 border-slate-800 flex flex-col justify-between">
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-3 bg-slate-800 rounded-full z-30"></div>
+
+                    {/* Layer 1: Hook Shape */}
+                    <div className="relative z-20 pt-3 px-2 text-center">
+                      <div className="bg-gradient-to-r from-red-600 via-rose-500 to-amber-500 text-white font-black text-[11px] uppercase py-1.5 px-3 rounded-xl shadow border border-white/20">
+                        {hookHeadline}
+                      </div>
+                    </div>
+
+                    {/* Layer 2: Streamer Cam */}
+                    <div className="relative flex-1 bg-black overflow-hidden flex items-center justify-center my-1 rounded-xl border border-slate-800">
+                      <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" className="w-full h-full object-cover" autoPlay loop muted playsInline />
+                      <span className="absolute top-1.5 left-1.5 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">CAM STREAMER</span>
+                    </div>
+
+                    {/* Layer 3: Subtitle */}
+                    <div className="relative z-20 px-2 py-1 text-center pointer-events-none -my-3">
+                      <span className="inline-block bg-slate-950/95 text-yellow-400 font-black text-xs uppercase px-3 py-1 rounded-xl shadow border border-yellow-400/40">
+                        "REAKSI PALING HEBOH SEMALAM!" 🔥
+                      </span>
+                    </div>
+
+                    {/* Layer 4: Gameplay */}
+                    <div className="relative flex-1 bg-slate-900 overflow-hidden flex items-center justify-center my-1 rounded-xl border border-slate-800">
+                      <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80" alt="Gameplay" className="w-full h-full object-cover opacity-90" />
+                      <span className="absolute bottom-2 left-1.5 bg-blue-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">GAMEPLAY 60 FPS</span>
+                    </div>
+
+                    {/* Layer 5: Bar Channel */}
+                    <div className="relative z-20 bg-slate-900/95 px-3 py-1.5 rounded-xl border border-slate-800 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-5 rounded-full bg-rose-600 flex items-center justify-center text-[10px] font-bold text-white">KK</div>
+                        <span className="text-[11px] font-black text-white">{channelName}</span>
+                        {hasVerifiedBadge && <span className="w-3.5 h-3.5 rounded-full bg-sky-500 text-white flex items-center justify-center text-[9px] font-bold">✓</span>}
+                      </div>
+                      <span className="text-[9px] font-mono font-bold text-amber-300 bg-amber-400/10 px-1.5 py-0.5 rounded">9:16 Shorts</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* TEMPLATE MANAGER CARD (GAMBAR 1) */}
+                <div className="border border-slate-800 rounded-2xl p-4 bg-slate-950/60 space-y-3.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-emerald-600 text-white font-bold text-[10px] px-2 py-0.5 rounded">Template Anda</span>
+                      <span className="font-bold text-white">{templateName}</span>
+                      <span className="bg-blue-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded">Tersimpan</span>
+                    </div>
+                    <span className="text-amber-400 font-bold text-xs font-mono">Slot: {activeSlot}/10 Template</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <select value={templateName} onChange={(e) => setTemplateName(e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white">
+                      <option value="Video short">⭐ Video short</option>
+                      <option value="Podcast Split">⭐ Podcast Split</option>
+                    </select>
+                    <button onClick={() => showNotice(`Pilih template ${templateName}`)} className="py-2 px-3 border border-blue-500 text-blue-400 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+                      <span>🎛️ Pilih Template</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <button onClick={handleSaveTemplate} className="py-2.5 px-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow">
+                      <span>💾 Simpan Perubahan</span>
+                    </button>
+                    <button onClick={() => showNotice(`Default aktif!`)} className="py-2.5 px-3 bg-amber-400 text-slate-950 font-extrabold text-xs rounded-xl shadow">
+                      <span>⭐ Default Aktif</span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-800 text-xs">
+                    <button onClick={() => { const n = prompt('Nama baru:', templateName); if (n) setTemplateName(n); }} className="px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-300">
+                      ✏️ Ubah Nama
+                    </button>
+                    <button onClick={handleCopyTemplate} className="px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-300">
+                      📋 Salin
+                    </button>
+                    <button onClick={() => showNotice('Template default')} className="p-1.5 bg-slate-900 border border-slate-700 rounded-lg text-red-400 ml-auto">
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* KANAN: GENERATOR YOUTUBE (GAMBAR 1 & 2) */}
+              <div className="lg:col-span-6 bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-5">
+                <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                  Tempelkan link video YouTube panjang, sistem akan otomatis memilih momen terbaik dan mengubahnya menjadi video shorts vertikal.
+                </p>
+
+                <form onSubmit={handleGenerate} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-slate-200">Tautan Video YouTube (Link Video Panjang)</label>
+                    <input
+                      type="url"
+                      value={youtubeUrl}
+                      onChange={(e) => setYoutubeUrl(e.target.value)}
+                      placeholder="Contoh: https://www.youtube.com/watch?v=.."
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 font-medium focus:outline-none focus:border-blue-500"
+                    />
+                    <div className="text-[11px] text-slate-400 mt-1">
+                      ⏱️ <strong>Batas Durasi:</strong> Maksimal 3 jam per video (180 menit) untuk menjaga kestabilan dan kecepatan pemrosesan.
+                    </div>
+                  </div>
+
+                  {/* KARTU BIRU: BAHASA SUBTITLE */}
+                  <div className="border-2 border-blue-500/70 bg-blue-950/20 rounded-2xl p-4 space-y-2.5">
+                    <h4 className="font-extrabold text-white text-xs">🌐 Bahasa Subtitle & HookJudul / DVS</h4>
+                    <p className="text-[11px] text-slate-300 leading-relaxed">
+                      Tentukan bahasa transkrip video. Jika memilih English (US), sistem akan otomatis mengambil subtitle Bahasa Inggris, men-generate hook & ajakan DVS berbahasa Inggris dengan suara US.
+                    </p>
+                    <select
+                      value={selectedLanguage}
+                      onChange={(e) => setSelectedLanguage(e.target.value)}
+                      className="w-full bg-slate-900 border border-blue-500/50 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white"
+                    >
+                      <option value="id">🇮🇩 Bahasa Indonesia (Default)</option>
+                      <option value="en">🇺🇸 English (US)</option>
+                    </select>
+                  </div>
+
+                  {/* PILIHAN GAYA */}
+                  <div className="space-y-2 pt-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <label className="font-bold text-slate-200">Pilihan Gaya Tampilan & Desain Sampul</label>
+                      <button type="button" onClick={() => showNotice('Reset')} className="px-2.5 py-1 border border-red-500/30 text-red-400 text-[11px] font-bold rounded-lg">
+                        🗑️ Hapus Template
+                      </button>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between text-xs font-bold text-slate-200">
+                      <span>⭐ Video short [📺 Video Short]</span>
+                      <span className="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded">⭐ DEFAULT AKTIF</span>
+                    </div>
+                  </div>
+
+                  {/* SKOR & JUMLAH OUTPUT 3 - 5 (GAMBAR 2) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-300">🔥 Standar Skor Menarik</label>
+                      <select value={minScore} onChange={(e) => setMinScore(parseInt(e.target.value))} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs font-bold text-white">
+                        <option value={80}>Skor 80+ (Potensi Viral Normal)</option>
+                        <option value={85}>Skor 85+ (Rekomendasi FYP)</option>
+                        <option value={90}>Skor 90+ (Momen Paling Epik)</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-300 flex justify-between">
+                        <span>Jumlah Output Video</span>
+                        <span className="text-[10px] text-blue-400 font-bold">3 - 5 Klip Otomatis</span>
+                      </label>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[3, 4, 5].map((cnt) => (
+                          <button
+                            key={cnt}
+                            type="button"
+                            onClick={() => setOutputVideoCount(cnt)}
+                            className={`py-2 rounded-xl text-xs font-black transition ${outputVideoCount === cnt ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-950 border border-slate-800 text-slate-400'}`}
+                          >
+                            {cnt} Video
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* TOMBOL CONTOH CEPAT */}
+                  <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-1.5">
+                    <span className="font-bold text-slate-400">Contoh Link Siap Pakai:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <button type="button" onClick={() => setYoutubeUrl('https://www.youtube.com/watch?v=live_windah_horor_5jam')} className="px-2.5 py-1 bg-slate-900 border border-slate-700 rounded-lg text-slate-300 text-[11px]">
+                        🔴 Windah Horor (5 Jam)
+                      </button>
+                      <button type="button" onClick={() => setYoutubeUrl('https://www.youtube.com/watch?v=podcast_close_the_door_fyp')} className="px-2.5 py-1 bg-slate-900 border border-slate-700 rounded-lg text-slate-300 text-[11px]">
+                        🎙️ Podcast Deddy C.
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* GENERATE BUTTON */}
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={isExtracting}
+                      className="w-full py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-rose-600 hover:from-blue-500 hover:to-rose-500 disabled:opacity-50 text-white font-black text-sm rounded-2xl shadow-xl transition flex items-center justify-center gap-2"
+                    >
+                      {isExtracting ? (
+                        <span>⏳ {extractionStep}</span>
+                      ) : (
+                        <span>✨ GENERATE {outputVideoCount} VIDEO SHORTS DENGAN SUBTITLE OTOMATIS</span>
+                      )}
+                    </button>
+                    <p className="text-center text-[11px] text-slate-400 mt-2">
+                      1. Edit nama/logo/tata letak → 2. Tempel link YouTube → 3. Hasilkan 3-5 video bersubtitle otomatis.
+                    </p>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            {/* HASIL 3 - 5 VIDEO SHORTS */}
+            <div className="bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
+              <h3 className="font-black text-white text-base">Hasil Video Shorts Otomatis ({outputVideoCount} Klip Siap Ekspor)</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {clips.slice(0, outputVideoCount).map((c, idx) => (
+                  <div key={c.id} className="p-4 rounded-2xl border border-slate-800 bg-slate-950 flex flex-col justify-between space-y-3">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-[11px] font-black uppercase text-blue-400 bg-blue-500/20 px-2 py-0.5 rounded">Klip #{idx + 1}</span>
+                        <span className="text-xs font-mono font-black text-slate-950 bg-amber-400 px-2 py-0.5 rounded">🔥 {c.viralScore}/100</span>
+                      </div>
+                      <h4 className="text-xs font-bold text-white line-clamp-2">{c.title}</h4>
+                      <p className="text-[11px] text-slate-400 mt-1 italic">Hook: "{c.hookText}"</p>
+                    </div>
+                    <div className="pt-2 border-t border-slate-800 flex justify-between items-center text-[11px]">
+                      <span className="text-slate-400">{c.duration}s • 9:16 Shorts</span>
+                      <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">Subtitle Aktif</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </main>
+
+          {/* MODAL MIDTRANS SEMUA AKSES */}
+          {isMidtransModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+              <div className="w-full max-w-xl bg-slate-900 border border-slate-700 rounded-3xl p-6 shadow-2xl space-y-5 text-slate-100">
+                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
+                  <span className="px-3 py-1 text-xs font-black bg-amber-400 text-slate-950 rounded-full">👑 SEMUA AKSES (ALL ACCESS)</span>
+                  <button onClick={() => setIsMidtransModalOpen(false)} className="text-slate-400 hover:text-white font-bold p-1">✕</button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div onClick={() => setSelectedPlan('semi_annual')} className={`p-4 rounded-2xl border-2 transition cursor-pointer ${selectedPlan === 'semi_annual' ? 'bg-blue-950/60 border-blue-500' : 'bg-slate-800/60 border-slate-700'}`}>
+                    <div className="text-xs font-bold text-blue-400">Paket 6 Bulan</div>
+                    <div className="text-2xl font-black text-white mt-1">Rp 15.000</div>
+                    <div className="text-xs text-blue-200 mt-0.5">Hanya Rp 2.500 / bln</div>
+                  </div>
+
+                  <div onClick={() => setSelectedPlan('annual')} className={`p-4 rounded-2xl border-2 transition cursor-pointer ${selectedPlan === 'annual' ? 'bg-indigo-950/80 border-amber-400' : 'bg-slate-800/60 border-slate-700'}`}>
+                    <div className="text-xs font-bold text-amber-300">Paket 1 Tahun (Hemat ⭐)</div>
+                    <div className="text-2xl font-black text-white mt-1">Rp 25.000</div>
+                    <div className="text-xs text-amber-200 mt-0.5">Hanya Rp 2.083 / bln</div>
+                  </div>
+                </div>
+
+                <button onClick={handlePayMidtrans} className="w-full py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-rose-600 hover:from-blue-700 hover:to-rose-700 text-white font-extrabold text-sm rounded-2xl shadow-xl transition">
+                  Bayar Rp {selectedPlan === 'annual' ? '25.000 (1 Tahun)' : '15.000 (6 Bulan)'} via Midtrans Snap / QRIS
+                </button>
+                <p className="text-center text-[11px] text-slate-500">🔒 Didukung Midtrans Merchant ID: M421506312 (QRIS & VA Bank).</p>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+  </html>
